@@ -373,6 +373,14 @@ public class ParseHelper {
 
         }
 
+        public void run(String fileName){
+            try {
+                this.readSample(this.parse(fileName));
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
         public JsonParser parse(String filename) throws JsonParseException, IOException {
 
             InputStream in = this.getClass().getClassLoader().getResourceAsStream(filename);

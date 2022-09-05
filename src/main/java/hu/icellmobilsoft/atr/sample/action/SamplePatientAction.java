@@ -4,12 +4,13 @@ import hu.icellmobilsoft.atr.sample.model.Patient;
 import hu.icellmobilsoft.atr.sample.repository.DepartmentRepository;
 import hu.icellmobilsoft.atr.sample.repository.InstituteRepository;
 import hu.icellmobilsoft.atr.sample.repository.PatientRepository;
-import hu.icellmobilsoft.atr.sample.rest.LoadDataImpl;
 import hu.icellmobilsoft.atr.sample.rest.RequestDataImpl;
 import hu.icellmobilsoft.atr.sample.rest.ParseJson;
 import hu.icellmobilsoft.atr.sample.rest.ParseXml;
 import hu.icellmobilsoft.atr.sample.util.ParseHelper;
 import hu.icellmobilsoft.atr.sample.util.SimplePatientConstans;
+
+import hu.icellmobilsoft.atr.sample.util.XSDValidator;
 import org.apache.commons.lang3.StringUtils;
 
 /**
@@ -20,8 +21,6 @@ public class SamplePatientAction extends RequestDataImpl {
     private DepartmentRepository depRep;
     private PatientRepository patRep;
     private InstituteRepository instRep;
-
-    private LoadDataImpl loadData;
 
     // validator elhelyezése?
 
@@ -52,29 +51,23 @@ public class SamplePatientAction extends RequestDataImpl {
         return instRep;
     }
 
-    /**
-     * Instantiates a new Sample patient action.
-     */
-    public SamplePatientAction() {
-        loadData = new LoadDataImpl();
-    }
-
-    /**
-     * Load from xml.
-     *
-     * @param xml
-     *            the xml
-     */
     public void loadFromXml(String xmlFileName) {
         if (StringUtils.isBlank(xmlFileName)) {
             throw new IllegalArgumentException(SimplePatientConstans.PARAMETER_CANNOT_NULL_MSG);
         }
-        ParseHelper.ParseXml oParseXml = new ParseHelper.ParseXml();
-        oParseXml.run(xmlFileName);
 
-        depRep = oParseXml.getDepRepo();
-        patRep = oParseXml.getPatRepo();
-        instRep = oParseXml.getInstRepo();
+        XSDValidator validator = new XSDValidator();
+        if (validator.Validate(xmlFileName, "samplepatient.xsd")) {
+            ParseHelper.ParseXml oParseXml = new ParseHelper.ParseXml();
+            oParseXml.run(xmlFileName);
+
+            depRep = oParseXml.getDepRepo();
+            patRep = oParseXml.getPatRepo();
+            instRep = oParseXml.getInstRepo();
+        } else {
+            throw new Error("invalid xml");
+        }
+
     }
 
     /**
@@ -105,9 +98,6 @@ public class SamplePatientAction extends RequestDataImpl {
      * @return the patient
      */
     public Patient queryPatientData(String userName, String department) {
-        if (StringUtils.isBlank(xmlFileName)) {
-            throw new IllegalArgumentException(SimplePatientConstans.PARAMETER_CANNOT_NULL_MSG);
-        }
         return patRep.getAllPatient().stream().filter(x -> {
             return x.getUsername().equals(userName) && x.getDepartment().getId().equals(department);
         }).findFirst().orElse(null);
@@ -120,7 +110,7 @@ public class SamplePatientAction extends RequestDataImpl {
      *            the id
      */
     public void deletePatient(String id) {
-        if (StringUtils.isBlank(xmlFileName)) {
+        if (StringUtils.isBlank(id)) {
             throw new IllegalArgumentException(SimplePatientConstans.PARAMETER_CANNOT_NULL_MSG);
         }
         PatientRepository tempPatRepo = new PatientRepository();

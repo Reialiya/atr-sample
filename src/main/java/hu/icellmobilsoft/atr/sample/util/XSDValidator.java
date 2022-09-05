@@ -24,7 +24,7 @@ public class XSDValidator {
      * @param xsdFileName the xsd file name
      * @return the boolean
      */
-    public boolean validate(String xmlFileName, String xsdFileName) {
+    public boolean Validate(String xmlFileName, String xsdFileName) {
         String xml = this.getClass().getClassLoader().getResource(xmlFileName).getFile();
         String xsd = this.getClass().getClassLoader().getResource(xsdFileName).getFile();
         boolean isValid = validateXMLSchema(xml, xsd);

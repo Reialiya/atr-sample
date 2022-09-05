@@ -3,6 +3,7 @@ package hu.icellmobilsoft;
 import hu.icellmobilsoft.atr.sample.action.SamplePatientAction;
 import hu.icellmobilsoft.atr.sample.model.Patient;
 import hu.icellmobilsoft.atr.sample.rest.*;
+import hu.icellmobilsoft.atr.sample.util.XSDValidator;
 
 /**
  * Hello world!
