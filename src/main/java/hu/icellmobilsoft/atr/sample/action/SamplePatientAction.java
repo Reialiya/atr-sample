@@ -8,7 +8,8 @@ import hu.icellmobilsoft.atr.sample.rest.LoadDataImpl;
 import hu.icellmobilsoft.atr.sample.rest.RequestDataImpl;
 import hu.icellmobilsoft.atr.sample.rest.ParseJson;
 import hu.icellmobilsoft.atr.sample.rest.ParseXml;
-import hu.icellmobilsoft.atr.sample.util.SimpleTicketConstans;
+import hu.icellmobilsoft.atr.sample.util.ParseHelper;
+import hu.icellmobilsoft.atr.sample.util.SimplePatientConstans;
 import org.apache.commons.lang3.StringUtils;
 
 /**
@@ -16,15 +17,13 @@ import org.apache.commons.lang3.StringUtils;
  * @version 1
  */
 public class SamplePatientAction extends RequestDataImpl {
-     if(StringUtils.isBlank(xmlFileName)){
-        throw new IllegalArgumentException(SimpleTicketConstans.PARAMETER_CANNOT_NULL_MSG);
-    }
-
     private DepartmentRepository depRep;
     private PatientRepository patRep;
     private InstituteRepository instRep;
 
     private LoadDataImpl loadData;
+
+    // validator elhelyezése?
 
     /**
      * Gets dep rep.
@@ -63,10 +62,15 @@ public class SamplePatientAction extends RequestDataImpl {
     /**
      * Load from xml.
      *
-     * @param xml the xml
+     * @param xml
+     *            the xml
      */
-    public void loadFromXml(String xml) {
-        ParseXml oParseXml = loadData.loadFromXml(xml);
+    public void loadFromXml(String xmlFileName) {
+        if (StringUtils.isBlank(xmlFileName)) {
+            throw new IllegalArgumentException(SimplePatientConstans.PARAMETER_CANNOT_NULL_MSG);
+        }
+        ParseHelper.ParseXml oParseXml = new ParseHelper.ParseXml();
+        oParseXml.run(xmlFileName);
 
         depRep = oParseXml.getDepRepo();
         patRep = oParseXml.getPatRepo();
@@ -76,10 +80,15 @@ public class SamplePatientAction extends RequestDataImpl {
     /**
      * Load from json.
      *
-     * @param json the json
+     * @param json
+     *            the json
      */
-    public void loadFromJson(String json) {
-        ParseJson oParseJson = loadData.loadFromJson(json);
+    public void loadFromJson(String jsonFileName) {
+        if (StringUtils.isBlank(jsonFileName)) {
+            throw new IllegalArgumentException(SimplePatientConstans.PARAMETER_CANNOT_NULL_MSG);
+        }
+        ParseHelper.ParseJson oParseJson = new ParseHelper.ParseJson();
+        oParseJson.run(jsonFileName);
 
         depRep = oParseJson.getDepRepo();
         patRep = oParseJson.getPatRepo();
@@ -89,11 +98,16 @@ public class SamplePatientAction extends RequestDataImpl {
     /**
      * Query patient data patient.
      *
-     * @param userName   the user name
-     * @param department the department
+     * @param userName
+     *            the user name
+     * @param department
+     *            the department
      * @return the patient
      */
     public Patient queryPatientData(String userName, String department) {
+        if (StringUtils.isBlank(xmlFileName)) {
+            throw new IllegalArgumentException(SimplePatientConstans.PARAMETER_CANNOT_NULL_MSG);
+        }
         return patRep.getAllPatient().stream().filter(x -> {
             return x.getUsername().equals(userName) && x.getDepartment().getId().equals(department);
         }).findFirst().orElse(null);
@@ -102,15 +116,17 @@ public class SamplePatientAction extends RequestDataImpl {
     /**
      * Delete patient.
      *
-     * @param id the id
+     * @param id
+     *            the id
      */
     public void deletePatient(String id) {
+        if (StringUtils.isBlank(xmlFileName)) {
+            throw new IllegalArgumentException(SimplePatientConstans.PARAMETER_CANNOT_NULL_MSG);
+        }
         PatientRepository tempPatRepo = new PatientRepository();
-        patRep.getAllPatient().stream()
-                .filter(x -> x.getId().equals(id))
-                .forEach(y -> {
-                    tempPatRepo.savePatient(y);
-                });
+        patRep.getAllPatient().stream().filter(x -> x.getId().equals(id)).forEach(y -> {
+            tempPatRepo.savePatient(y);
+        });
         patRep.getAllPatient().removeAll(tempPatRepo.getAllPatient());
 
     }

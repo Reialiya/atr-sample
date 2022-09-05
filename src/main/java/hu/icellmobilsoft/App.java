@@ -2,7 +2,7 @@ package hu.icellmobilsoft;
 
 import hu.icellmobilsoft.atr.sample.action.SamplePatientAction;
 import hu.icellmobilsoft.atr.sample.model.Patient;
-import hu.icellmobilsoft.atr.sample.rest.ParseXml;
+import hu.icellmobilsoft.atr.sample.rest.*;
 
 /**
  * Hello world!
@@ -14,28 +14,29 @@ import hu.icellmobilsoft.atr.sample.rest.ParseXml;
  */
 public class App {
     public static void main(String[] args) {
-        // parseXml opx = new parseXml();
-        // patientTest(opx);
-        SamplePatientAction osp = new SamplePatientAction();
-        osp.loadFromJson("example.json");
+        ILoadData loadData = new LoadDataImpl();
+        IRequestData requestData = new RequestDataImpl();
+        SamplePatientAction ospXml = loadData.loadFromXml();
+        SamplePatientAction ospJson = loadData.loadFromJson();
 
-        patientJsonTest(osp);
+        patientXmlTest(ospXml);
+        patientJsonTest(ospJson);
 
-        Patient patient = osp.queryPatientData("kv", "000008");
-        osp.deletePatient("PATIENT8");
+        Patient patient = ospXml.queryPatientData("kv", "000008");
+        ospXml.deletePatient("PATIENT8");
     }
 
-    public static void patientXmlTest(ParseXml opx) {
+    public static void patientXmlTest(SamplePatientAction opx) {
         System.out.println("######################## allDepartment");
-        opx.getDepRepo().toString();
+        opx.getDepRep().toString();
         System.out.println("######################## allDepartment End \n");
 
         System.out.println("######################## allInstitute");
-        opx.getInstRepo().toString();
+        opx.getInstRep().toString();
         System.out.println("######################## allInstitute End \n");
 
         System.out.println("######################## allPatient");
-        opx.getPatRepo().toString();
+        opx.getPatRep().toString();
         System.out.println("######################## allPatient End \n");
     }
 

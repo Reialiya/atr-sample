@@ -1,9 +1,12 @@
 package hu.icellmobilsoft.atr.sample.rest;
 
+import hu.icellmobilsoft.atr.sample.action.SamplePatientAction;
+
 public interface ILoadData {
-    ParseXml loadFromXml(String xml);
+    SamplePatientAction loadFromXml();
 
-    ParseJson loadFromJson(String json);
+    SamplePatientAction loadFromJson();
 
 
+  //  void loadFromXml();
 }

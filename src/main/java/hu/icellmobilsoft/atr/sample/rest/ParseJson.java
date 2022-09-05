@@ -79,22 +79,22 @@ public class ParseJson {
 
                 while ((nextToken = jParser.nextToken()) != JsonToken.END_ARRAY) {
                     switch (jParser.getText()) {
-                        case "id":
-                            tempDep = new Department();
-                            jParser.nextToken();
-                            tempDep.setId(jParser.getValueAsString());
+                    case "id":
+                        tempDep = new Department();
+                        jParser.nextToken();
+                        tempDep.setId(jParser.getValueAsString());
 
-                            break;
-                        case "name":
-                            jParser.nextToken();
-                            tempDep.setName(jParser.getValueAsString());
+                        break;
+                    case "name":
+                        jParser.nextToken();
+                        tempDep.setName(jParser.getValueAsString());
 
-                            break;
-                        default:
-                            if (nextToken == JsonToken.END_OBJECT) {
-                                tempDepRep.saveDepartment(tempDep);
-                            }
-                            break;
+                        break;
+                    default:
+                        if (nextToken == JsonToken.END_OBJECT) {
+                            tempDepRep.saveDepartment(tempDep);
+                        }
+                        break;
                     }
                 }
             }
@@ -152,40 +152,40 @@ public class ParseJson {
                 while (jParser.nextToken() != JsonToken.END_ARRAY) {
 
                     switch (jParser.getText()) {
-                        case "id":
-                            jParser.nextToken();
-                            tempPat = new Patient();
-                            tempPat.setId(jParser.getValueAsString());
+                    case "id":
+                        jParser.nextToken();
+                        tempPat = new Patient();
+                        tempPat.setId(jParser.getValueAsString());
 
-                            break;
-                        case "name":
-                            jParser.nextToken();
-                            tempPat.setName(jParser.getValueAsString());
+                        break;
+                    case "name":
+                        jParser.nextToken();
+                        tempPat.setName(jParser.getValueAsString());
 
-                            break;
-                        case "email":
-                            jParser.nextToken();
-                            tempPat.setEmail(jParser.getValueAsString());
+                        break;
+                    case "email":
+                        jParser.nextToken();
+                        tempPat.setEmail(jParser.getValueAsString());
 
-                            break;
-                        case "username":
-                            jParser.nextToken();
-                            tempPat.setUsername(jParser.getValueAsString());
+                        break;
+                    case "username":
+                        jParser.nextToken();
+                        tempPat.setUsername(jParser.getValueAsString());
 
-                            break;
-                        case "department":
-                            jParser.nextToken();
-                            tempPat.setDepartment(depRepo.findDepartment(jParser.getValueAsString()));
+                        break;
+                    case "department":
+                        jParser.nextToken();
+                        tempPat.setDepartment(depRepo.findDepartment(jParser.getValueAsString()));
 
-                            break;
-                        case "institute":
-                            jParser.nextToken();
-                            tempPat.setInstitute(instRepo.findInstitute(jParser.getValueAsString()));
-                            tempPatRep.savePatient(tempPat);
+                        break;
+                    case "institute":
+                        jParser.nextToken();
+                        tempPat.setInstitute(instRepo.findInstitute(jParser.getValueAsString()));
+                        tempPatRep.savePatient(tempPat);
 
-                            break;
-                        default:
-                            break;
+                        break;
+                    default:
+                        break;
                     }
                 }
             }

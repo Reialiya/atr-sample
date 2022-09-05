@@ -1,53 +1,33 @@
 package hu.icellmobilsoft.atr.sample.rest;
 
-import java.io.IOException;
 
-import javax.xml.stream.XMLStreamException;
-
-import org.apache.commons.lang3.StringUtils;
-
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.core.JsonParser;
-
-import hu.icellmobilsoft.atr.sample.util.SimpleTicketConstans;
-import hu.icellmobilsoft.atr.sample.util.XSDValidator;
+import hu.icellmobilsoft.atr.sample.action.SamplePatientAction;
 
 public class LoadDataImpl implements ILoadData {
+    private final SamplePatientAction oSampleActionPatient = new SamplePatientAction();
+    /// elérési útvonala a xml, xsd
+    private static final String XML_FILE = "sample.xml";
+    private static final String JSON_FILE = "example.json";
 
-    @Override
-    public ParseXml loadFromXml(String xmlFileName) {
-        if(StringUtils.isBlank(xmlFileName)){
-            throw new IllegalArgumentException(SimpleTicketConstans.PARAMETER_CANNOT_NULL_MSG);
-        }
-        ParseXml oParseXml = new ParseXml();
-        try {
-            XSDValidator validator = new XSDValidator();
-            if (validator.Validate(xmlFileName, "samplePatient.xsd")) {
-                oParseXml.readSample(oParseXml.parse(xmlFileName));
-            } else {
-                throw new Error("invalid xml");
-            }
-        } catch (XMLStreamException e) {
-            e.printStackTrace();
-        }
-
-        return oParseXml;
+   /* @Override
+    public void loadFromXml() throws BaseException {
+        simplePatientAction.loadFromXml(XML_FILE);
     }
 
     @Override
-    public ParseJson loadFromJson(String jsonFileName) {
-        ParseJson jParser = new ParseJson();
-        JsonParser parser;
-        try {
-            parser = jParser.parse(jsonFileName);
-            jParser.readSample(parser);
-        } catch (JsonParseException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        return jParser;
-
+    public void loadFromJson() throws BaseException {
+        simplePatientAction.loadFromJson(JSON_FILE);
+    }*/
+    @Override
+    public SamplePatientAction loadFromXml() {
+        oSampleActionPatient.loadFromXml(XML_FILE);
+        return this.oSampleActionPatient;
     }
+
+    @Override
+    public SamplePatientAction loadFromJson() {
+        oSampleActionPatient.loadFromJson(JSON_FILE);
+        return this.oSampleActionPatient;
+    }
+
 }

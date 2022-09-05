@@ -5,9 +5,9 @@ import java.util.ArrayList;
 import hu.icellmobilsoft.atr.sample.model.Patient;
 
 public interface IRequestData {
-    public Patient getPatientData(String id);
+     Patient getPatientData(String id);
 
-    public ArrayList<Patient> getAllUsersData();
+    ArrayList<Patient> getAllUsersData();
 
 }
 
