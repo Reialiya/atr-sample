@@ -1,18 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://sample.dto.icellmobilsoft.hu/patient"
             xmlns="http://sample.dto.icellmobilsoft.hu/patient" elementFormDefault='qualified'>
+
     <xsd:simpleType name="IdType">
         <xsd:restriction base="xsd:string">
             <xsd:maxLength value="32"/>
             <xsd:pattern value="[+a-zA-Z0-9_]{1,32}"/>
         </xsd:restriction>
     </xsd:simpleType>
+
     <xsd:simpleType name="NameType">
         <xsd:restriction base="xsd:string">
             <xsd:maxLength value="150"/>
             <xsd:minLength value="2"/>
         </xsd:restriction>
     </xsd:simpleType>
+
     <xsd:simpleType name="EmailType">
         <xsd:restriction base="xsd:string">
             <xsd:maxLength value="200"/>
@@ -30,7 +33,7 @@
 
     <xsd:complexType name="DepartmentIdType">
         <xsd:sequence>
-            <xsd:element name="department" type="xsd:string"/>
+            <xsd:element name="department" type="xsd:string" maxOccurs="unbounded"/>
         </xsd:sequence>
     </xsd:complexType>
 
