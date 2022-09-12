@@ -1,6 +1,6 @@
 package hu.icellmobilsoft.atr.sample.util;
 
-public class SimplePatientConstans {
+public interface SimplePatientConstans {
     public static final String PARAMETER_CANNOT_NULL_MSG = "Parameter cannot be null.";
     public static final String FILE_NOT_FOUND_MSG = "File not found.";
     public static final String FILE_NOT_VALID_MSG = "File was not valid.";

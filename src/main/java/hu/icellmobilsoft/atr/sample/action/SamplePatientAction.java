@@ -5,13 +5,8 @@ import hu.icellmobilsoft.atr.sample.repository.DepartmentRepository;
 import hu.icellmobilsoft.atr.sample.repository.InstituteRepository;
 import hu.icellmobilsoft.atr.sample.repository.PatientRepository;
 import hu.icellmobilsoft.atr.sample.rest.RequestDataImpl;
-import hu.icellmobilsoft.atr.sample.rest.ParseJson;
-import hu.icellmobilsoft.atr.sample.rest.ParseXml;
 import hu.icellmobilsoft.atr.sample.util.ParseHelper;
-import hu.icellmobilsoft.atr.sample.util.SimplePatientConstans;
-
 import hu.icellmobilsoft.atr.sample.util.XSDValidator;
-import org.apache.commons.lang3.StringUtils;
 
 /**
  * @author juhaszkata
@@ -52,9 +47,9 @@ public class SamplePatientAction extends RequestDataImpl {
     }
 
     public void loadFromXml(String xmlFileName) {
-        if (StringUtils.isBlank(xmlFileName)) {
-            throw new IllegalArgumentException(SimplePatientConstans.PARAMETER_CANNOT_NULL_MSG);
-        }
+//        if (StringUtils.isBlank(xmlFileName)) {
+//            throw new IllegalArgumentException(SimplePatientConstans.PARAMETER_CANNOT_NULL_MSG);
+//        }
 
         XSDValidator validator = new XSDValidator();
         if (validator.Validate(xmlFileName, "samplepatient.xsd")) {
@@ -73,13 +68,13 @@ public class SamplePatientAction extends RequestDataImpl {
     /**
      * Load from json.
      *
-     * @param json
+     *
      *            the json
      */
     public void loadFromJson(String jsonFileName) {
-        if (StringUtils.isBlank(jsonFileName)) {
-            throw new IllegalArgumentException(SimplePatientConstans.PARAMETER_CANNOT_NULL_MSG);
-        }
+//        if (StringUtils.isBlank(jsonFileName)) {
+//            throw new IllegalArgumentException(SimplePatientConstans.PARAMETER_CANNOT_NULL_MSG);
+//        }
         ParseHelper.ParseJson oParseJson = new ParseHelper.ParseJson();
         oParseJson.run(jsonFileName);
 
@@ -110,9 +105,9 @@ public class SamplePatientAction extends RequestDataImpl {
      *            the id
      */
     public void deletePatient(String id) {
-        if (StringUtils.isBlank(id)) {
-            throw new IllegalArgumentException(SimplePatientConstans.PARAMETER_CANNOT_NULL_MSG);
-        }
+//        if (StringUtils.isBlank(id)) {
+//            throw new IllegalArgumentException(SimplePatientConstans.PARAMETER_CANNOT_NULL_MSG);
+//        }
         PatientRepository tempPatRepo = new PatientRepository();
         patRep.getAllPatient().stream().filter(x -> x.getId().equals(id)).forEach(y -> {
             tempPatRepo.savePatient(y);

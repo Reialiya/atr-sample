@@ -4,14 +4,14 @@
 
     <xsd:simpleType name="IdType">
         <xsd:restriction base="xsd:string">
-            <xsd:maxLength value="32"/>
+            <xsd:maxLength value="30"/>
             <xsd:pattern value="[+a-zA-Z0-9_]{1,32}"/>
         </xsd:restriction>
     </xsd:simpleType>
 
     <xsd:simpleType name="NameType">
         <xsd:restriction base="xsd:string">
-            <xsd:maxLength value="150"/>
+            <xsd:maxLength value="200"/>
             <xsd:minLength value="2"/>
         </xsd:restriction>
     </xsd:simpleType>
@@ -51,8 +51,8 @@
             <xsd:element name="name" type="NameType" minOccurs="0"/>
             <xsd:element name="email" type="EmailType"/>
             <xsd:element name="username" type="NameType"/>
-            <xsd:element name="department" type="xsd:string"/>
-            <xsd:element name="institute" type="xsd:string"/>
+            <xsd:element name="department" type="IdType"/>
+            <xsd:element name="institute" type="IdType"/>
         </xsd:sequence>
     </xsd:complexType>
 

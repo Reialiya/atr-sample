@@ -1,29 +1,31 @@
 package hu.icellmobilsoft.atr.sample.util;
 
-import com.fasterxml.jackson.core.JsonFactory;
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonToken;
-import hu.icellmobilsoft.atr.sample.model.Department;
-import hu.icellmobilsoft.atr.sample.model.Institute;
-import hu.icellmobilsoft.atr.sample.model.Patient;
-import hu.icellmobilsoft.atr.sample.repository.DepartmentRepository;
-import hu.icellmobilsoft.atr.sample.repository.InstituteRepository;
-import hu.icellmobilsoft.atr.sample.repository.PatientRepository;
-import org.apache.commons.lang3.StringUtils;
+import java.io.IOException;
+import java.io.InputStream;
 
 import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.XMLEvent;
-import java.io.IOException;
-import java.io.InputStream;
+
+import com.fasterxml.jackson.core.JsonFactory;
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonToken;
+
+import hu.icellmobilsoft.atr.sample.model.Department;
+import hu.icellmobilsoft.atr.sample.model.Institute;
+import hu.icellmobilsoft.atr.sample.model.Patient;
+import hu.icellmobilsoft.atr.sample.repository.DepartmentRepository;
+import hu.icellmobilsoft.atr.sample.repository.InstituteRepository;
+import hu.icellmobilsoft.atr.sample.repository.PatientRepository;
 
 /**
  * The type Parse helper.
  */
 public class ParseHelper {
+
     public static class ParseXml {
         private DepartmentRepository depRepo;
         private PatientRepository patRepo;
