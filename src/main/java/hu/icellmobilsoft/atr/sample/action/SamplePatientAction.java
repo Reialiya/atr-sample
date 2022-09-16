@@ -47,9 +47,7 @@ public class SamplePatientAction extends RequestDataImpl {
     }
 
     public void loadFromXml(String xmlFileName) {
-//        if (StringUtils.isBlank(xmlFileName)) {
-//            throw new IllegalArgumentException(SimplePatientConstans.PARAMETER_CANNOT_NULL_MSG);
-//        }
+
 
         XSDValidator validator = new XSDValidator();
         if (validator.Validate(xmlFileName, "samplepatient.xsd")) {
@@ -72,9 +70,7 @@ public class SamplePatientAction extends RequestDataImpl {
      *            the json
      */
     public void loadFromJson(String jsonFileName) {
-//        if (StringUtils.isBlank(jsonFileName)) {
-//            throw new IllegalArgumentException(SimplePatientConstans.PARAMETER_CANNOT_NULL_MSG);
-//        }
+
         ParseHelper.ParseJson oParseJson = new ParseHelper.ParseJson();
         oParseJson.run(jsonFileName);
 
@@ -105,9 +101,7 @@ public class SamplePatientAction extends RequestDataImpl {
      *            the id
      */
     public void deletePatient(String id) {
-//        if (StringUtils.isBlank(id)) {
-//            throw new IllegalArgumentException(SimplePatientConstans.PARAMETER_CANNOT_NULL_MSG);
-//        }
+/
         PatientRepository tempPatRepo = new PatientRepository();
         patRep.getAllPatient().stream().filter(x -> x.getId().equals(id)).forEach(y -> {
             tempPatRepo.savePatient(y);
