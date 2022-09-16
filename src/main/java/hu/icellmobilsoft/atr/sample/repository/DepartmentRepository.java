@@ -1,46 +1,56 @@
 package hu.icellmobilsoft.atr.sample.repository;
 
 import java.util.ArrayList;
-import java.util.stream.Stream;
+import java.util.NoSuchElementException;
 
-import hu.icellmobilsoft.atr.sample.model.Department;
+import javax.enterprise.inject.Model;
+import javax.inject.Inject;
 
+import org.apache.commons.lang3.StringUtils;
+
+import hu.icellmobilsoft.atr.sample.model.DepartmentEntity;
+import hu.icellmobilsoft.atr.sample.util.PersistenceHelper;
+import hu.icellmobilsoft.atr.sample.util.SimplePatientConstans;
+
+@Model
 public class DepartmentRepository {
 
-    ArrayList<Department> departments = new ArrayList<Department>();
+    @Inject
+    private PersistenceHelper persistenceHelper;
+    ArrayList<DepartmentEntity> departments = new ArrayList<>();
 
-    public DepartmentRepository() {
-    }
-
-    public void saveDepartment(Department department) {
-        Department existingDep = findDepartment(department.getId());
-
-        if (existingDep == null) {
-            departments.add(department);
-        } else {
-            Integer idx = departments.indexOf(existingDep);
-            departments.set(idx, new Department(department.getId(), department.getName()));
+    public DepartmentEntity findDepartment(String id) {
+        if (StringUtils.isBlank(id)) {
+            throw new IllegalArgumentException(SimplePatientConstans.PARAMETER_CANNOT_NULL_MSG);
         }
-
+        return persistenceHelper.getEntityManager().find(DepartmentEntity.class, id);
     }
 
-    public Department findDepartment(String id) {
-        Stream<Department> findDepId = departments.stream().filter(x -> x.getId().equals(id));
-        return findDepId.findFirst().orElse(null);
+    public void saveDepartment(DepartmentEntity department) {
+        if (department == null) {
+            throw new IllegalArgumentException(SimplePatientConstans.PARAMETER_CANNOT_NULL_MSG);
+        }
+        DepartmentEntity existingDepartment = findDepartment(department.getId());
+
+        if (existingDepartment != null) {
+            existingDepartment.setId(department.getId());
+            existingDepartment.setName(department.getName());
+        } else {
+            persistenceHelper.getEntityManager().persist(department);
+        }
     }
 
-    public ArrayList<Department> getAllDepartment() {
-        return departments;
-    }
+//    státusszal kiegészítve később
+    public void deleteDepartment(String id) {
+        if (StringUtils.isBlank(id)) {
+            throw new IllegalArgumentException(SimplePatientConstans.PARAMETER_CANNOT_NULL_MSG);
+        }
+        DepartmentEntity findDep = findDepartment(id);
+        if (findDep == null) {
+            throw new NoSuchElementException(SimplePatientConstans.NO_TICKET_WITH_THIS_ID_MSG);
+        }
+        persistenceHelper.getEntityManager().remove(findDep);
 
-    @Override
-    public String toString() {
-        departments.stream().forEach(x -> {
-            System.out.printf("[ %s ] => \n id: %s \n name: %s\n", this.getClass().getSimpleName().toString(),
-                    x.getId(),
-                    x.getName());
-        });
-        return super.toString();
     }
 
 }

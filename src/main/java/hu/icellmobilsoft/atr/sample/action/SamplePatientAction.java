@@ -90,7 +90,7 @@ public class SamplePatientAction extends RequestDataImpl {
      */
     public Patient queryPatientData(String userName, String department) {
         return patRep.getAllPatient().stream().filter(x -> {
-            return x.getUsername().equals(userName) && x.getDepartment().getId().equals(department);
+            return x.getUsername().equals(userName) && x.getDepartmentId().equals(department);
         }).findFirst().orElse(null);
     }
 

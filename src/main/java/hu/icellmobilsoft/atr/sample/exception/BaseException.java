@@ -1,4 +1,4 @@
-package hu.icellmobilsoft.atr.sample.util;
+package hu.icellmobilsoft.atr.sample.exception;
 
 public class BaseException extends Exception {
     public BaseException(String message) {
