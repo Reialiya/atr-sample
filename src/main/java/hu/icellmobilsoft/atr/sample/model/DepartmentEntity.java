@@ -1,5 +1,4 @@
 package hu.icellmobilsoft.atr.sample.model;
-import java.lang.String;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -7,6 +6,8 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 import com.sun.istack.NotNull;
+
+import hu.icellmobilsoft.atr.sample.util.PatientStatusEnum;
 
 /**
  * The type Department entity.
@@ -24,6 +25,9 @@ public class DepartmentEntity {
     @Column(name = "NAME", nullable = false, length = 200)
     private String name;
 
+    @Column(nullable = false)
+    @NotNull
+    private PatientStatusEnum status;
     /**
      * Gets id.
      *
@@ -56,10 +60,17 @@ public class DepartmentEntity {
      * Sets name.
      *
      * @param name
-     *            the name
+     *
      */
     public void setName(String name) {
         this.name = name;
     }
 
+    public PatientStatusEnum getStatus() {
+        return status;
+    }
+
+    public void setStatus(PatientStatusEnum status) {
+        this.status = status;
+    }
 }

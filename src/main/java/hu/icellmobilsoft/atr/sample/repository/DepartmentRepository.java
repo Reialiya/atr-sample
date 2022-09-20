@@ -16,7 +16,8 @@ import hu.icellmobilsoft.atr.sample.util.SimplePatientConstans;
 public class DepartmentRepository {
 
     @Inject
-    private PersistenceHelper persistenceHelper;
+    PersistenceHelper persistenceHelper;
+
     ArrayList<DepartmentEntity> departments = new ArrayList<>();
 
     public DepartmentEntity findDepartment(String id) {

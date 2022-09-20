@@ -7,6 +7,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 import com.sun.istack.NotNull;
+import hu.icellmobilsoft.atr.sample.util.PatientStatusEnum;
 
 @Entity
 @Table(name = "JK_INSTITUTE")
@@ -22,6 +23,11 @@ public class InstituteEntity {
 
     @Column(name = "Department_ID")
     private String departmentId;
+
+
+    @Column(nullable = false)
+    @NotNull
+    private PatientStatusEnum status;
 
     public String getDepartmentId() {
         return departmentId;
@@ -46,4 +52,12 @@ public class InstituteEntity {
     public void setName(String name) {
         this.name = name;
     }
+
+    public PatientStatusEnum getStatus() {
+        return status;
+    }
+    public void setStatus(PatientStatusEnum status) {
+        this.status = status;
+    }
+
 }

@@ -74,6 +74,49 @@
         </xsd:sequence>
     </xsd:complexType>
 
+    <xsd:element name="DepartmentResponse">
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element name="department" type="DepartmentType" />
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="DepartmentRequest">
+    <xsd:complexType>
+        <xsd:sequence>
+            <xsd:element name="department" type="DepartmentType" />
+        </xsd:sequence>
+    </xsd:complexType>
+</xsd:element>
+    <xsd:element name="InstituteResponse">
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element name="institute" type="InstituteType" />
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="InstituteRequest">
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element name="institute" type="InstituteType" />
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="PatientResponse">
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element name="patient" type="PatientType" />
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="PatientRequest">
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element name="patient" type="PatientType" />
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+
     <xsd:element name="sample">
         <xsd:complexType>
             <xsd:sequence>

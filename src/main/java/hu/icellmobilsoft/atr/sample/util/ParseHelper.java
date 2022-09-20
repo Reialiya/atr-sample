@@ -200,7 +200,7 @@ public class ParseHelper {
             case "department":
                 java.lang.String depdep = reader.nextEvent().asCharacters().getData();
                 if (!depdep.isEmpty() && tempDep != null) {
-                    tempDep.addDepartments(depRepo.findDepartment(depdep));
+//                    tempDep.addDepartments(depRepo.findDepartment(depdep));
                 }
                 break;
             default:
@@ -214,7 +214,7 @@ public class ParseHelper {
             if (endelementName.equals("department")) {
                 System.out.println(" [" + tag + "] getInst END -> " + endelementName);
                 if (temp != null) {
-                    tempRep.saveInstitute(temp);
+//                    tempRep.saveInstitute(temp);
                 }
             }
             return tempRep;
@@ -288,63 +288,63 @@ public class ParseHelper {
             if (endelementName.equals("patient")) {
                 System.out.println(" [" + tag + "] getPat END -> " + endelementName);
                 if (tempPat != null) {
-                    tempPatRep.savePatient(tempPat);
+//                    tempPatRep.savePatient(tempPat);
                 }
             }
             return tempPatRep;
         }
 
         private Patient parsePatientTags(XMLEventReader reader, java.lang.String elementName, Patient tempPat) throws XMLStreamException {
-            switch (elementName) {
-            case "patient":
-                tempPat = new Patient();
-                break;
-            case "id":
-                java.lang.String id = reader.nextEvent().asCharacters().getData();
-                if (!id.isEmpty()) {
-                    if (tempPat != null)
-                        tempPat.setId(id);
-                }
-                break;
-            case "name":
-                java.lang.String name = reader.nextEvent().asCharacters().getData();
-                if (!name.isEmpty()) {
-                    if (tempPat != null)
-                        tempPat.setName(name);
-                }
-                break;
-            case "email":
-                java.lang.String email = reader.nextEvent().asCharacters().getData();
-                if (!email.isEmpty()) {
-                    if (tempPat != null)
-                        tempPat.setEmail(email);
-                }
-                break;
-            case "username":
-                java.lang.String username = reader.nextEvent().asCharacters().getData();
-                if (!username.isEmpty()) {
-                    if (tempPat != null)
-                        tempPat.setUsername(username);
-                }
-                break;
-            case "department":
-                java.lang.String departmentId = reader.nextEvent().asCharacters().getData();
-                if (!departmentId.isEmpty()) {
-                    if (tempPat != null)
-                        tempPat.setDepartmentId(depRepo.findDepartment(departmentId));
-                }
-                break;
-            case "institute":
-                java.lang.String stringId = reader.nextEvent().asCharacters().getData();
-                if (!stringId.isEmpty()) {
-                    if (tempPat != null)
-                        tempPat.setInstituteId(instRepo.findInstitute(stringId));
-                }
-                break;
-            }
-            return tempPat;
-        }
-
+//            switch (elementName) {
+//            case "patient":
+//                tempPat = new Patient();
+//                break;
+//            case "id":
+//                java.lang.String id = reader.nextEvent().asCharacters().getData();
+//                if (!id.isEmpty()) {
+//                    if (tempPat != null)
+//                        tempPat.setId(id);
+//                }
+//                break;
+//            case "name":
+//                java.lang.String name = reader.nextEvent().asCharacters().getData();
+//                if (!name.isEmpty()) {
+//                    if (tempPat != null)
+//                        tempPat.setName(name);
+//                }
+//                break;
+//            case "email":
+//                java.lang.String email = reader.nextEvent().asCharacters().getData();
+//                if (!email.isEmpty()) {
+//                    if (tempPat != null)
+//                        tempPat.setEmail(email);
+//                }
+//                break;
+//            case "username":
+//                java.lang.String username = reader.nextEvent().asCharacters().getData();
+//                if (!username.isEmpty()) {
+//                    if (tempPat != null)
+//                        tempPat.setUsername(username);
+//                }
+//                break;
+//            case "department":
+//                java.lang.String departmentId = reader.nextEvent().asCharacters().getData();
+//                if (!departmentId.isEmpty()) {
+//                    if (tempPat != null);{
+////                        tempPat.setDepartmentId(depRepo.findDepartment(departmentId));
+//                }
+//                break;
+//            case "institute":
+//                java.lang.String stringId = reader.nextEvent().asCharacters().getData();
+//                if (!stringId.isEmpty()) {
+//                    if (tempPat != null){
+////                        tempPat.setInstituteId(instRepo.findInstitute(stringId));
+//                }
+//                break;
+//            }
+//            return tempPat;
+//        }
+return null;
     }
 
     public static class ParseJson {
@@ -443,95 +443,95 @@ public class ParseHelper {
         }
 
         InstituteRepository readInstitute(JsonParser jParser) throws IOException {
-            InstituteRepository tempInstRep = new InstituteRepository();
-            Institute tempInst = null;
-
-            while (jParser.nextToken() != JsonToken.END_OBJECT) {
-                java.lang.String fieldname = jParser.getCurrentName();
-
-                if ("institute".equals(fieldname)) {
-                    JsonToken nextToken;
-
-                    while ((nextToken = jParser.nextToken()) != JsonToken.END_ARRAY) {
-                        if ("id".equals(jParser.getValueAsString())) {
-                            jParser.nextToken();
-                            tempInst = new Institute();
-                            tempInst.setId(jParser.getValueAsString());
-                        }
-                        if ("name".equals(jParser.getValueAsString())) {
-                            jParser.nextToken();
-                            tempInst.setName(jParser.getValueAsString());
-                        }
-                        if ("departments".equals(jParser.getValueAsString())) {
-                            nextToken = jParser.nextToken();
-                            while (nextToken != JsonToken.END_ARRAY && nextToken != JsonToken.END_OBJECT) {
-                                java.lang.String depId = jParser.getValueAsString();
-                                if (depId != null && depId != "department") {
-                                    tempInst.addDepartments(depRepo.findDepartment(depId));
-                                }
-                                nextToken = jParser.nextToken();
-                            }
-                            tempInstRep.saveInstitute(tempInst);
-                        }
-                    }
-                }
-            }
-            return tempInstRep;
+//            InstituteRepository tempInstRep = new InstituteRepository();
+//            Institute tempInst = null;
+//
+//            while (jParser.nextToken() != JsonToken.END_OBJECT) {
+//                java.lang.String fieldname = jParser.getCurrentName();
+//
+//                if ("institute".equals(fieldname)) {
+//                    JsonToken nextToken;
+//
+//                    while ((nextToken = jParser.nextToken()) != JsonToken.END_ARRAY) {
+//                        if ("id".equals(jParser.getValueAsString())) {
+//                            jParser.nextToken();
+//                            tempInst = new Institute();
+//                            tempInst.setId(jParser.getValueAsString());
+//                        }
+//                        if ("name".equals(jParser.getValueAsString())) {
+//                            jParser.nextToken();
+//                            tempInst.setName(jParser.getValueAsString());
+//                        }
+//                        if ("departments".equals(jParser.getValueAsString())) {
+//                            nextToken = jParser.nextToken();
+//                            while (nextToken != JsonToken.END_ARRAY && nextToken != JsonToken.END_OBJECT) {
+//                                java.lang.String depId = jParser.getValueAsString();
+//                                if (depId != null && depId != "department") {
+//                                    tempInst.addDepartments(depRepo.findDepartment(depId));
+//                                }
+//                                nextToken = jParser.nextToken();
+//                            }
+//                            tempInstRep.saveInstitute(tempInst);
+//                        }
+//                    }
+//                }
+//            }
+            return null;
         }
 
         PatientRepository readPatients(JsonParser jParser) throws IOException {
             PatientRepository tempPatRep = new PatientRepository();
-            Patient tempPat = null;
-
-            while (jParser.nextToken() != JsonToken.END_OBJECT) {
-                java.lang.String fieldname = jParser.getCurrentName();
-
-                if ("patient".equals(fieldname)) {
-                    jParser.nextToken();
-
-                    while (jParser.nextToken() != JsonToken.END_ARRAY) {
-
-                        switch (jParser.getText()) {
-                        case "id":
-                            jParser.nextToken();
-                            tempPat = new Patient();
-                            tempPat.setId(jParser.getValueAsString());
-
-                            break;
-                        case "name":
-                            jParser.nextToken();
-                            tempPat.setName(jParser.getValueAsString());
-
-                            break;
-                        case "email":
-                            jParser.nextToken();
-                            tempPat.setEmail(jParser.getValueAsString());
-
-                            break;
-                        case "username":
-                            jParser.nextToken();
-                            tempPat.setUsername(jParser.getValueAsString());
-
-                            break;
-                        case "department":
-                            jParser.nextToken();
-                            tempPat.setDepartmentId(depRepo.findDepartment(jParser.getValueAsString()));
-
-                            break;
-                        case "institute":
-                            jParser.nextToken();
-                            tempPat.setInstituteId(instRepo.findInstitute(jParser.getValueAsString()));
-                            tempPatRep.savePatient(tempPat);
-
-                            break;
-                        default:
-                            break;
-                        }
-                    }
-                }
-            }
+//            Patient tempPat = null;
+//
+//            while (jParser.nextToken() != JsonToken.END_OBJECT) {
+//                java.lang.String fieldname = jParser.getCurrentName();
+//
+//                if ("patient".equals(fieldname)) {
+//                    jParser.nextToken();
+//
+//                    while (jParser.nextToken() != JsonToken.END_ARRAY) {
+//
+//                        switch (jParser.getText()) {
+//                        case "id":
+//                            jParser.nextToken();
+//                            tempPat = new Patient();
+//                            tempPat.setId(jParser.getValueAsString());
+//
+//                            break;
+//                        case "name":
+//                            jParser.nextToken();
+//                            tempPat.setName(jParser.getValueAsString());
+//
+//                            break;
+//                        case "email":
+//                            jParser.nextToken();
+//                            tempPat.setEmail(jParser.getValueAsString());
+//
+//                            break;
+//                        case "username":
+//                            jParser.nextToken();
+//                            tempPat.setUsername(jParser.getValueAsString());
+//
+//                            break;
+//                        case "department":
+//                            jParser.nextToken();
+//                            tempPat.setDepartmentId(depRepo.findDepartment(jParser.getValueAsString()));
+//
+//                            break;
+//                        case "institute":
+//                            jParser.nextToken();
+//                            tempPat.setInstituteId(instRepo.findInstitute(jParser.getValueAsString()));
+//                            tempPatRep.savePatient(tempPat);
+//
+//                            break;
+//                        default:
+//                            break;
+//                        }
+//                    }
+//                }
+//            }
             return tempPatRep;
         }
-    }
+    }}
 
 }

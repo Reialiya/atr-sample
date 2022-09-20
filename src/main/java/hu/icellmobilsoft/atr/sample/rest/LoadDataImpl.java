@@ -11,13 +11,13 @@ public class LoadDataImpl implements ILoadData {
 
     @Override
     public SamplePatientAction loadFromXml() {
-        oSampleActionPatient.loadFromXml(XML_FILE);
+//        oSampleActionPatient.loadFromXml(XML_FILE);
         return this.oSampleActionPatient;
     }
 
     @Override
     public SamplePatientAction loadFromJson() {
-        oSampleActionPatient.loadFromJson(JSON_FILE);
+//        oSampleActionPatient.loadFromJson(JSON_FILE);
         return this.oSampleActionPatient;
     }
 
