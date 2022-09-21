@@ -48,7 +48,7 @@ public class DepartmentRepository {
         }
         DepartmentEntity findDep = findDepartment(id);
         if (findDep == null) {
-            throw new NoSuchElementException(SimplePatientConstans.NO_TICKET_WITH_THIS_ID_MSG);
+            throw new NoSuchElementException(SimplePatientConstans.NO_DEPARTMENT_WITH_THIS_ID_MSG);
         }
         persistenceHelper.getEntityManager().remove(findDep);
 

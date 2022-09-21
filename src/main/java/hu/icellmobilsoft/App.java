@@ -1,6 +1,12 @@
 package hu.icellmobilsoft;
 
+
+import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
+
+import hu.icellmobilsoft.atr.sample.action.DepartmentAction;
 import hu.icellmobilsoft.atr.sample.action.SamplePatientAction;
+import hu.icellmobilsoft.atr.sample.exception.BaseException;
 
 /**
  * Hello world!
@@ -11,7 +17,14 @@ import hu.icellmobilsoft.atr.sample.action.SamplePatientAction;
  *
  */
 public class App {
-    public static void main(String[] args) {
+
+    @Inject
+      private DepartmentAction departmentAction;
+
+    public static void main(String[] args) throws BaseException {
+
+        CDI.current().select(DepartmentAction.class).get().getDepartment("123");
+
 //        ILoadData loadData = new LoadDataImpl();
 //        IRequestData requestData = new RequestDataImpl();
 //        SamplePatientAction ospXml = loadData.loadFromXml();
@@ -22,6 +35,9 @@ public class App {
 //
 //        Patient patient = ospXml.queryPatientData("kv", "000008");
 //        ospXml.deletePatient("PATIENT8");
+    }
+    public void valami() throws BaseException {
+        departmentAction.getDepartment("123");
     }
 
     public static void patientXmlTest(SamplePatientAction opx) {

@@ -2,12 +2,14 @@ package hu.icellmobilsoft.atr.sample.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
 import com.sun.istack.NotNull;
 
-import hu.icellmobilsoft.atr.sample.util.PatientStatusEnum;
+import hu.icellmobilsoft.atr.sample.util.ActiveInactiveStatus;
 
 /**
  * The type Department entity.
@@ -25,9 +27,9 @@ public class DepartmentEntity {
     @Column(name = "NAME", nullable = false, length = 200)
     private String name;
 
-    @Column(nullable = false)
-    @NotNull
-    private PatientStatusEnum status;
+    @Column(name = "STATUS")
+    @Enumerated (EnumType.STRING)
+    private ActiveInactiveStatus status;
     /**
      * Gets id.
      *
@@ -66,11 +68,11 @@ public class DepartmentEntity {
         this.name = name;
     }
 
-    public PatientStatusEnum getStatus() {
+    public ActiveInactiveStatus getStatus() {
         return status;
     }
 
-    public void setStatus(PatientStatusEnum status) {
+    public void setStatus(ActiveInactiveStatus status) {
         this.status = status;
     }
 }

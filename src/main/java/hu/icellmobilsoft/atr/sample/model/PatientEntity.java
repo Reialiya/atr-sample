@@ -3,11 +3,13 @@ import java.lang.String;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
 import com.sun.istack.NotNull;
-import hu.icellmobilsoft.atr.sample.util.PatientStatusEnum;
+import hu.icellmobilsoft.atr.sample.util.ActiveInactiveStatus;
 
 /**
  * The type Patient entity.
@@ -37,9 +39,9 @@ public class PatientEntity {
     @Column(name = "Department_ID")
     private String departmentId;
 
-    @Column(nullable = false)
-    @NotNull
-    private PatientStatusEnum status;
+    @Column(name = "STATUS")
+    @Enumerated (EnumType.STRING)
+    private ActiveInactiveStatus status;
 
     public PatientEntity(String id, String name, String email, String username, String instituteId, String departmentId) {
         this.id = id;
@@ -102,11 +104,11 @@ public class PatientEntity {
         this.departmentId = department;
     }
 
-    public void setStatus(PatientStatusEnum status) {
+    public void setStatus(ActiveInactiveStatus status) {
         this.status = status;
     }
 
-    public PatientStatusEnum getStatus() {
+    public ActiveInactiveStatus getStatus() {
         return status;
     }
 

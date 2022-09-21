@@ -3,11 +3,13 @@ import java.lang.String;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
 import com.sun.istack.NotNull;
-import hu.icellmobilsoft.atr.sample.util.PatientStatusEnum;
+import hu.icellmobilsoft.atr.sample.util.ActiveInactiveStatus;
 
 @Entity
 @Table(name = "JK_INSTITUTE")
@@ -25,9 +27,9 @@ public class InstituteEntity {
     private String departmentId;
 
 
-    @Column(nullable = false)
-    @NotNull
-    private PatientStatusEnum status;
+    @Column(name = "STATUS")
+    @Enumerated (EnumType.STRING)
+    private ActiveInactiveStatus status;
 
     public String getDepartmentId() {
         return departmentId;
@@ -53,10 +55,10 @@ public class InstituteEntity {
         this.name = name;
     }
 
-    public PatientStatusEnum getStatus() {
+    public ActiveInactiveStatus getStatus() {
         return status;
     }
-    public void setStatus(PatientStatusEnum status) {
+    public void setStatus(ActiveInactiveStatus status) {
         this.status = status;
     }
 

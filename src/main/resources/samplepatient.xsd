@@ -24,10 +24,18 @@
         </xsd:restriction>
     </xsd:simpleType>
 
+    <xsd:simpleType name="ActiveInactiveStatus">
+        <xsd:restriction base="xsd:string">
+            <xsd:enumeration value="ACTIVE"/>
+            <xsd:enumeration value="INACTIVE"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+
     <xsd:complexType name="DepartmentType">
         <xsd:sequence>
             <xsd:element name="id" type="IdType"/>
             <xsd:element name="name" type="NameType"/>
+            <xsd:element name="status" type="ActiveInactiveStatus" />
         </xsd:sequence>
     </xsd:complexType>
 
@@ -42,6 +50,7 @@
             <xsd:element name="id" type="IdType"/>
             <xsd:element name="name" type="NameType"/>
             <xsd:element name="departments" type="DepartmentIdType" maxOccurs="unbounded"/>
+            <xsd:element name="status" type="ActiveInactiveStatus" />
         </xsd:sequence>
     </xsd:complexType>
 
@@ -53,6 +62,7 @@
             <xsd:element name="username" type="NameType"/>
             <xsd:element name="department" type="IdType"/>
             <xsd:element name="institute" type="IdType"/>
+            <xsd:element name="status" type="ActiveInactiveStatus" />
         </xsd:sequence>
     </xsd:complexType>
 
@@ -74,6 +84,13 @@
         </xsd:sequence>
     </xsd:complexType>
 
+    <xsd:element name="DepartmentRequest">
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element name="department" type="DepartmentType" />
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
     <xsd:element name="DepartmentResponse">
         <xsd:complexType>
             <xsd:sequence>
@@ -81,20 +98,7 @@
             </xsd:sequence>
         </xsd:complexType>
     </xsd:element>
-    <xsd:element name="DepartmentRequest">
-    <xsd:complexType>
-        <xsd:sequence>
-            <xsd:element name="department" type="DepartmentType" />
-        </xsd:sequence>
-    </xsd:complexType>
-</xsd:element>
-    <xsd:element name="InstituteResponse">
-        <xsd:complexType>
-            <xsd:sequence>
-                <xsd:element name="institute" type="InstituteType" />
-            </xsd:sequence>
-        </xsd:complexType>
-    </xsd:element>
+
     <xsd:element name="InstituteRequest">
         <xsd:complexType>
             <xsd:sequence>
@@ -102,14 +106,22 @@
             </xsd:sequence>
         </xsd:complexType>
     </xsd:element>
-    <xsd:element name="PatientResponse">
+    <xsd:element name="InstituteResponse">
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element name="institute" type="InstituteType" />
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+
+    <xsd:element name="PatientRequest">
         <xsd:complexType>
             <xsd:sequence>
                 <xsd:element name="patient" type="PatientType" />
             </xsd:sequence>
         </xsd:complexType>
     </xsd:element>
-    <xsd:element name="PatientRequest">
+    <xsd:element name="PatientResponse">
         <xsd:complexType>
             <xsd:sequence>
                 <xsd:element name="patient" type="PatientType" />

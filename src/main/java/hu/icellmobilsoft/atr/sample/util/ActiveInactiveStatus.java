@@ -5,6 +5,6 @@ package hu.icellmobilsoft.atr.sample.util;
  * 
  * @author juhaszkata
  */
-public enum PatientStatusEnum {
+public enum ActiveInactiveStatus {
     ACTIVE, INACTIVE,
 }
