@@ -21,6 +21,7 @@ import hu.icellmobilsoft.atr.sample.util.ActiveInactiveStatus;
 
 public class PatientEntity {
 
+    public static hu.icellmobilsoft.atr.sample.model.PatientEntity PatientEntity;
     @Id
     @NotNull
     @Column(name = "ID", nullable = false, length = 30)

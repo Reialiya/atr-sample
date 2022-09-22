@@ -1,5 +1,7 @@
 package hu.icellmobilsoft.atr.sample.util;
 
+import javax.enterprise.context.Dependent;
+import javax.enterprise.inject.Produces;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
@@ -9,14 +11,17 @@ import javax.persistence.PersistenceContext;
  * @author juhaszkata
  */
 public class PersistenceHelper {
-    @PersistenceContext
+    @PersistenceContext(unitName = "defaultPU")
     private EntityManager entityManager;
+
 
     /**
      * Gets entity manager.
      *
      * @return the entity manager
      */
+    @Produces
+    @Dependent
     public EntityManager getEntityManager() {
         return entityManager;
     }

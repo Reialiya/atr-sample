@@ -8,15 +8,15 @@ import hu.icellmobilsoft.dto.sample.patient.InstituteType;
 
 public class InstituteConverter {
     // db-ből jön az adat és entityvé lesz alakítva és fordítva is műkődnie kell
-    public InstituteEntity convert(InstituteType instituteTypeDto) {
-        if (instituteTypeDto == null) {
+    public InstituteEntity convert(InstituteType instituteType) {
+        if (instituteType== null) {
             throw new IllegalArgumentException(SimplePatientConstans.PARAMETER_CANNOT_NULL_MSG);
         }
         InstituteEntity instituteEntity = new InstituteEntity();
-        instituteEntity.setId(instituteEntity.getId());
-        instituteEntity.setName(instituteEntity.getName());
+        instituteEntity.setId(instituteType.getId());
+        instituteEntity.setName(instituteType.getName());
         instituteEntity.setDepartmentId(instituteEntity.getDepartmentId());
-        instituteEntity.setStatus(EnumUtil.convert(instituteTypeDto.getStatus() , ActiveInactiveStatus.class));
+        instituteEntity.setStatus(EnumUtil.convert(instituteType.getStatus() , ActiveInactiveStatus.class));
 
         return instituteEntity;
     }
@@ -27,8 +27,9 @@ public class InstituteConverter {
         }
         InstituteType instituteType = new InstituteType();
         instituteType.setId(instituteEntity.getId());
-        instituteEntity.setName(instituteEntity.getName());
-        instituteEntity.setDepartmentId(instituteEntity.getDepartmentId());
+        instituteType.setName(instituteEntity.getName());
+
+        instituteType.setStatus(EnumUtil.convert(instituteEntity.getStatus(), hu.icellmobilsoft.dto.sample.patient.ActiveInactiveStatus.class));
 
         return instituteType;
     }

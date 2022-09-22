@@ -15,6 +15,9 @@ import hu.icellmobilsoft.atr.sample.util.SimplePatientConstans;
 import hu.icellmobilsoft.dto.sample.patient.DepartmentRequest;
 import hu.icellmobilsoft.dto.sample.patient.DepartmentResponse;
 
+/**
+ * The type Department action.
+ */
 @Model
 public class DepartmentAction {
 
@@ -24,6 +27,13 @@ public class DepartmentAction {
     @Inject
     private DepartmentConverter departmentConverter;
 
+    /**
+     * Gets department.
+     *
+     * @param departmentID the department id
+     * @return the department
+     * @throws BaseException the base exception
+     */
 // departmentID alapján az entityvel visszatérünk
     public DepartmentResponse getDepartment(String departmentID) throws BaseException {
         if (StringUtils.isBlank(departmentID)) {
@@ -34,18 +44,17 @@ public class DepartmentAction {
         if (StringUtils.isBlank(departmentID)) {
             throw new BaseException(SimplePatientConstans.PARAMETER_CANNOT_NULL_MSG);
         }
-        return DepartmentToResponse(department);
+        return departmentToResponse(department);
     }
 
-//    DepartmentResponse beállítva lesz, with-ben benne van a set is
-    private DepartmentResponse DepartmentToResponse(DepartmentEntity department) {
-//        üres vizsgálni kell-e?
 
-        DepartmentResponse departmentResponse = new DepartmentResponse();
-    return departmentResponse.withDepartment(departmentConverter.convert(department));
-    }
-
-//    dpertmentRequestet convertáljuk át entityvé, h menteni lehessen
+    /**
+     * Post department department response, convertáljuk át entetyvé a mentés miatt
+     *
+     * @param departmentRequest the department request
+     * @return the department response
+     * @throws BaseException the base exception
+     */
     @Transactional
     public DepartmentResponse postDepartment(DepartmentRequest departmentRequest) throws BaseException {
         if (departmentRequest == null) {
@@ -54,19 +63,52 @@ public class DepartmentAction {
         DepartmentEntity department = departmentRepository.findDepartment(departmentRequest.getDepartment().getId());
 
         departmentRepository.saveDepartment(department);
-        return DepartmentToResponse(department);
 
+        return departmentToResponse(department);
     }
 
-public void deleteDepartment(String DepartmentID) throws DeleteException {
-    if (StringUtils.isBlank(DepartmentID)) {
-        throw new IllegalArgumentException(SimplePatientConstans.PARAMETER_CANNOT_NULL_MSG);
-    }
-    if(departmentRepository.findDepartment(DepartmentID) == null){
-        throw new DeleteException(SimplePatientConstans.NO_DEPARTMENT_WITH_THIS_ID_MSG);
-    }
-    departmentRepository.deleteDepartment(DepartmentID);
-}
 
+//    public DepartmentResponse putDepartment(DepartmentRequest departmentRequest) throws BaseException {
+//        if (departmentRequest == null) {
+//            throw new BaseException(SimplePatientConstans.PARAMETER_CANNOT_NULL_MSG);
+//        }
+//
+//        DepartmentEntity department = departmentRepository.findDepartment(departmentRequest.getDepartment().getId());
+//
+//        departmentRepository.saveDepartment(department);
+//
+//        return departmentToResponse(department);
+//    }
+
+    /**
+     * Paraméterként kapott departmentID alapján törli a repoból a departmentet és visszatér depEntityvel
+     *
+     * @param departmentID the department id
+     * @return the department response
+     * @throws DeleteException the delete exception
+     */
+    public DepartmentResponse deleteDepartment(String departmentID) throws DeleteException {
+        if (StringUtils.isBlank(departmentID)) {
+            throw new IllegalArgumentException(SimplePatientConstans.PARAMETER_CANNOT_NULL_MSG);
+        }
+
+        DepartmentEntity departmentEntity = departmentRepository.findDepartment(departmentID);
+        if (departmentEntity == null) {
+            throw new DeleteException(SimplePatientConstans.NO_DEPARTMENT_WITH_THIS_ID_MSG);
+        }
+        departmentRepository.deleteDepartment(departmentID);
+        return departmentToResponse(departmentEntity);
+    }
+
+
+
+
+    // DepartmentResponse beállítva lesz, with-ben benne van a set is
+    private DepartmentResponse departmentToResponse(DepartmentEntity department) {
+        // üres vizsgálni kell-e?
+
+        DepartmentResponse departmentResponse = new DepartmentResponse();
+        return departmentResponse.withDepartment(departmentConverter.convert(department));
+    }
 
 }

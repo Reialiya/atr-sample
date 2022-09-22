@@ -5,17 +5,16 @@
           http://xmlns.jcp.org/xml/ns/persistence/persistence_2_2.xsd"
              version="2.2">
 
-    <persistence-unit name="atrSampleDefaultEntityManager">
+    <persistence-unit name="defaultPU" transaction-type="JTA">
         <description>Hibernate EntityManager Test</description>
+        <jta-data-source>java:jboss/datasources/${service.name}DS</jta-data-source>
+        <mapping-file>META-INF/jpa-entity.xml</mapping-file>
         <!--    <class>atr-sample.hibernate.pojo.ATR</class>-->
         <exclude-unlisted-classes>true</exclude-unlisted-classes>
         <properties>
             <property name="hibernate.dialect" value="org.hibernate.dialect.Oracle10gDialect"/>
             <property name="hibernate.hbm2ddl.auto" value="update"/>
             <property name="javax.persistence.jdbc.driver" value="oracle.jdbc.OracleDriver"/>
-            <property name="javax.persistence.jdbc.url" value="oradev08.icellmobilsoft.hu:1521:ATRDEV"/>
-            <property name="javax.persistence.jdbc.user" value="root"/>
-            <property name="javax.persistence.jdbc.password" value="root"/>
         </properties>
     </persistence-unit>
 </persistence>

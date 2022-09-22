@@ -36,6 +36,7 @@ public class InstituteRepository {
             existingInstitute.setId(institute.getId());
             existingInstitute.setName(institute.getName());
             existingInstitute.setDepartmentId(institute.getDepartmentId());
+            existingInstitute.setStatus(institute.getStatus());
         } else {
             persistenceHelper.getEntityManager().persist(institute);
         }

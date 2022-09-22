@@ -36,6 +36,7 @@ public class DepartmentRepository {
         if (existingDepartment != null) {
             existingDepartment.setId(department.getId());
             existingDepartment.setName(department.getName());
+            existingDepartment.setStatus(department.getStatus());
         } else {
             persistenceHelper.getEntityManager().persist(department);
         }

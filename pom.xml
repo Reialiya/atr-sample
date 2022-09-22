@@ -7,6 +7,7 @@
     <groupId>hu.icellmobilsoft</groupId>
     <artifactId>atr-sample</artifactId>
     <version>0.1.0-SNAPSHOT</version>
+    <packaging>war</packaging>
 
     <name>atr-sample</name>
     <!-- FIXME change it to the project's website -->
@@ -26,6 +27,7 @@
         <version.maven.jaxb2.plugin>0.13.3</version.maven.jaxb2.plugin>
         <failOnMissingWebXml>false</failOnMissingWebXml>
         <apache.common.version>3.10</apache.common.version>
+        <service.name>atr-sample</service.name>
     </properties>
 
     <dependencies>
@@ -109,9 +111,31 @@
     </dependencies>
 
     <build>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+            <resource>
+                <directory>src/main/webapp</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
         <finalName>${project.artifactId}</finalName>
         <plugins>
-
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>3.3.1</version>
+                <configuration>
+                    <archive>
+                        <manifestEntries>
+                            <create-date>${maven.build.timestamp}</create-date>
+                            <Logging-Profile>${project.artifactId}</Logging-Profile>
+                        </manifestEntries>
+                    </archive>
+                </configuration>
+            </plugin>
             <plugin>
                 <groupId>org.jvnet.jaxb2.maven2</groupId>
                 <artifactId>maven-jaxb2-plugin</artifactId>

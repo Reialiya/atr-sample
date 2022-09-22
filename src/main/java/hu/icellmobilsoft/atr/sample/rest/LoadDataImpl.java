@@ -1,5 +1,6 @@
 package hu.icellmobilsoft.atr.sample.rest;
 
+import javax.ws.rs.core.Response;
 
 import hu.icellmobilsoft.atr.sample.action.SamplePatientAction;
 
@@ -10,15 +11,26 @@ public class LoadDataImpl implements ILoadData {
     private static final String JSON_FILE = "example.json";
 
     @Override
-    public SamplePatientAction loadFromXml() {
-//        oSampleActionPatient.loadFromXml(XML_FILE);
-        return this.oSampleActionPatient;
+    public Response getHello() {
+        return Response.ok("Hello !").build();
     }
 
-    @Override
-    public SamplePatientAction loadFromJson() {
-//        oSampleActionPatient.loadFromJson(JSON_FILE);
-        return this.oSampleActionPatient;
-    }
+//    @Override
+//    public Response getDepartment(){
+//        return Response.
+//    }
+
+
+     @Override
+     public SamplePatientAction loadFromXml() {
+    // oSampleActionPatient.loadFromXml(XML_FILE);
+     return this.oSampleActionPatient;
+     }
+
+     @Override
+     public SamplePatientAction loadFromJson() {
+    // oSampleActionPatient.loadFromJson(JSON_FILE);
+     return this.oSampleActionPatient;
+     }
 
 }

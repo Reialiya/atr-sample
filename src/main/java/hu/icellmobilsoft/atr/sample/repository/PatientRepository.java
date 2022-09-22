@@ -38,6 +38,7 @@ public class PatientRepository {
             existingPatient.setEmail(patient.getEmail());
             existingPatient.setInstituteId(patient.getInstituteId());
             existingPatient.setDepartmentId(patient.getDepartmentId());
+            existingPatient.setStatus(patient.getStatus());
         }
         persistenceHelper.getEntityManager().persist(patient);
 
