@@ -4,11 +4,14 @@ import java.util.ArrayList;
 import java.util.NoSuchElementException;
 
 import javax.enterprise.inject.Model;
+import javax.enterprise.inject.spi.CDI;
 import javax.inject.Inject;
+import javax.transaction.Transactional;
 
 import org.apache.commons.lang3.StringUtils;
 
 import hu.icellmobilsoft.atr.sample.model.PatientEntity;
+import hu.icellmobilsoft.atr.sample.util.ActiveInactiveStatus;
 import hu.icellmobilsoft.atr.sample.util.PersistenceHelper;
 import hu.icellmobilsoft.atr.sample.util.SimplePatientConstans;
 
@@ -30,20 +33,15 @@ public class PatientRepository {
             throw new IllegalArgumentException(SimplePatientConstans.PARAMETER_CANNOT_NULL_MSG);
         }
 
-        PatientEntity existingPatient = findPatient(patient.getInstituteId());
-        if (existingPatient != null){
-            existingPatient.setId(patient.getId());
-            existingPatient.setName(patient.getName());
-            existingPatient.setUsername(patient.getUsername());
-            existingPatient.setEmail(patient.getEmail());
-            existingPatient.setInstituteId(patient.getInstituteId());
-            existingPatient.setDepartmentId(patient.getDepartmentId());
-            existingPatient.setStatus(patient.getStatus());
-        }
-        persistenceHelper.getEntityManager().persist(patient);
+        CDI.current().select(PatientRepository.class).get().savePat(patient);
 
     }
-// később státusszak kiegészítve
+
+    @Transactional
+    public void savePat(PatientEntity patient) {
+        persistenceHelper.getEntityManager().persist(patient);
+    }
+
     public void deletePatient(String id) {
         if (StringUtils.isBlank(id)) {
             throw new IllegalArgumentException(SimplePatientConstans.PARAMETER_CANNOT_NULL_MSG);
@@ -52,13 +50,9 @@ public class PatientRepository {
         if (findPat == null) {
             throw new NoSuchElementException(SimplePatientConstans.NO_TICKET_WITH_THIS_ID_MSG);
         }
+        findPat.setStatus(ActiveInactiveStatus.INACTIVE);
         persistenceHelper.getEntityManager().remove(findPat);
 
     }
-
-
-
-
-
 
 }

@@ -1,14 +1,16 @@
 package hu.icellmobilsoft.atr.sample.repository;
 
-import java.util.ArrayList;
 import java.util.NoSuchElementException;
 
 import javax.enterprise.inject.Model;
+import javax.enterprise.inject.spi.CDI;
 import javax.inject.Inject;
+import javax.transaction.Transactional;
 
 import org.apache.commons.lang3.StringUtils;
 
 import hu.icellmobilsoft.atr.sample.model.DepartmentEntity;
+import hu.icellmobilsoft.atr.sample.util.ActiveInactiveStatus;
 import hu.icellmobilsoft.atr.sample.util.PersistenceHelper;
 import hu.icellmobilsoft.atr.sample.util.SimplePatientConstans;
 
@@ -18,7 +20,7 @@ public class DepartmentRepository {
     @Inject
     PersistenceHelper persistenceHelper;
 
-    ArrayList<DepartmentEntity> departments = new ArrayList<>();
+//    ArrayList<DepartmentEntity> departments = new ArrayList<>();
 
     public DepartmentEntity findDepartment(String id) {
         if (StringUtils.isBlank(id)) {
@@ -31,27 +33,25 @@ public class DepartmentRepository {
         if (department == null) {
             throw new IllegalArgumentException(SimplePatientConstans.PARAMETER_CANNOT_NULL_MSG);
         }
-        DepartmentEntity existingDepartment = findDepartment(department.getId());
-
-        if (existingDepartment != null) {
-            existingDepartment.setId(department.getId());
-            existingDepartment.setName(department.getName());
-            existingDepartment.setStatus(department.getStatus());
-        } else {
-            persistenceHelper.getEntityManager().persist(department);
-        }
+        CDI.current().select(DepartmentRepository.class).get().saveDep(department);
     }
 
-//    státusszal kiegészítve később
+    @Transactional
+    public void saveDep(DepartmentEntity department) {
+        persistenceHelper.getEntityManager().persist(department);
+    }
+
     public void deleteDepartment(String id) {
         if (StringUtils.isBlank(id)) {
             throw new IllegalArgumentException(SimplePatientConstans.PARAMETER_CANNOT_NULL_MSG);
         }
         DepartmentEntity findDep = findDepartment(id);
+
         if (findDep == null) {
             throw new NoSuchElementException(SimplePatientConstans.NO_DEPARTMENT_WITH_THIS_ID_MSG);
         }
-        persistenceHelper.getEntityManager().remove(findDep);
+        findDep.setStatus(ActiveInactiveStatus.INACTIVE);
+        persistenceHelper.getEntityManager().persist(findDep);
 
     }
 

@@ -2,7 +2,6 @@ package hu.icellmobilsoft.atr.sample.action;
 
 import javax.enterprise.inject.Model;
 import javax.inject.Inject;
-import javax.transaction.Transactional;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -30,11 +29,13 @@ public class DepartmentAction {
     /**
      * Gets department.
      *
-     * @param departmentID the department id
+     * @param departmentID
+     *            the department id
      * @return the department
-     * @throws BaseException the base exception
+     * @throws BaseException
+     *             the base exception
      */
-// departmentID alapján az entityvel visszatérünk
+    // departmentID alapján az entityvel visszatérünk
     public DepartmentResponse getDepartment(String departmentID) throws BaseException {
         if (StringUtils.isBlank(departmentID)) {
             throw new BaseException(SimplePatientConstans.PARAMETER_CANNOT_NULL_MSG);
@@ -47,45 +48,50 @@ public class DepartmentAction {
         return departmentToResponse(department);
     }
 
-
     /**
      * Post department department response, convertáljuk át entetyvé a mentés miatt
      *
-     * @param departmentRequest the department request
+     * @param departmentRequest
+     *            the department request
      * @return the department response
-     * @throws BaseException the base exception
+     * @throws BaseException
+     *             the base exception
      */
-    @Transactional
+
     public DepartmentResponse postDepartment(DepartmentRequest departmentRequest) throws BaseException {
         if (departmentRequest == null) {
             throw new BaseException(SimplePatientConstans.PARAMETER_CANNOT_NULL_MSG);
         }
+//       TODo: ha bo not found hibát dob, akkor try-catchbe kell rakni a hibát pl: no such element, try find, catch save
         DepartmentEntity department = departmentRepository.findDepartment(departmentRequest.getDepartment().getId());
-
+        if(department != null){
+         throw new BaseException("Already exist!");
+        }
         departmentRepository.saveDepartment(department);
 
         return departmentToResponse(department);
     }
 
-
-//    public DepartmentResponse putDepartment(DepartmentRequest departmentRequest) throws BaseException {
-//        if (departmentRequest == null) {
-//            throw new BaseException(SimplePatientConstans.PARAMETER_CANNOT_NULL_MSG);
-//        }
-//
-//        DepartmentEntity department = departmentRepository.findDepartment(departmentRequest.getDepartment().getId());
-//
-//        departmentRepository.saveDepartment(department);
-//
-//        return departmentToResponse(department);
-//    }
+    // public DepartmentResponse putDepartment(DepartmentRequest departmentRequest) throws BaseException {
+    // if (departmentRequest == null) {
+    // throw new BaseException(SimplePatientConstans.PARAMETER_CANNOT_NULL_MSG);
+    // }
+    //
+    // DepartmentEntity department = departmentRepository.findDepartment(departmentRequest.getDepartment().getId());
+    //
+    // departmentRepository.saveDepartment(department);
+    //
+    // return departmentToResponse(department);
+    // }
 
     /**
      * Paraméterként kapott departmentID alapján törli a repoból a departmentet és visszatér depEntityvel
      *
-     * @param departmentID the department id
+     * @param departmentID
+     *            the department id
      * @return the department response
-     * @throws DeleteException the delete exception
+     * @throws DeleteException
+     *             the delete exception
      */
     public DepartmentResponse deleteDepartment(String departmentID) throws DeleteException {
         if (StringUtils.isBlank(departmentID)) {
@@ -99,9 +105,6 @@ public class DepartmentAction {
         departmentRepository.deleteDepartment(departmentID);
         return departmentToResponse(departmentEntity);
     }
-
-
-
 
     // DepartmentResponse beállítva lesz, with-ben benne van a set is
     private DepartmentResponse departmentToResponse(DepartmentEntity department) {
