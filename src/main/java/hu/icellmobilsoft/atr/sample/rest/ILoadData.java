@@ -19,10 +19,7 @@ public interface ILoadData {
     @Produces({ "text/plain", MediaType.APPLICATION_JSON })
     Response getHello();
 
-//    @GET
-//    @Path("/getDepartment")
-//    @Produces({ "text/plain", MediaType.APPLICATION_JSON })
-//    Response getDepartment();
+
 
     SamplePatientAction loadFromXml();
 

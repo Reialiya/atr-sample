@@ -30,11 +30,13 @@ public class DepartmentAction {
     /**
      * Gets department.
      *
-     * @param departmentID the department id
-     * @return the department
-     * @throws BaseException the base exception
+     * @param departmentID
+     *            the department id
+     * @return the departmentID alapján visszatérünk az entity
+     * @throws BaseException
+     *             the base exception
      */
-// departmentID alapján az entityvel visszatérünk
+    // departmentID alapján az entityvel visszatérünk
     public DepartmentResponse getDepartment(String departmentID) throws BaseException {
         if (StringUtils.isBlank(departmentID)) {
             throw new BaseException(SimplePatientConstans.PARAMETER_CANNOT_NULL_MSG);
@@ -47,45 +49,45 @@ public class DepartmentAction {
         return departmentToResponse(department);
     }
 
-
     /**
      * Post department department response, convertáljuk át entetyvé a mentés miatt
      *
-     * @param departmentRequest the department request
+     * @param departmentRequest
+     *            the department request
      * @return the department response
-     * @throws BaseException the base exception
+     * @throws BaseException
+     *             the base exception
      */
     @Transactional
     public DepartmentResponse postDepartment(DepartmentRequest departmentRequest) throws BaseException {
         if (departmentRequest == null) {
             throw new BaseException(SimplePatientConstans.PARAMETER_CANNOT_NULL_MSG);
         }
-        DepartmentEntity department = departmentRepository.findDepartment(departmentRequest.getDepartment().getId());
 
-        departmentRepository.saveDepartment(department);
+        DepartmentEntity departmentEntity = departmentConverter.convert(departmentRequest.getDepartment());
+        departmentRepository.saveDepartment(departmentEntity);
 
-        return departmentToResponse(department);
+        return departmentToResponse(departmentEntity);
     }
 
+    public DepartmentResponse putDepartment(DepartmentRequest departmentRequest) throws BaseException {
+        if (departmentRequest == null) {
+            throw new BaseException(SimplePatientConstans.PARAMETER_CANNOT_NULL_MSG);
+        }
+        DepartmentEntity departmentEntity = departmentConverter.convert(departmentRequest.getDepartment());
+        departmentRepository.updateDepartment(departmentEntity);
 
-//    public DepartmentResponse putDepartment(DepartmentRequest departmentRequest) throws BaseException {
-//        if (departmentRequest == null) {
-//            throw new BaseException(SimplePatientConstans.PARAMETER_CANNOT_NULL_MSG);
-//        }
-//
-//        DepartmentEntity department = departmentRepository.findDepartment(departmentRequest.getDepartment().getId());
-//
-//        departmentRepository.saveDepartment(department);
-//
-//        return departmentToResponse(department);
-//    }
+        return departmentToResponse(departmentEntity);
+    }
 
     /**
      * Paraméterként kapott departmentID alapján törli a repoból a departmentet és visszatér depEntityvel
      *
-     * @param departmentID the department id
+     * @param departmentID
+     *            the department id
      * @return the department response
-     * @throws DeleteException the delete exception
+     * @throws DeleteException
+     *             the delete exception
      */
     public DepartmentResponse deleteDepartment(String departmentID) throws DeleteException {
         if (StringUtils.isBlank(departmentID)) {
@@ -100,12 +102,8 @@ public class DepartmentAction {
         return departmentToResponse(departmentEntity);
     }
 
-
-
-
     // DepartmentResponse beállítva lesz, with-ben benne van a set is
     private DepartmentResponse departmentToResponse(DepartmentEntity department) {
-        // üres vizsgálni kell-e?
 
         DepartmentResponse departmentResponse = new DepartmentResponse();
         return departmentResponse.withDepartment(departmentConverter.convert(department));

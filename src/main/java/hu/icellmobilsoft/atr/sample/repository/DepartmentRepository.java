@@ -34,15 +34,30 @@ public class DepartmentRepository {
         DepartmentEntity existingDepartment = findDepartment(department.getId());
 
         if (existingDepartment != null) {
-            existingDepartment.setId(department.getId());
             existingDepartment.setName(department.getName());
             existingDepartment.setStatus(department.getStatus());
+            persistenceHelper.getEntityManager().persist(existingDepartment);
         } else {
             persistenceHelper.getEntityManager().persist(department);
         }
     }
 
-//    státusszal kiegészítve később
+    public void updateDepartment(DepartmentEntity department) {
+        if (department == null) {
+            throw new IllegalArgumentException(SimplePatientConstans.PARAMETER_CANNOT_NULL_MSG);
+        }
+
+        DepartmentEntity existingDepartment = findDepartment(department.getId());
+
+        if (existingDepartment != null) {
+            existingDepartment.setName(department.getName());
+            existingDepartment.setStatus(department.getStatus());
+            persistenceHelper.getEntityManager().persist(existingDepartment);
+        }
+
+    }
+
+    // státusszal kiegészítve később
     public void deleteDepartment(String id) {
         if (StringUtils.isBlank(id)) {
             throw new IllegalArgumentException(SimplePatientConstans.PARAMETER_CANNOT_NULL_MSG);

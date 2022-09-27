@@ -14,40 +14,90 @@ import hu.icellmobilsoft.atr.sample.util.SimplePatientConstans;
 import hu.icellmobilsoft.dto.sample.patient.PatientRequest;
 import hu.icellmobilsoft.dto.sample.patient.PatientResponse;
 
+/**
+ * The type Patient action.
+ */
 // savet kell meghívni benne
 public class PatientAction {
 
+    /**
+     * The Patient repository.
+     */
     @Inject
     PatientRepository patientRepository;
 
+    /**
+     * The Patient converter.
+     */
     @Inject
     PatientConverter patientConverter;
 
-    // kivadászom instituteID és departmentID alapján és talán patientID szűkítem
+    /**
+     * Gets patient.
+     *
+     * @param patientID the patient id
+     * @return the patient
+     * @throws BaseException the base exception
+     */
+// kivadászom instituteID és departmentID alapján és talán patientID szűkítem
     public PatientResponse getPatient(String patientID) throws BaseException {
         if (StringUtils.isBlank(patientID)) {
             throw new BaseException(SimplePatientConstans.PARAMETER_CANNOT_NULL_MSG);
         }
-//patient ID?
+        // patient ID?
         PatientEntity patient = patientRepository.findPatient(patientID);
         if (StringUtils.isBlank(patientID)) {
             throw new BaseException(SimplePatientConstans.PARAMETER_CANNOT_NULL_MSG);
         }
-return patientToResponse(patient);
+        return patientToResponse(patient);
     }
 
+    /**
+     * Post patient patient response.
+     *
+     * @param patientRequest the patient request
+     * @return the patient response
+     * @throws BaseException the base exception
+     */
     @Transactional
     public PatientResponse postPatient(PatientRequest patientRequest) throws BaseException {
         if (patientRequest == null) {
             throw new BaseException(SimplePatientConstans.PARAMETER_CANNOT_NULL_MSG);
         }
 
-        PatientEntity patient = patientRepository.findPatient(patientRequest.getPatient().getId());
+        PatientEntity patientEntity = patientConverter.convert(patientRequest.getPatient());
+        // patientRepository.findPatient(patientRequest.getPatient().getId());
 
-        patientRepository.savePatient(patient);
-        return patientToResponse(patient);
+        patientRepository.savePatient(patientEntity);
+        return patientToResponse(patientEntity);
     }
 
+    /**
+     * Put patient patient response.
+     *
+     * @param patientRequest the patient request
+     * @return the patient response
+     * @throws BaseException the base exception
+     */
+    public PatientResponse putPatient(PatientRequest patientRequest) throws BaseException {
+        if (patientRequest == null) {
+            throw new BaseException(SimplePatientConstans.PARAMETER_CANNOT_NULL_MSG);
+        }
+
+        PatientEntity patientEntity = patientConverter.convert(patientRequest.getPatient());
+        patientRepository.updatePatient(patientEntity);
+
+        return patientToResponse(patientEntity);
+
+    }
+
+    /**
+     * Delete patient patient response.
+     *
+     * @param patientID the patient id
+     * @return the patient response
+     * @throws DeleteException the delete exception
+     */
     public PatientResponse deletePatient(String patientID) throws DeleteException {
         if (StringUtils.isBlank(patientID)) {
             throw new IllegalArgumentException(SimplePatientConstans.PARAMETER_CANNOT_NULL_MSG);

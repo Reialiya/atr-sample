@@ -42,6 +42,21 @@ public class InstituteRepository {
         }
     }
 
+    public void updateInstitute(InstituteEntity instituteEntity) {
+        if (instituteEntity == null) {
+            throw new IllegalArgumentException(SimplePatientConstans.PARAMETER_CANNOT_NULL_MSG);
+        }
+
+        InstituteEntity existingInstitute = findInstitute(instituteEntity.getId());
+
+        if (existingInstitute != null) {
+            existingInstitute.setName(instituteEntity.getName());
+            existingInstitute.setStatus(instituteEntity.getStatus());
+            persistenceHelper.getEntityManager().persist(existingInstitute);
+        }
+
+    }
+
 //    státusszal kiegészítve később
     public void deleteInstitute(String id) {
         if (StringUtils.isBlank(id)) {
