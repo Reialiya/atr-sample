@@ -31,7 +31,7 @@ public class DepartmentAction {
      *
      * @param departmentID
      *            the department id
-     * @return the department
+     * @return the departmentID alapján visszatérünk az entity
      * @throws BaseException
      *             the base exception
      */
@@ -62,27 +62,22 @@ public class DepartmentAction {
         if (departmentRequest == null) {
             throw new BaseException(SimplePatientConstans.PARAMETER_CANNOT_NULL_MSG);
         }
-//       TODo: ha bo not found hibát dob, akkor try-catchbe kell rakni a hibát pl: no such element, try find, catch save
-        DepartmentEntity department = departmentRepository.findDepartment(departmentRequest.getDepartment().getId());
-        if(department != null){
-         throw new BaseException("Already exist!");
-        }
-        departmentRepository.saveDepartment(department);
 
-        return departmentToResponse(department);
+        DepartmentEntity departmentEntity = departmentConverter.convert(departmentRequest.getDepartment());
+        departmentRepository.saveDepartment(departmentEntity);
+
+        return departmentToResponse(departmentEntity);
     }
 
-    // public DepartmentResponse putDepartment(DepartmentRequest departmentRequest) throws BaseException {
-    // if (departmentRequest == null) {
-    // throw new BaseException(SimplePatientConstans.PARAMETER_CANNOT_NULL_MSG);
-    // }
-    //
-    // DepartmentEntity department = departmentRepository.findDepartment(departmentRequest.getDepartment().getId());
-    //
-    // departmentRepository.saveDepartment(department);
-    //
-    // return departmentToResponse(department);
-    // }
+    public DepartmentResponse putDepartment(DepartmentRequest departmentRequest) throws BaseException {
+        if (departmentRequest == null) {
+            throw new BaseException(SimplePatientConstans.PARAMETER_CANNOT_NULL_MSG);
+        }
+        DepartmentEntity departmentEntity = departmentConverter.convert(departmentRequest.getDepartment());
+        departmentRepository.updateDepartment(departmentEntity);
+
+        return departmentToResponse(departmentEntity);
+    }
 
     /**
      * Paraméterként kapott departmentID alapján törli a repoból a departmentet és visszatér depEntityvel
@@ -108,7 +103,6 @@ public class DepartmentAction {
 
     // DepartmentResponse beállítva lesz, with-ben benne van a set is
     private DepartmentResponse departmentToResponse(DepartmentEntity department) {
-        // üres vizsgálni kell-e?
 
         DepartmentResponse departmentResponse = new DepartmentResponse();
         return departmentResponse.withDepartment(departmentConverter.convert(department));

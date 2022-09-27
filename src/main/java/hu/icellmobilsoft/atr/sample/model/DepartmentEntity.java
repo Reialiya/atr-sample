@@ -75,4 +75,6 @@ public class DepartmentEntity {
     public void setStatus(ActiveInactiveStatus status) {
         this.status = status;
     }
+
+
 }

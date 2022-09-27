@@ -36,11 +36,31 @@ public class DepartmentRepository {
         CDI.current().select(DepartmentRepository.class).get().saveDep(department);
     }
 
-    @Transactional
-    public void saveDep(DepartmentEntity department) {
-        persistenceHelper.getEntityManager().persist(department);
+        if (existingDepartment != null) {
+            existingDepartment.setName(department.getName());
+            existingDepartment.setStatus(department.getStatus());
+            persistenceHelper.getEntityManager().persist(existingDepartment);
+        } else {
+            persistenceHelper.getEntityManager().persist(department);
+        }
     }
 
+    public void updateDepartment(DepartmentEntity department) {
+        if (department == null) {
+            throw new IllegalArgumentException(SimplePatientConstans.PARAMETER_CANNOT_NULL_MSG);
+        }
+
+        DepartmentEntity existingDepartment = findDepartment(department.getId());
+
+        if (existingDepartment != null) {
+            existingDepartment.setName(department.getName());
+            existingDepartment.setStatus(department.getStatus());
+            persistenceHelper.getEntityManager().persist(existingDepartment);
+        }
+
+    }
+
+    // státusszal kiegészítve később
     public void deleteDepartment(String id) {
         if (StringUtils.isBlank(id)) {
             throw new IllegalArgumentException(SimplePatientConstans.PARAMETER_CANNOT_NULL_MSG);
