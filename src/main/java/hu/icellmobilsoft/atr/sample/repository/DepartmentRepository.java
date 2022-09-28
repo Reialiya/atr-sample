@@ -20,8 +20,6 @@ public class DepartmentRepository {
     @Inject
     PersistenceHelper persistenceHelper;
 
-//    ArrayList<DepartmentEntity> departments = new ArrayList<>();
-
     public DepartmentEntity findDepartment(String id) {
         if (StringUtils.isBlank(id)) {
             throw new IllegalArgumentException(SimplePatientConstans.PARAMETER_CANNOT_NULL_MSG);
@@ -36,13 +34,9 @@ public class DepartmentRepository {
         CDI.current().select(DepartmentRepository.class).get().saveDep(department);
     }
 
-        if (existingDepartment != null) {
-            existingDepartment.setName(department.getName());
-            existingDepartment.setStatus(department.getStatus());
-            persistenceHelper.getEntityManager().persist(existingDepartment);
-        } else {
-            persistenceHelper.getEntityManager().persist(department);
-        }
+    @Transactional
+    public void saveDep(DepartmentEntity department) {
+        persistenceHelper.getEntityManager().persist(department);
     }
 
     public void updateDepartment(DepartmentEntity department) {
@@ -60,7 +54,6 @@ public class DepartmentRepository {
 
     }
 
-    // státusszal kiegészítve később
     public void deleteDepartment(String id) {
         if (StringUtils.isBlank(id)) {
             throw new IllegalArgumentException(SimplePatientConstans.PARAMETER_CANNOT_NULL_MSG);

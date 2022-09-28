@@ -28,7 +28,6 @@ public class InstituteConverter {
         InstituteType instituteType = new InstituteType();
         instituteType.setId(instituteEntity.getId());
         instituteType.setName(instituteEntity.getName());
-
         instituteType.setStatus(EnumUtil.convert(instituteEntity.getStatus(), hu.icellmobilsoft.dto.sample.patient.ActiveInactiveStatus.class));
 
         return instituteType;

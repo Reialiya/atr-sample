@@ -13,6 +13,7 @@ import hu.icellmobilsoft.atr.sample.repository.DepartmentRepository;
 import hu.icellmobilsoft.atr.sample.util.SimplePatientConstans;
 import hu.icellmobilsoft.dto.sample.patient.DepartmentRequest;
 import hu.icellmobilsoft.dto.sample.patient.DepartmentResponse;
+import javassist.NotFoundException;
 
 /**
  * The type Department action.
@@ -36,15 +37,17 @@ public class DepartmentAction {
      *             the base exception
      */
     // departmentID alapján az entityvel visszatérünk
-    public DepartmentResponse getDepartment(String departmentID) throws BaseException {
+    public DepartmentResponse getDepartment(String departmentID) throws BaseException, NotFoundException {
         if (StringUtils.isBlank(departmentID)) {
             throw new BaseException(SimplePatientConstans.PARAMETER_CANNOT_NULL_MSG);
         }
 
         DepartmentEntity department = departmentRepository.findDepartment(departmentID);
-        if (StringUtils.isBlank(departmentID)) {
-            throw new BaseException(SimplePatientConstans.PARAMETER_CANNOT_NULL_MSG);
+
+        if (department == null) {
+            throw new NotFoundException("nincs ilyen adat!");
         }
+
         return departmentToResponse(department);
     }
 

@@ -1,6 +1,5 @@
 package hu.icellmobilsoft.atr.sample.repository;
 
-import java.util.ArrayList;
 import java.util.NoSuchElementException;
 
 import javax.enterprise.inject.Model;
@@ -19,8 +18,6 @@ import hu.icellmobilsoft.atr.sample.util.SimplePatientConstans;
 public class InstituteRepository {
     @Inject
     private PersistenceHelper persistenceHelper;
-
-    ArrayList<InstituteEntity> institutes = new ArrayList<>();
 
     public InstituteEntity findInstitute(String id) {
         if (StringUtils.isBlank(id)) {
@@ -56,7 +53,6 @@ public class InstituteRepository {
 
     }
 
-//    státusszal kiegészítve később
     public void deleteInstitute(String id) {
         if (StringUtils.isBlank(id)) {
             throw new IllegalArgumentException(SimplePatientConstans.PARAMETER_CANNOT_NULL_MSG);

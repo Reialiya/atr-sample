@@ -17,7 +17,6 @@ import hu.icellmobilsoft.dto.sample.patient.PatientResponse;
 /**
  * The type Patient action.
  */
-// savet kell meghívni benne
 public class PatientAction {
 
     /**
@@ -35,11 +34,13 @@ public class PatientAction {
     /**
      * Gets patient.
      *
-     * @param patientID the patient id
+     * @param patientID
+     *            the patient id
      * @return the patient
-     * @throws BaseException the base exception
+     * @throws BaseException
+     *             the base exception
      */
-// kivadászom instituteID és departmentID alapján és talán patientID szűkítem
+    // kivadászom instituteID és departmentID alapján és talán patientID szűkítem
     public PatientResponse getPatient(String patientID) throws BaseException {
         if (StringUtils.isBlank(patientID)) {
             throw new BaseException(SimplePatientConstans.PARAMETER_CANNOT_NULL_MSG);
@@ -55,9 +56,11 @@ public class PatientAction {
     /**
      * Post patient patient response.
      *
-     * @param patientRequest the patient request
+     * @param patientRequest
+     *            the patient request
      * @return the patient response
-     * @throws BaseException the base exception
+     * @throws BaseException
+     *             the base exception
      */
     @Transactional
     public PatientResponse postPatient(PatientRequest patientRequest) throws BaseException {
@@ -75,9 +78,11 @@ public class PatientAction {
     /**
      * Put patient patient response.
      *
-     * @param patientRequest the patient request
+     * @param patientRequest
+     *            the patient request
      * @return the patient response
-     * @throws BaseException the base exception
+     * @throws BaseException
+     *             the base exception
      */
     public PatientResponse putPatient(PatientRequest patientRequest) throws BaseException {
         if (patientRequest == null) {
@@ -94,9 +99,11 @@ public class PatientAction {
     /**
      * Delete patient patient response.
      *
-     * @param patientID the patient id
+     * @param patientID
+     *            the patient id
      * @return the patient response
-     * @throws DeleteException the delete exception
+     * @throws DeleteException
+     *             the delete exception
      */
     public PatientResponse deletePatient(String patientID) throws DeleteException {
         if (StringUtils.isBlank(patientID)) {

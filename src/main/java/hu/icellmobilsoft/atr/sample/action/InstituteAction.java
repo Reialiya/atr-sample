@@ -13,6 +13,7 @@ import hu.icellmobilsoft.atr.sample.repository.InstituteRepository;
 import hu.icellmobilsoft.atr.sample.util.SimplePatientConstans;
 import hu.icellmobilsoft.dto.sample.patient.InstituteRequest;
 import hu.icellmobilsoft.dto.sample.patient.InstituteResponse;
+import javassist.NotFoundException;
 
 /**
  * The type Institute action.
@@ -37,14 +38,14 @@ public class InstituteAction {
      * @throws BaseException
      *             the base exception
      */
-    public InstituteResponse getInstitute(String instituteID) throws BaseException {
+    public InstituteResponse getInstitute(String instituteID) throws BaseException, NotFoundException {
         if (StringUtils.isBlank(instituteID)) {
             throw new BaseException(SimplePatientConstans.PARAMETER_CANNOT_NULL_MSG);
         }
 
         InstituteEntity institute = instituteRepository.findInstitute(instituteID);
-        if (StringUtils.isBlank(instituteID)) {
-            throw new BaseException(SimplePatientConstans.PARAMETER_CANNOT_NULL_MSG);
+        if (institute == null) {
+            throw new NotFoundException("nincs ilyen adat!");
         }
 
         return instituteToResponse(institute);

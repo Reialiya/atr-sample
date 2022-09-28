@@ -7,6 +7,7 @@ import javax.inject.Inject;
 import hu.icellmobilsoft.atr.sample.action.DepartmentAction;
 import hu.icellmobilsoft.atr.sample.action.SamplePatientAction;
 import hu.icellmobilsoft.atr.sample.exception.BaseException;
+import javassist.NotFoundException;
 
 /**
  * Hello world!
@@ -21,7 +22,7 @@ public class App {
     @Inject
       private DepartmentAction departmentAction;
 
-    public static void main(String[] args) throws BaseException {
+    public static void main(String[] args) throws BaseException, NotFoundException {
 
         CDI.current().select(DepartmentAction.class).get().getDepartment("123");
 
@@ -36,7 +37,7 @@ public class App {
 //        Patient patient = ospXml.queryPatientData("kv", "000008");
 //        ospXml.deletePatient("PATIENT8");
     }
-    public void valami() throws BaseException {
+    public void valami() throws BaseException, NotFoundException {
         departmentAction.getDepartment("123");
     }
 

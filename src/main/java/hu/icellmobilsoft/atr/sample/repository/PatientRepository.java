@@ -30,7 +30,8 @@ public class PatientRepository {
     /**
      * Find patient patient entity.
      *
-     * @param id the id
+     * @param id
+     *            the id
      * @return the patient entity
      */
     public PatientEntity findPatient(String id) {
@@ -43,8 +44,10 @@ public class PatientRepository {
     /**
      * Save patient.
      *
-     * @param patient the patient
+     * @param patient
+     *            the patient
      */
+
     public void savePatient(PatientEntity patient) {
         if (patient == null) {
             throw new IllegalArgumentException(SimplePatientConstans.PARAMETER_CANNOT_NULL_MSG);
@@ -54,10 +57,16 @@ public class PatientRepository {
 
     }
 
+    @Transactional
+    public void savePat(PatientEntity patient) {
+        persistenceHelper.getEntityManager().persist(patient);
+    }
+
     /**
      * Update patient.
      *
-     * @param patientEntity the patient entity
+     * @param patientEntity
+     *            the patient entity
      */
     public void updatePatient(PatientEntity patientEntity) {
         if (patientEntity == null) {
@@ -81,9 +90,9 @@ public class PatientRepository {
     /**
      * Delete patient.
      *
-     * @param id the id
+     * @param id
+     *            the id
      */
-// később státusszak kiegészítve
     public void deletePatient(String id) {
         if (StringUtils.isBlank(id)) {
             throw new IllegalArgumentException(SimplePatientConstans.PARAMETER_CANNOT_NULL_MSG);
