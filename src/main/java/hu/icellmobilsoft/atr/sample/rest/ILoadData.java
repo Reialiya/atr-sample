@@ -20,7 +20,7 @@ public interface ILoadData {
     Response getHello();
 
 
-
+// TODO: endpointok (get), loadFromJson, xml visszarakása
     SamplePatientAction loadFromXml();
 
     SamplePatientAction loadFromJson();

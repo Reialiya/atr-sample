@@ -62,7 +62,7 @@ public class DepartmentAction {
      */
 
     public DepartmentResponse postDepartment(DepartmentRequest departmentRequest) throws BaseException {
-        if (departmentRequest == null) {
+        if (departmentRequest  == null && StringUtils.isBlank(departmentRequest.getDepartment().getId())) {
             throw new BaseException(SimplePatientConstans.PARAMETER_CANNOT_NULL_MSG);
         }
 
@@ -72,6 +72,7 @@ public class DepartmentAction {
         return departmentToResponse(departmentEntity);
     }
 
+//    id generálva, status állítjuk-> deletenél lesz módosítva, update name
     public DepartmentResponse putDepartment(DepartmentRequest departmentRequest) throws BaseException {
         if (departmentRequest == null) {
             throw new BaseException(SimplePatientConstans.PARAMETER_CANNOT_NULL_MSG);
@@ -100,7 +101,8 @@ public class DepartmentAction {
         if (departmentEntity == null) {
             throw new DeleteException(SimplePatientConstans.NO_DEPARTMENT_WITH_THIS_ID_MSG);
         }
-        departmentRepository.deleteDepartment(departmentID);
+//        departmentRepository.deleteDepartment(departmentID);
+        // status állítás, mentés
         return departmentToResponse(departmentEntity);
     }
 

@@ -21,7 +21,7 @@ import hu.icellmobilsoft.atr.sample.model.Patient;
 import hu.icellmobilsoft.atr.sample.model.Institute;
 import hu.icellmobilsoft.atr.sample.repository.DepartmentRepository;
 import hu.icellmobilsoft.atr.sample.repository.InstituteRepository;
-import hu.icellmobilsoft.atr.sample.repository.PatientRepository;
+import hu.icellmobilsoft.atr.sample.service.PatientService;
 
 /**
  * The type Parse helper.
@@ -30,10 +30,10 @@ public class ParseHelper {
 
     public static class ParseXml {
         private DepartmentRepository depRepo;
-        private PatientRepository patRepo;
+        private PatientService patRepo;
         private InstituteRepository instRepo;
 
-        public PatientRepository getPatRepo() {
+        public PatientService getPatRepo() {
             return patRepo;
         }
 
@@ -47,7 +47,7 @@ public class ParseHelper {
 
         public ParseXml() {
             this.depRepo = new DepartmentRepository();
-            this.patRepo = new PatientRepository();
+            this.patRepo = new PatientService();
             this.instRepo = new InstituteRepository();
         }
 
@@ -254,9 +254,9 @@ public class ParseHelper {
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-        private PatientRepository getPats(XMLEventReader reader, java.lang.String tag) throws XMLStreamException {
+        private PatientService getPats(XMLEventReader reader, java.lang.String tag) throws XMLStreamException {
             Patient tempPat = null;
-            PatientRepository tempPatRep = new PatientRepository();
+            PatientService tempPatRep = new PatientService();
 
             while (reader.hasNext()) {
                 XMLEvent nextEvent = reader.nextEvent();
@@ -283,8 +283,8 @@ public class ParseHelper {
             return tempPatRep;
         }
 
-        private PatientRepository savePatientToRepository(PatientRepository tempPatRep, Patient tempPat, java.lang.String endelementName,
-                java.lang.String tag) {
+        private PatientService savePatientToRepository(PatientService tempPatRep, Patient tempPat, java.lang.String endelementName,
+                                                       java.lang.String tag) {
             if (endelementName.equals("patient")) {
                 System.out.println(" [" + tag + "] getPat END -> " + endelementName);
                 if (tempPat != null) {
@@ -350,10 +350,10 @@ return null;
     public static class ParseJson {
 
         private DepartmentRepository depRepo;
-        private PatientRepository patRepo;
+        private PatientService patRepo;
         private InstituteRepository instRepo;
 
-        public PatientRepository getPatRepo() {
+        public PatientService getPatRepo() {
             return patRepo;
         }
 
@@ -479,8 +479,8 @@ return null;
             return null;
         }
 
-        PatientRepository readPatients(JsonParser jParser) throws IOException {
-            PatientRepository tempPatRep = new PatientRepository();
+        PatientService readPatients(JsonParser jParser) throws IOException {
+            PatientService tempPatRep = new PatientService();
 //            Patient tempPat = null;
 //
 //            while (jParser.nextToken() != JsonToken.END_OBJECT) {

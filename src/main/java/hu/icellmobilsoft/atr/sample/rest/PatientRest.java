@@ -29,8 +29,8 @@ public class PatientRest implements IPatientRest {
     }
 
     @Override
-    public PatientResponse putPatient(PatientRequest patientRequest) throws BaseException {
-        return patientAction.putPatient(patientRequest);
+    public PatientResponse putPatient(String patientID, PatientRequest patientRequest) throws BaseException {
+        return patientAction.putPatient(patientID, patientRequest);
     }
 
     @Override

@@ -1,7 +1,6 @@
 package hu.icellmobilsoft.atr.sample.action;
 
 import javax.inject.Inject;
-import javax.transaction.Transactional;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -60,7 +59,7 @@ public class InstituteAction {
      * @throws BaseException
      *             the base exception
      */
-    @Transactional
+
     public InstituteResponse postInstitute(InstituteRequest instituteRequest) throws BaseException {
         if (instituteRequest == null) {
             throw new BaseException(SimplePatientConstans.PARAMETER_CANNOT_NULL_MSG);

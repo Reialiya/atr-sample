@@ -10,4 +10,7 @@ public interface SimplePatientConstans {
     public static final String TICKET_DELETE_EX_MSG = "The ticket cannot be deleted because it belongs to one of the users.";
     public static final String NO_TICKET_WITH_THIS_ID_MSG = "KKKEKEKEKEKkeK";
 
+    public static final String ENTITY_DOES_NOT_EXIST_MSG = "Entity doesn't exist!";
+    String ENTITY_SAVE_FAILED ="Entity save failed!";
+
 }
