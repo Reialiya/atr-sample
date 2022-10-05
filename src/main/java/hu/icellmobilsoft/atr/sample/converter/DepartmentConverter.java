@@ -13,20 +13,30 @@ public class DepartmentConverter {
             throw new IllegalArgumentException(SimplePatientConstans.PARAMETER_CANNOT_NULL_MSG);
         }
         DepartmentEntity departmentEntity = new DepartmentEntity();
+
+
 //        departmentEntity.setId(departmentType.getId());
         departmentEntity.setName(departmentType.getName());
+        convert(departmentType, departmentEntity);
 //        departmentEntity.setStatus(EnumUtil.convert(departmentType.getStatus(), hu.icellmobilsoft.atr.sample.util.ActiveInactiveStatus.class));
 
         return departmentEntity;
     }
+
+    public void convert(DepartmentType departmentType, DepartmentEntity departmentEntity){
+        departmentEntity.setName(departmentType.getName());
+    }
+
 
     public DepartmentType convert(DepartmentEntity departmentEntity) {
         if (departmentEntity == null) {
             throw new IllegalArgumentException(SimplePatientConstans.PARAMETER_CANNOT_NULL_MSG);
         }
         DepartmentType departmentType = new DepartmentType();
+
         // setID generálás
-        departmentType.setId(departmentEntity.getId());
+//        departmentType.setId(departmentEntity.getId());
+
         departmentType.setName(departmentEntity.getName());
         departmentType.setStatus(EnumUtil.convert(departmentEntity.getStatus(), ActiveInactiveStatus.class));
 

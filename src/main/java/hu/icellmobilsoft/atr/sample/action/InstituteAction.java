@@ -1,6 +1,8 @@
 package hu.icellmobilsoft.atr.sample.action;
 
+import javax.enterprise.inject.spi.CDI;
 import javax.inject.Inject;
+import javax.transaction.Transactional;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -9,6 +11,8 @@ import hu.icellmobilsoft.atr.sample.exception.BaseException;
 import hu.icellmobilsoft.atr.sample.exception.DeleteException;
 import hu.icellmobilsoft.atr.sample.model.InstituteEntity;
 import hu.icellmobilsoft.atr.sample.repository.InstituteRepository;
+import hu.icellmobilsoft.atr.sample.util.ActiveInactiveStatus;
+import hu.icellmobilsoft.atr.sample.util.RandomUtil;
 import hu.icellmobilsoft.atr.sample.util.SimplePatientConstans;
 import hu.icellmobilsoft.dto.sample.patient.InstituteRequest;
 import hu.icellmobilsoft.dto.sample.patient.InstituteResponse;
@@ -28,6 +32,13 @@ public class InstituteAction {
     @Inject
     private InstituteConverter instituteConverter;
 
+    public Boolean isIdBlank(InstituteRequest instituteRequest) {
+        if (instituteRequest == null) {
+            return true;
+        }
+        return StringUtils.isBlank(instituteRequest.getInstitute().getId());
+    }
+
     /**
      * Gets institute.
      *
@@ -44,7 +55,7 @@ public class InstituteAction {
 
         InstituteEntity institute = instituteRepository.findInstitute(instituteID);
         if (institute == null) {
-            throw new NotFoundException("nincs ilyen adat!");
+            throw new NotFoundException("nincs ilyen institute!");
         }
 
         return instituteToResponse(institute);
@@ -61,14 +72,22 @@ public class InstituteAction {
      */
 
     public InstituteResponse postInstitute(InstituteRequest instituteRequest) throws BaseException {
-        if (instituteRequest == null) {
+        if (isIdBlank(instituteRequest)) {
             throw new BaseException(SimplePatientConstans.PARAMETER_CANNOT_NULL_MSG);
         }
 
         InstituteEntity instituteEntity = instituteConverter.convert(instituteRequest.getInstitute());
-        instituteRepository.saveInstitute(instituteEntity);
+        instituteEntity.setId(RandomUtil.generateId());
+        instituteEntity.setStatus(ActiveInactiveStatus.ACTIVE);
+
+        CDI.current().select(InstituteAction.class).get().saveInstitute(instituteEntity);
 
         return instituteToResponse(instituteEntity);
+    }
+
+    @Transactional
+    public void saveInstitute(InstituteEntity instituteEntity) {
+        instituteRepository.saveInst(instituteEntity);
     }
 
     /**

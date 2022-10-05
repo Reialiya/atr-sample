@@ -1,7 +1,9 @@
 package hu.icellmobilsoft.atr.sample.action;
 
 import javax.enterprise.inject.Model;
+import javax.enterprise.inject.spi.CDI;
 import javax.inject.Inject;
+import javax.transaction.Transactional;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -10,6 +12,8 @@ import hu.icellmobilsoft.atr.sample.exception.BaseException;
 import hu.icellmobilsoft.atr.sample.exception.DeleteException;
 import hu.icellmobilsoft.atr.sample.model.DepartmentEntity;
 import hu.icellmobilsoft.atr.sample.repository.DepartmentRepository;
+import hu.icellmobilsoft.atr.sample.util.ActiveInactiveStatus;
+import hu.icellmobilsoft.atr.sample.util.RandomUtil;
 import hu.icellmobilsoft.atr.sample.util.SimplePatientConstans;
 import hu.icellmobilsoft.dto.sample.patient.DepartmentRequest;
 import hu.icellmobilsoft.dto.sample.patient.DepartmentResponse;
@@ -27,6 +31,14 @@ public class DepartmentAction {
     @Inject
     private DepartmentConverter departmentConverter;
 
+    // Boolean vs boolean utánaolvasás
+    public boolean isIdBlank(DepartmentRequest departmentRequest) {
+        if (departmentRequest == null) {
+            return true;
+        }
+        return StringUtils.isBlank(departmentRequest.getDepartment().getId());
+    }
+
     /**
      * Gets department.
      *
@@ -36,16 +48,14 @@ public class DepartmentAction {
      * @throws BaseException
      *             the base exception
      */
-    // departmentID alapján az entityvel visszatérünk
     public DepartmentResponse getDepartment(String departmentID) throws BaseException, NotFoundException {
         if (StringUtils.isBlank(departmentID)) {
             throw new BaseException(SimplePatientConstans.PARAMETER_CANNOT_NULL_MSG);
         }
 
         DepartmentEntity department = departmentRepository.findDepartment(departmentID);
-
         if (department == null) {
-            throw new NotFoundException("nincs ilyen adat!");
+            throw new NotFoundException("nincs ilyen department!");
         }
 
         return departmentToResponse(department);
@@ -62,23 +72,44 @@ public class DepartmentAction {
      */
 
     public DepartmentResponse postDepartment(DepartmentRequest departmentRequest) throws BaseException {
-        if (departmentRequest  == null && StringUtils.isBlank(departmentRequest.getDepartment().getId())) {
+        if (isIdBlank(departmentRequest)) {
             throw new BaseException(SimplePatientConstans.PARAMETER_CANNOT_NULL_MSG);
         }
 
         DepartmentEntity departmentEntity = departmentConverter.convert(departmentRequest.getDepartment());
-        departmentRepository.saveDepartment(departmentEntity);
+        departmentEntity.setId(RandomUtil.generateId());
+        departmentEntity.setStatus(ActiveInactiveStatus.ACTIVE);
+
+        CDI.current().select(DepartmentAction.class).get().saveDepartment(departmentEntity);
 
         return departmentToResponse(departmentEntity);
     }
 
-//    id generálva, status állítjuk-> deletenél lesz módosítva, update name
-    public DepartmentResponse putDepartment(DepartmentRequest departmentRequest) throws BaseException {
+    @Transactional
+    public void saveDepartment(DepartmentEntity departmentEntity) {
+        departmentRepository.saveDep(departmentEntity);
+    }
+
+    // id generálva, ne küldjön id-t a requestben, status állítjuk-> deletenél lesz módosítva, update name
+    //
+    public DepartmentResponse putDepartment(DepartmentRequest departmentRequest, String id) throws BaseException {
         if (departmentRequest == null) {
             throw new BaseException(SimplePatientConstans.PARAMETER_CANNOT_NULL_MSG);
         }
-        DepartmentEntity departmentEntity = departmentConverter.convert(departmentRequest.getDepartment());
-        departmentRepository.updateDepartment(departmentEntity);
+        //        megvizsgáljuk a departmentRequestet, hogy mit küld magában, pl id-t és ha igen hibát dobunk, ha nem küldött akkor oké
+
+//        if(departmentRequest.getDepartment().getId() != null){
+//            throw new BaseException("a bejövő adatok között szerepel id");
+//        }
+        
+        //        findByID departmententityt ad vissza, a paraméterben lévő id alapján
+
+        DepartmentEntity departmentEntity = departmentRepository.findDepartment(id);
+        if (departmentEntity == null){
+            throw new BaseException(SimplePatientConstans.ENTITY_DOES_NOT_EXIST_MSG);
+        }
+        departmentConverter.convert(departmentRequest.getDepartment(), departmentEntity);
+        CDI.current().select(DepartmentAction.class).get().saveDepartment(departmentEntity);
 
         return departmentToResponse(departmentEntity);
     }
@@ -101,10 +132,19 @@ public class DepartmentAction {
         if (departmentEntity == null) {
             throw new DeleteException(SimplePatientConstans.NO_DEPARTMENT_WITH_THIS_ID_MSG);
         }
-//        departmentRepository.deleteDepartment(departmentID);
+
+        departmentEntity.setStatus(ActiveInactiveStatus.INACTIVE);
         // status állítás, mentés
         return departmentToResponse(departmentEntity);
     }
+
+    // private DepartmentResponse getDepartmentResponse(DepartmentEntity departmentEntity) throws BaseException {
+    //// if (Objects.isNull(departmentEntity)) {
+    //// throw new BaseException(SimplePatientConstans.PARAMETER_CANNOT_NULL_MSG);
+    //// }
+    ////
+    ////
+    //// }
 
     // DepartmentResponse beállítva lesz, with-ben benne van a set is
     private DepartmentResponse departmentToResponse(DepartmentEntity department) {

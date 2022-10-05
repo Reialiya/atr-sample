@@ -59,7 +59,7 @@ public class InstituteRepository {
         }
         InstituteEntity findInst = findInstitute(id);
         if (findInst == null) {
-            throw new NoSuchElementException(SimplePatientConstans.NO_TICKET_WITH_THIS_ID_MSG);
+            throw new NoSuchElementException(SimplePatientConstans.NO_INSTITUTE_WITH_THIS_ID_MSG);
         }
         findInst.setStatus(ActiveInactiveStatus.INACTIVE);
         persistenceHelper.getEntityManager().remove(findInst);

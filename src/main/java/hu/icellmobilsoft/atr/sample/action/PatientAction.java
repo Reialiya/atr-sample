@@ -3,7 +3,6 @@ package hu.icellmobilsoft.atr.sample.action;
 import javax.enterprise.inject.Model;
 import javax.enterprise.inject.spi.CDI;
 import javax.inject.Inject;
-import javax.transaction.Transactional;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -46,7 +45,6 @@ public class PatientAction {
      * @throws BaseException
      *             the base exception
      */
-    // kivadászom instituteID és departmentID alapján és talán patientID szűkítem
     public PatientResponse getPatient(String patientID) throws BaseException {
         if (StringUtils.isBlank(patientID)) {
             throw new BaseException(SimplePatientConstans.PARAMETER_CANNOT_NULL_MSG);
@@ -73,22 +71,21 @@ public class PatientAction {
         if (patientRequest == null) {
             throw new BaseException(SimplePatientConstans.PARAMETER_CANNOT_NULL_MSG);
         }
-        // ellenőrzi az username
-        validateUsername(patientRequest.getPatient().getUsername());
+        // ellenőrzi az usernamet
+        isUsernameExist(patientRequest.getPatient().getUsername());
 
         PatientEntity patientEntity = patientConverter.convert(patientRequest.getPatient());
         patientEntity.setId(RandomUtil.generateId());
         patientEntity.setStatus(ActiveInactiveStatus.ACTIVE);
-        // persistenceHelper.getEntityManager().persist(patientEntity);
 
-        CDI.current().select(PatientAction.class).get().savePatient(patientEntity);
+        CDI.current().select(PatientService.class).get().savePatient(patientEntity);
         return patientToResponse(patientEntity);
     }
 
-    @Transactional
-    public void savePatient(PatientEntity patient) throws BaseException {
-        patientService.save(patient);
-    }
+//    @Transactional
+//    public void savePatient(PatientEntity patient) throws BaseException {
+//        patientService.save(patient);
+//    }
 
     /**
      * Put patient patient response.
@@ -103,7 +100,7 @@ public class PatientAction {
         if (patientRequest == null) {
             throw new BaseException(SimplePatientConstans.PARAMETER_CANNOT_NULL_MSG);
         }
-        if (patientRequest.getPatient().getUsername() != null){
+        if (patientRequest.getPatient().getUsername() != null) {
             throw new BaseException("módosításkor nem lehet usernamet megadni");
         }
 
@@ -112,22 +109,20 @@ public class PatientAction {
             throw new BaseException(SimplePatientConstans.ENTITY_DOES_NOT_EXIST_MSG);
         }
         patientConverter.convert(patientRequest.getPatient(), patientEntity);
-        CDI.current().select(PatientAction.class).get().savePatient(patientEntity);
+        CDI.current().select(PatientService.class).get().savePatient(patientEntity);
 
         return patientToResponse(patientEntity);
 
     }
 
-    public void validateUsername(String username) throws BaseException {
+    public void isUsernameExist(String username) throws BaseException {
         if (StringUtils.isBlank(username)) {
             throw new BaseException(SimplePatientConstans.ENTITY_DOES_NOT_EXIST_MSG);
         }
         PatientEntity patientEntity = patientService.findByUsername(username);
         if (patientEntity != null) {
             throw new BaseException("already exist");
-
         }
-
     }
 
     /**
@@ -139,7 +134,7 @@ public class PatientAction {
      * @throws DeleteException
      *             the delete exception
      */
-    public PatientResponse deletePatient(String patientID) throws DeleteException {
+    public PatientResponse deletePatient(String patientID) throws BaseException {
         if (StringUtils.isBlank(patientID)) {
             throw new IllegalArgumentException(SimplePatientConstans.PARAMETER_CANNOT_NULL_MSG);
         }
@@ -150,7 +145,9 @@ public class PatientAction {
         }
 
         patientEntity.setStatus(ActiveInactiveStatus.INACTIVE);
-        // TODO: mentés
+
+        CDI.current().select(PatientService.class).get().savePatient(patientEntity);
+
         return patientToResponse((patientEntity));
 
     }

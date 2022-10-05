@@ -5,7 +5,7 @@ import javax.enterprise.inject.spi.CDI;
 import javax.inject.Inject;
 
 import hu.icellmobilsoft.atr.sample.action.DepartmentAction;
-import hu.icellmobilsoft.atr.sample.action.SamplePatientAction;
+import hu.icellmobilsoft.atr.sample.action.LoadDataAction;
 import hu.icellmobilsoft.atr.sample.exception.BaseException;
 import javassist.NotFoundException;
 
@@ -41,7 +41,7 @@ public class App {
         departmentAction.getDepartment("123");
     }
 
-    public static void patientXmlTest(SamplePatientAction opx) {
+    public static void patientXmlTest(LoadDataAction opx) {
 //        System.out.println("######################## allDepartment");
 //        opx.getDepRep().toString();
 //        System.out.println("######################## allDepartment End \n");
@@ -55,7 +55,7 @@ public class App {
 //        System.out.println("######################## allPatient End \n");
     }
 
-    public static void patientJsonTest(SamplePatientAction spa) {
+    public static void patientJsonTest(LoadDataAction spa) {
 //        System.out.println("######################## allDepartment");
 //        spa.getDepRep().toString();
 //        System.out.println("######################## allDepartment End \n");

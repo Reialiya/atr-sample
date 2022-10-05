@@ -111,15 +111,16 @@
         </dependency>
         <dependency>
             <groupId>org.apache.deltaspike.modules</groupId>
-            <artifactId>deltaspike-jpa-module-api</artifactId>
-            <version>1.9.6</version>
+            <artifactId>deltaspike-data-module-api</artifactId>
+            <version>1.9.1</version>
+            <scope>compile</scope>
         </dependency>
+
         <dependency>
             <groupId>org.apache.deltaspike.modules</groupId>
-            <artifactId>deltaspike-jpa-module-impl</artifactId>
-            <!-- alapbol runtime, de most bovitettuk egy class-al -->
-            <scope>compile</scope>
-            <version>1.9.6</version>
+            <artifactId>deltaspike-data-module-impl</artifactId>
+            <version>1.9.1</version>
+            <scope>runtime</scope>
         </dependency>
 
     </dependencies>

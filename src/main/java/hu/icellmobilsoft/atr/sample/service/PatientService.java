@@ -6,7 +6,9 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.deltaspike.jpa.api.transaction.Transactional;
 
+import hu.icellmobilsoft.atr.sample.exception.BaseException;
 import hu.icellmobilsoft.atr.sample.model.PatientEntity;
 import hu.icellmobilsoft.atr.sample.repository.BaseRepository;
 import hu.icellmobilsoft.atr.sample.util.SimplePatientConstans;
@@ -31,6 +33,13 @@ public class PatientService extends BaseRepository {
         return getEntityManager().find(PatientEntity.class, id);
     }
 
+
+    // TODO: tesztelés, h menti-e az adatokat
+    @Transactional
+    public void savePatient(PatientEntity patient) throws BaseException {
+        save(patient);
+    }
+
     // criteriaBuilder alapján felépített db lekérdezés, entity válasz
     public PatientEntity findByUsername(String username) {
         if (StringUtils.isBlank(username)) {
@@ -47,5 +56,11 @@ public class PatientService extends BaseRepository {
     }
 
     // TODO: repository tábla elkészítés, deltaspike
+
+
+//    public PatientEntity findByUserName(String username){
+//
+//
+//    }
 
 }

@@ -29,12 +29,15 @@ public class DepartmentRest implements IDepartmentRest{
     }
 
     @Override
-    public DepartmentResponse putDepartment(DepartmentRequest departmentRequest) throws BaseException {
-        return departmentAction.putDepartment(departmentRequest);
+    public DepartmentResponse putDepartment(DepartmentRequest departmentRequest, String id) throws BaseException {
+        return departmentAction.putDepartment(departmentRequest, id);
     }
 
     @Override
     public DepartmentResponse deleteDepartment(String departmentID) throws BaseException {
         return departmentAction.deleteDepartment(departmentID);
     }
+
+
+
 }

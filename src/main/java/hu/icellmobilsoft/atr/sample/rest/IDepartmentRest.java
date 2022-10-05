@@ -20,12 +20,19 @@ import javassist.NotFoundException;
 @Path("/rest/department/")
 public interface IDepartmentRest {
 
+    // @GET
+    // @Path("/hello")
+    // @Produces({ "text/plain", MediaType.APPLICATION_JSON })
+    // Response getHello();
+
     /**
      * Gets department.
      *
-     * @param departmentID the department id
+     * @param departmentID
+     *            the department id
      * @return the department
-     * @throws BaseException the base exception
+     * @throws BaseException
+     *             the base exception
      */
     @GET
     @Path("/{id}")
@@ -33,37 +40,45 @@ public interface IDepartmentRest {
     DepartmentResponse getDepartment(@PathParam("id") String departmentID) throws BaseException, NotFoundException;
 
     /**
+     * Update department data.
+     *
+     * @param departmentRequest
+     *            the department request
+     * @return the department response
+     * @throws BaseException
+     *             the base exception
+     */
+
+    // ahol van request, ott mindig kell Consumesnek lennie
+    @PUT
+    @Path("/{id}")
+    @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
+    @Consumes({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
+    DepartmentResponse putDepartment(DepartmentRequest departmentRequest, @PathParam("id")String id) throws BaseException;
+
+    /**
      * Post department department response.
      *
-     * @param departmentRequest the department request
+     * @param departmentRequest
+     *            the department request
      * @return the department response
-     * @throws BaseException the base exception
+     * @throws BaseException
+     *             the base exception
      */
     @POST
-//    @Path("/fafa")
-    @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-    @Consumes
+    // @Path("/fafa")
+    @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
+    @Consumes({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
     DepartmentResponse postDepartment(DepartmentRequest departmentRequest) throws BaseException;
 
     /**
-     * Update department data.
+     * Delete department department response. Delete helyett put methodot hasznalunk
      *
-     * @param departmentRequest the department request
+     * @param departmentID
+     *            the department id
      * @return the department response
-     * @throws BaseException the base exception
-     */
-    @PUT
-    @Path("/{id}")
-    @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-    DepartmentResponse putDepartment(DepartmentRequest departmentRequest) throws BaseException;
-
-    /**
-     * Delete department department response.
-     * Delete helyett put methodot hasznalunk
-     *
-     * @param departmentID the department id
-     * @return the department response
-     * @throws BaseException the base exception
+     * @throws BaseException
+     *             the base exception
      */
 
     @PUT

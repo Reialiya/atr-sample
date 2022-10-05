@@ -7,10 +7,13 @@ public interface SimplePatientConstans {
     public static final String PARSING_ERROR_MSG = "Error parsing XML:";
     public static final String NO_USER_WITH_THIS_ID_MSG = "Does not find user with this ID.";
     public static final String NO_DEPARTMENT_WITH_THIS_ID_MSG = "There is no department with this ID ";
-    public static final String TICKET_DELETE_EX_MSG = "The ticket cannot be deleted because it belongs to one of the users.";
-    public static final String NO_TICKET_WITH_THIS_ID_MSG = "KKKEKEKEKEKkeK";
+    public static final String NO_INSTITUTE_WITH_THIS_ID_MSG = "There is no institute with this ID ";
+
+//    public static final String TICKET_DELETE_EX_MSG = "The ticket cannot be deleted because it belongs to one of the users.";
+    public static final String NO_TICKET_WITH_THIS_ID_MSG = "no ticket with this id";
 
     public static final String ENTITY_DOES_NOT_EXIST_MSG = "Entity doesn't exist!";
     String ENTITY_SAVE_FAILED ="Entity save failed!";
 
+    String SCHEMA_FILE = "valami";
 }

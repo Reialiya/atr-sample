@@ -8,8 +8,7 @@ import hu.icellmobilsoft.atr.sample.util.SimplePatientConstans;
 
 public class BaseRepository {
     @Inject
-    protected
-    EntityManager entityManager;
+    protected EntityManager entityManager;
 
     /**
      * Gets entity manager.
@@ -17,6 +16,7 @@ public class BaseRepository {
      * @return the entity manager
      */
 
+//    kívülről ne lehessen hozzáférni, de használni tudja a az entitymanagert
     protected EntityManager getEntityManager() {
         return entityManager;
     }

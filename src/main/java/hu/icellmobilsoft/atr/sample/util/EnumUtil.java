@@ -22,4 +22,5 @@ public class EnumUtil {
         }
         return EnumUtils.getEnum(targetClass, source.name());
     }
+
 }

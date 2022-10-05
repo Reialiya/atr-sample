@@ -1,27 +1,21 @@
 package hu.icellmobilsoft.atr.sample.rest;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
+import hu.icellmobilsoft.atr.sample.action.LoadDataAction;
 
-import hu.icellmobilsoft.atr.sample.action.SamplePatientAction;
-
-@Path("/rest/ticketService")
+//@Path("/rest/ticketService")
 public interface ILoadData {
 //    SamplePatientAction loadFromXml();
 //
 //    SamplePatientAction loadFromJson();
 
-    @GET
-    @Path("/hello")
-    @Produces({ "text/plain", MediaType.APPLICATION_JSON })
-    Response getHello();
 
 
-// TODO: endpointok (get), loadFromJson, xml visszarakása
-    SamplePatientAction loadFromXml();
 
-    SamplePatientAction loadFromJson();
+// TODO: endpointok (get), loadFromJson, xml visszarakása, csak ezekre, path pluszba
+
+// meghívás a loadDataActiont, baseresponse visszaválaszol
+
+    LoadDataAction loadFromXml();
+
+    LoadDataAction loadFromJson();
 }
