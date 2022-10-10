@@ -28,13 +28,13 @@ public class PatientAction {
      * The Patient repository.
      */
     @Inject
-    PatientService patientService;
+    private PatientService patientService;
 
     /**
      * The Patient converter.
      */
     @Inject
-    PatientConverter patientConverter;
+    private PatientConverter patientConverter;
 
     /**
      * Gets patient.
@@ -72,20 +72,19 @@ public class PatientAction {
             throw new BaseException(SimplePatientConstans.PARAMETER_CANNOT_NULL_MSG);
         }
         // ellenőrzi az usernamet
-        isUsernameExist(patientRequest.getPatient().getUsername());
-
         PatientEntity patientEntity = patientConverter.convert(patientRequest.getPatient());
-        patientEntity.setId(RandomUtil.generateId());
-        patientEntity.setStatus(ActiveInactiveStatus.ACTIVE);
+        try {
+            isUsernameExist(patientRequest.getPatient().getUsername());
 
-        CDI.current().select(PatientService.class).get().savePatient(patientEntity);
-        return patientToResponse(patientEntity);
+        } catch (Exception exception) {
+            patientEntity.setId(RandomUtil.generateId());
+            patientEntity.setStatus(ActiveInactiveStatus.ACTIVE);
+
+            CDI.current().select(PatientService.class).get().savePatient(patientEntity);
+            return patientToResponse(patientEntity);
+        }
+    throw new BaseException("nem megfelelő adatok/username/");
     }
-
-//    @Transactional
-//    public void savePatient(PatientEntity patient) throws BaseException {
-//        patientService.save(patient);
-//    }
 
     /**
      * Put patient patient response.
@@ -109,7 +108,7 @@ public class PatientAction {
             throw new BaseException(SimplePatientConstans.ENTITY_DOES_NOT_EXIST_MSG);
         }
         patientConverter.convert(patientRequest.getPatient(), patientEntity);
-        CDI.current().select(PatientService.class).get().savePatient(patientEntity);
+        patientService.savePatient(patientEntity);
 
         return patientToResponse(patientEntity);
 

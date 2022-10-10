@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.net.URL;
 
 import javax.enterprise.inject.Model;
-import javax.enterprise.inject.spi.CDI;
 import javax.inject.Inject;
 import javax.xml.XMLConstants;
 import javax.xml.bind.JAXBContext;
@@ -32,7 +31,9 @@ import hu.icellmobilsoft.atr.sample.rest.RequestDataImpl;
 import hu.icellmobilsoft.atr.sample.service.PatientService;
 import hu.icellmobilsoft.atr.sample.util.SimplePatientConstans;
 import hu.icellmobilsoft.atr.sample.util.TagNameEnum;
+import hu.icellmobilsoft.dto.sample.patient.BaseResponse;
 import hu.icellmobilsoft.dto.sample.patient.DepartmentListType;
+import hu.icellmobilsoft.dto.sample.patient.FunctionCodeType;
 import hu.icellmobilsoft.dto.sample.patient.InstituteListType;
 import hu.icellmobilsoft.dto.sample.patient.PatientsListType;
 import hu.icellmobilsoft.dto.sample.patient.Sample;
@@ -72,13 +73,16 @@ public class LoadDataAction extends RequestDataImpl {
     @Inject
     private PatientConverter patientConverter;
 
-    @Inject
-    private TagNameEnum tagNameEnum;
+//    @Inject
+//    private TagNameEnum tagNameEnum;
 
     // BaseResponse a visszatérítési érték, funcCode beállítjuk a végén setFunctionCode type = ok
     // return mindenhol hibával visszaválaszolunk BaseResponse setF. error
     // xml marshall exceptionnél lehet dob hibát és xml-t alakítsuk át, xsd-hez ne nyúljak hozzá!!
-    public void loadFromXml(String fileName) throws BaseException {
+//    with beállítjuk és a visszatérési értéke nem void, ugyanazt beállítjuk
+
+    public BaseResponse loadFromXml(String fileName) throws BaseException {
+        BaseResponse baseResponse = new BaseResponse().withFuncCode(FunctionCodeType.ERROR);
         if (StringUtils.isBlank(fileName)) {
             throw new IllegalArgumentException(SimplePatientConstans.PARAMETER_CANNOT_NULL_MSG);
         }
@@ -92,7 +96,7 @@ public class LoadDataAction extends RequestDataImpl {
             Sample sample = (Sample) jaxbUnmarshaller.unmarshal(new StreamSource(xmlFile));
             DepartmentListType departmentListType = sample.getDepartments();
             if (departmentListType == null) {
-                return;
+                return baseResponse;
             }
             departmentListType.getDepartment().forEach(departmentType -> {
                 DepartmentEntity departmentEntity = departmentConverter.convert(departmentType);
@@ -100,7 +104,7 @@ public class LoadDataAction extends RequestDataImpl {
             });
             InstituteListType instituteListType = sample.getInstitutes();
             if (instituteListType == null) {
-                return;
+                return baseResponse;
             }
             instituteListType.getInstitute().forEach(instituteType -> {
                 InstituteEntity instituteEntity = instituteConverter.convert(instituteType);
@@ -108,13 +112,13 @@ public class LoadDataAction extends RequestDataImpl {
             });
             PatientsListType patientsListType = sample.getPatients();
             if (patientsListType == null) {
-                return;
+                return baseResponse;
             }
             patientsListType.getPatient().forEach(patientType -> {
                 PatientEntity patientEntity = patientConverter.convert(patientType);
 
                 try {
-                    CDI.current().select(PatientService.class).get().savePatient(patientEntity);
+                   patientService.savePatient(patientEntity);
                 } catch (BaseException e) {
                     throw new RuntimeException(e);
                 }
@@ -126,6 +130,8 @@ public class LoadDataAction extends RequestDataImpl {
         }
 
         // return response.ok
+        baseResponse.setFuncCode(FunctionCodeType.OK);
+        return baseResponse;
     }
 
     // not found exception kell

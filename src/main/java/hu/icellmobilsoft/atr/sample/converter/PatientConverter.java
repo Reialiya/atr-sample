@@ -19,8 +19,8 @@ public class PatientConverter {
         patientEntity.setName(patientType.getName());
         patientEntity.setUsername(patientType.getUsername());
         patientEntity.setEmail(patientType.getEmail());
-        patientEntity.setDepartmentId(patientEntity.getDepartmentId());
-        patientEntity.setInstituteId(patientEntity.getInstituteId());
+        patientEntity.setDepartmentId(patientType.getDepartment());
+        patientEntity.setInstituteId(patientType.getInstitute());
     }
 
     public PatientType convert(PatientEntity patientEntity) {

@@ -1,21 +1,21 @@
 package hu.icellmobilsoft.atr.sample.repository;
 
+import javax.enterprise.inject.Model;
 import javax.enterprise.inject.spi.CDI;
 import javax.inject.Inject;
 import javax.transaction.Transactional;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.deltaspike.data.api.Repository;
 
 import hu.icellmobilsoft.atr.sample.model.DepartmentEntity;
 import hu.icellmobilsoft.atr.sample.util.PersistenceHelper;
 import hu.icellmobilsoft.atr.sample.util.SimplePatientConstans;
 
-@Repository
+@Model
 public class DepartmentRepository {
 
     @Inject
-    PersistenceHelper persistenceHelper;
+    private PersistenceHelper persistenceHelper;
 
     public DepartmentEntity findDepartment(String id) {
         if (StringUtils.isBlank(id)) {

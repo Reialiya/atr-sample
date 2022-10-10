@@ -1,11 +1,13 @@
 package hu.icellmobilsoft.atr.sample.repository;
 
+import javax.enterprise.inject.Model;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 
 import hu.icellmobilsoft.atr.sample.exception.BaseException;
 import hu.icellmobilsoft.atr.sample.util.SimplePatientConstans;
 
+@Model
 public class BaseRepository {
     @Inject
     protected EntityManager entityManager;
