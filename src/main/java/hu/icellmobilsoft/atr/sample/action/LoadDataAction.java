@@ -1,8 +1,11 @@
 package hu.icellmobilsoft.atr.sample.action;
 
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.enterprise.inject.Model;
 import javax.inject.Inject;
@@ -15,20 +18,23 @@ import javax.xml.validation.SchemaFactory;
 import javax.xml.validation.Validator;
 
 import org.apache.commons.lang3.StringUtils;
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 import org.xml.sax.SAXException;
 
 import hu.icellmobilsoft.atr.sample.converter.DepartmentConverter;
 import hu.icellmobilsoft.atr.sample.converter.InstituteConverter;
 import hu.icellmobilsoft.atr.sample.converter.PatientConverter;
 import hu.icellmobilsoft.atr.sample.exception.BaseException;
+import hu.icellmobilsoft.atr.sample.exception.NotFoundException;
 import hu.icellmobilsoft.atr.sample.model.DepartmentEntity;
 import hu.icellmobilsoft.atr.sample.model.InstituteEntity;
 import hu.icellmobilsoft.atr.sample.model.PatientEntity;
 import hu.icellmobilsoft.atr.sample.repository.DepartmentRepository;
 import hu.icellmobilsoft.atr.sample.repository.InstituteRepository;
-import hu.icellmobilsoft.atr.sample.rest.RequestDataImpl;
 import hu.icellmobilsoft.atr.sample.service.PatientService;
+import hu.icellmobilsoft.atr.sample.util.ActiveInactiveStatus;
 import hu.icellmobilsoft.atr.sample.util.SimplePatientConstans;
 import hu.icellmobilsoft.atr.sample.util.TagNameEnum;
 import hu.icellmobilsoft.dto.sample.patient.BaseResponse;
@@ -44,16 +50,16 @@ import hu.icellmobilsoft.dto.sample.patient.Sample;
  */
 
 @Model
-public class LoadDataAction extends RequestDataImpl {
+public class LoadDataAction {
 
-    @Inject
-    private PatientAction patientAction;
-
-    @Inject
-    private InstituteAction instituteAction;
-
-    @Inject
-    private DepartmentAction departmentAction;
+//    @Inject
+//    private PatientAction patientAction;
+//
+//    @Inject
+//    private InstituteAction instituteAction;
+//
+//    @Inject
+//    private DepartmentAction departmentAction;
 
     @Inject
     private DepartmentConverter departmentConverter;
@@ -73,13 +79,10 @@ public class LoadDataAction extends RequestDataImpl {
     @Inject
     private PatientConverter patientConverter;
 
-//    @Inject
-//    private TagNameEnum tagNameEnum;
-
     // BaseResponse a visszatérítési érték, funcCode beállítjuk a végén setFunctionCode type = ok
     // return mindenhol hibával visszaválaszolunk BaseResponse setF. error
     // xml marshall exceptionnél lehet dob hibát és xml-t alakítsuk át, xsd-hez ne nyúljak hozzá!!
-//    with beállítjuk és a visszatérési értéke nem void, ugyanazt beállítjuk
+    // with beállítjuk és a visszatérési értéke nem void, ugyanazt beállítjuk
 
     public BaseResponse loadFromXml(String fileName) throws BaseException {
         BaseResponse baseResponse = new BaseResponse().withFuncCode(FunctionCodeType.ERROR);
@@ -118,7 +121,7 @@ public class LoadDataAction extends RequestDataImpl {
                 PatientEntity patientEntity = patientConverter.convert(patientType);
 
                 try {
-                   patientService.savePatient(patientEntity);
+                    patientService.savePatient(patientEntity);
                 } catch (BaseException e) {
                     throw new RuntimeException(e);
                 }
@@ -138,7 +141,7 @@ public class LoadDataAction extends RequestDataImpl {
     private String getResource(String filename) throws BaseException {
         URL resource = getClass().getClassLoader().getResource(filename);
         if (resource == null) {
-            throw new BaseException(SimplePatientConstans.FILE_NOT_FOUND_MSG);
+            throw new NotFoundException(SimplePatientConstans.FILE_NOT_FOUND_MSG);
         }
         return resource.getFile();
     }
@@ -165,42 +168,125 @@ public class LoadDataAction extends RequestDataImpl {
         }
     }
 
-    // private DepartmentRepository depRep;
-    // private PatientRepository patRep;
-    // private InstituteRepository instRep;
-    //
-    // // validator elhelyezése?
-    //
-    // /**
-    // * Gets dep rep.
-    // *
-    // * @return the dep rep
-    // */
-    // public DepartmentRepository getDepRep() {
-    // return depRep;
-    // }
-    //
-    // /**
-    // * Gets pat rep.
-    // *
-    // * @return the pat rep
-    // */
-    // public PatientRepository getPatRep() {
-    // return patRep;
-    // }
-    //
-    // /**
-    // * Gets inst rep.
-    // *
-    // * @return the inst rep
-    // */
-    // public InstituteRepository getInstRep() {
-    // return instRep;
-    // }
-    //
+    // BaseResponse visszatérési érték
+    public BaseResponse loadFromJson(String fileName) throws BaseException {
+        BaseResponse baseResponse = new BaseResponse().withFuncCode(FunctionCodeType.ERROR);
+        if (StringUtils.isBlank(fileName)) {
+            throw new IllegalArgumentException(SimplePatientConstans.PARAMETER_CANNOT_NULL_MSG);
+        }
+        File jsonFile = new File(getResource(fileName));
+        JSONParser parser = new JSONParser();
+        try {
+            FileReader reader = new FileReader(jsonFile.getAbsolutePath());
+            Object obj = parser.parse(reader);
+            JSONObject jsonObject = (JSONObject) obj;
+
+            // mit olvasson fel először, a samplet szeretnem felolvasni
+            JSONObject sample = (JSONObject) jsonObject.get(TagNameEnum.SAMPLE);
+
+            // department
+            JSONObject departments = (JSONObject) sample.get(TagNameEnum.DEPARTMENTS.getTagName());
+            if (departments == null) {
+                return baseResponse;
+            }
+            JSONArray departmentJsonArray = (JSONArray) departments.get(TagNameEnum.DEPARTMENT.getTagName());
+            if (departmentJsonArray == null) {
+                return baseResponse;
+            }
+            departmentJsonArray.forEach(department -> {
+                // jsonObjectumot alakítanánk át depType és utána tudnám tovább convertálni
+                // departmentConverter.convert(departmentType);
+
+                JSONObject objDepartment = (JSONObject) department;
+                String name = getElement(objDepartment, TagNameEnum.NAME);
+                String id = getElement(objDepartment, TagNameEnum.ID);
+
+                // db-be mentés miatt entityt használok, settelést lehetne convertálásra kiemelni
+                DepartmentEntity departmentEntity = new DepartmentEntity();
+                departmentEntity.setName(name);
+                departmentEntity.setId(id);
+                departmentEntity.setStatus(ActiveInactiveStatus.ACTIVE);
+                departmentRepository.saveDep(departmentEntity);
+            });
+
+            // institute
+            JSONObject institutes = (JSONObject) sample.get(TagNameEnum.INSTITUTES.getTagName());
+            if (institutes == null) {
+                return baseResponse;
+            }
+            JSONArray instituteJsonArray = (JSONArray) institutes.get(TagNameEnum.INSTITUTE.getTagName());
+            if (instituteJsonArray == null) {
+                return baseResponse;
+            }
+            instituteJsonArray.forEach(institute -> {
+                JSONObject objInstitute = (JSONObject) institute;
+                String id = getElement(objInstitute, TagNameEnum.ID);
+                String name = getElement(objInstitute, TagNameEnum.NAME);
+                String department = getElement(objInstitute, TagNameEnum.DEPARTMENTS);
+
+                if (objInstitute.get(TagNameEnum.DEPARTMENT) != null) {
+                    try {
+                        throw new BaseException("already exist departments");
+                    } catch (BaseException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+
+                InstituteEntity instituteEntity = new InstituteEntity();
+
+                List<InstituteEntity> instituteEntities = new ArrayList<>();
+
+
+                instituteEntity.setId(id);
+                instituteEntity.setName(name);
+                instituteEntity.setStatus(ActiveInactiveStatus.ACTIVE);
+                instituteEntity.setDepartmentId(id);
+                instituteRepository.saveInstitute(instituteEntity);
+            });
+
+            // patient
+            JSONObject patients = (JSONObject) sample.get(TagNameEnum.PATIENTS.getTagName());
+            if (patients == null) {
+                return baseResponse;
+            }
+            JSONArray patientJsonArray = (JSONArray) patients.get(TagNameEnum.PATIENT.getTagName());
+            if (patientJsonArray == null) {
+                return baseResponse;
+            }
+            patientJsonArray.forEach(patient -> {
+                JSONObject objPatient = (JSONObject) patient;
+                String id = getElement(objPatient, TagNameEnum.ID);
+                String name = getElement(objPatient, TagNameEnum.NAME);
+                String email = getElement(objPatient, TagNameEnum.EMAIL);
+                String username = getElement(objPatient, TagNameEnum.USERNAME);
+                String department = getElement(objPatient, TagNameEnum.DEPARTMENT);
+                String institute = getElement(objPatient, TagNameEnum.INSTITUTE);
+
+                PatientEntity patientEntity = new PatientEntity();
+                patientEntity.setId(id);
+                patientEntity.setName(name);
+                patientEntity.setEmail(email);
+                patientEntity.setUsername(username);
+                patientEntity.setStatus(ActiveInactiveStatus.ACTIVE);
+                patientEntity.setDepartmentId(id);
+                patientEntity.setInstituteId(id);
+                try {
+                    patientService.save(patientEntity);
+                } catch (BaseException e) {
+                    throw new RuntimeException(e);
+                }
+            });
+
+        } catch (Exception e) {
+            throw new BaseException(e);
+        }
+
+        baseResponse.setFuncCode(FunctionCodeType.OK);
+        return baseResponse;
+    }
+
+
     // public void loadFromXml(String xmlFileName) {
-    //
-    //
     // XSDValidator validator = new XSDValidator();
     // if (validator.Validate(xmlFileName, "samplepatient.xsd")) {
     // ParseHelper.ParseXml oParseXml = new ParseHelper.ParseXml();
@@ -214,51 +300,5 @@ public class LoadDataAction extends RequestDataImpl {
     // }
     //
     // }
-    //
-    // /**
-    // * Load from json.
-    // *
-    // *
-    // * the json
-    // */
-    // public void loadFromJson(String jsonFileName) {
-    //
-    // ParseHelper.ParseJson oParseJson = new ParseHelper.ParseJson();
-    // oParseJson.run(jsonFileName);
-    //
-    // depRep = oParseJson.getDepRepo();
-    // patRep = oParseJson.getPatRepo();
-    // instRep = oParseJson.getInstRepo();
-    // }
-    //
-    // /**
-    // * Query patient data patient.
-    // *
-    // * @param userName
-    // * the user name
-    // * @param department
-    // * the department
-    // * @return the patient
-    //// */
-    //// public Patient queryPatientData(String userName, String department) {
-    //// return patRep.getAllPatient().stream().filter(x -> {
-    //// return x.getUsername().equals(userName) && x.getDepartmentId().equals(department);
-    //// }).findFirst().orElse(null);
-    //// }
-    //
-    // /**
-    // * Delete patient.
-    // *
-    // * @param id
-    // * the id
-    // */
-    //// public void deletePatient(String id) {
-    ////
-    //// PatientRepository tempPatRepo = new PatientRepository();
-    //// patRep.getAllPatient().stream().filter(x -> x.getId().equals(id)).forEach(y -> {
-    //// tempPatRepo.savePatient(y);
-    //// });
-    //// patRep.getAllPatient().removeAll(tempPatRepo.getAllPatient());
-    ////
-    //// }
+
 }

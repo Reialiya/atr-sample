@@ -31,6 +31,8 @@ public class DepartmentRepository {
         CDI.current().select(DepartmentRepository.class).get().saveDep(department);
     }
 
+
+    // Baseservice save method
     @Transactional
     public void saveDep(DepartmentEntity department) {
         persistenceHelper.getEntityManager().persist(department);

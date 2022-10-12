@@ -1,27 +1,18 @@
-package hu.icellmobilsoft.atr.sample.repository;
+package hu.icellmobilsoft.atr.sample.service;
 
-import javax.enterprise.inject.Model;
+import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 
 import hu.icellmobilsoft.atr.sample.exception.BaseException;
 import hu.icellmobilsoft.atr.sample.util.SimplePatientConstans;
 
-@Model
-public class BaseRepository {
+@Dependent
+public class BaseService {
+
     @Inject
-    protected EntityManager entityManager;
+    private EntityManager entityManager;
 
-    /**
-     * Gets entity manager.
-     *
-     * @return the entity manager
-     */
-
-//    kívülről ne lehessen hozzáférni, de használni tudja a az entitymanagert
-    protected EntityManager getEntityManager() {
-        return entityManager;
-    }
 
     /**
      * Transaction required!
@@ -39,9 +30,9 @@ public class BaseRepository {
 
         T savedEntity;
         try {
-            savedEntity = getEntityManager().merge(entity);
-            getEntityManager().flush();
-            getEntityManager().refresh(savedEntity);
+            savedEntity = entityManager.merge(entity);
+            entityManager.flush();
+            entityManager.refresh(savedEntity);
             return savedEntity;
         } catch (Exception e) {
             throw new BaseException(SimplePatientConstans.ENTITY_SAVE_FAILED);

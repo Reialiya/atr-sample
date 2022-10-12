@@ -40,8 +40,9 @@ public class XSDValidator {
      * @return the boolean
      */
     public static boolean validateXMLSchema(String xmlPath, String xsdPath) {
+        SchemaFactory factory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
         try {
-            SchemaFactory factory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+//            File xmlFile = new File(getResource(fileName));
             Schema schema = factory.newSchema(new File(xsdPath));
             Validator validator = schema.newValidator();
             validator.validate(new StreamSource(new File(xmlPath)));
@@ -56,4 +57,11 @@ public class XSDValidator {
         return true;
 
     }
+
+    //json validation
+
+
+
+
+
 }

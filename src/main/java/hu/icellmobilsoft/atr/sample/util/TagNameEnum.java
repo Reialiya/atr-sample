@@ -1,6 +1,22 @@
 package hu.icellmobilsoft.atr.sample.util;
 
-public class TagNameEnum {
+public enum TagNameEnum {
+
+    SAMPLE("sample"),
+    ID ("id"),
+    NAME ("name"),
+    EMAIL("email"),
+    USERNAME("username"),
+    STATUS("status"),
+    TYPE("type"),
+    DEPARTMENT("department"),
+    DEPARTMENTS("departments"),
+    INSTITUTE("institute"),
+    INSTITUTES("institutes"),
+    PATIENT("patient"),
+    PATIENTS("patients");
+//    DESCRIPTION("description");
+
 
     private String tagname;
 
