@@ -15,8 +15,6 @@ public enum TagNameEnum {
     INSTITUTES("institutes"),
     PATIENT("patient"),
     PATIENTS("patients");
-//    DESCRIPTION("description");
-
 
     private String tagname;
 

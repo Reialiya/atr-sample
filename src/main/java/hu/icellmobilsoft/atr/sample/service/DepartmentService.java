@@ -1,5 +1,6 @@
 package hu.icellmobilsoft.atr.sample.service;
 
+import javax.enterprise.inject.Model;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
@@ -10,6 +11,7 @@ import hu.icellmobilsoft.atr.sample.exception.BaseException;
 import hu.icellmobilsoft.atr.sample.model.DepartmentEntity;
 import hu.icellmobilsoft.atr.sample.util.SimplePatientConstans;
 
+@Model
 public class DepartmentService extends BaseService {
 
     @Inject
@@ -27,4 +29,13 @@ public class DepartmentService extends BaseService {
         entityManager.persist(department);
         // save(department);
     }
+
+    public DepartmentEntity findDepartmentById(String id) {
+        if (StringUtils.isBlank(id)) {
+            throw new IllegalArgumentException(SimplePatientConstans.PARAMETER_CANNOT_NULL_MSG);
+        }
+        return entityManager.find(DepartmentEntity.class, id);
+    }
+
+
 }

@@ -6,7 +6,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
-//import javax.transaction.Transactional;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.deltaspike.jpa.api.transaction.Transactional;
@@ -31,7 +30,7 @@ public class PatientService extends BaseService {
      *            the id
      * @return the patient entity
      */
-    public PatientEntity findPatient(String id) {
+    public PatientEntity findPatientById(String id) {
         if (StringUtils.isBlank(id)) {
             throw new IllegalArgumentException(SimplePatientConstans.PARAMETER_CANNOT_NULL_MSG);
         }
@@ -59,7 +58,7 @@ public class PatientService extends BaseService {
         query.where(criteriaBuilder.equal(patientEntityRoot.get("username"), username));
 
         return entityManager.createQuery(query).getSingleResult();
-        // getResultStream() a végére, optional l
+        // getResultStream() a végére, optional
     }
 
     // TODO: repository tábla elkészítés, deltaspike

@@ -34,7 +34,7 @@ public class DepartmentConverter {
         }
         DepartmentType departmentType = new DepartmentType();
 
-        // setID generálás
+        // ID generálás
 //        departmentType.setId(departmentEntity.getId());
 
         departmentType.setName(departmentEntity.getName());

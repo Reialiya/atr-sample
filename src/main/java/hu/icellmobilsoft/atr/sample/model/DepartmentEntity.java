@@ -30,6 +30,18 @@ public class DepartmentEntity {
     @Column(name = "STATUS")
     @Enumerated (EnumType.STRING)
     private ActiveInactiveStatus status;
+
+    @Column(name = "INSTITUTE_ID", nullable = false, length = 30)
+    private String InstituteId;
+
+    public String getInstituteId() {
+        return InstituteId;
+    }
+
+    public void setInstituteId(String instituteId) {
+        InstituteId = instituteId;
+    }
+
     /**
      * Gets id.
      *

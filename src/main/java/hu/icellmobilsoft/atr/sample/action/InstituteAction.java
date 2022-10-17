@@ -11,6 +11,7 @@ import hu.icellmobilsoft.atr.sample.exception.BaseException;
 import hu.icellmobilsoft.atr.sample.exception.DeleteException;
 import hu.icellmobilsoft.atr.sample.model.InstituteEntity;
 import hu.icellmobilsoft.atr.sample.repository.InstituteRepository;
+import hu.icellmobilsoft.atr.sample.service.InstituteService;
 import hu.icellmobilsoft.atr.sample.util.ActiveInactiveStatus;
 import hu.icellmobilsoft.atr.sample.util.RandomUtil;
 import hu.icellmobilsoft.atr.sample.util.SimplePatientConstans;
@@ -28,6 +29,9 @@ public class InstituteAction {
 
     @Inject
     private InstituteRepository instituteRepository;
+
+    @Inject
+    private InstituteService instituteService;
 
     @Inject
     private InstituteConverter instituteConverter;
@@ -53,7 +57,7 @@ public class InstituteAction {
             throw new BaseException(SimplePatientConstans.PARAMETER_CANNOT_NULL_MSG);
         }
 
-        InstituteEntity institute = instituteRepository.findInstitute(instituteID);
+        InstituteEntity institute = instituteService.findInstitute(instituteID);
         if (institute == null) {
             throw new NotFoundException("nincs ilyen institute!");
         }
@@ -87,7 +91,7 @@ public class InstituteAction {
 
     @Transactional
     public void saveInstitute(InstituteEntity instituteEntity) {
-        instituteRepository.saveInst(instituteEntity);
+        instituteService.saveInst(instituteEntity);
     }
 
     /**
@@ -105,7 +109,7 @@ public class InstituteAction {
         }
 
         InstituteEntity instituteEntity = instituteConverter.convert(instituteRequest.getInstitute());
-        instituteRepository.updateInstitute(instituteEntity);
+        instituteService.updateInstitute(instituteEntity);
 
         return instituteToResponse(instituteEntity);
 
@@ -125,11 +129,11 @@ public class InstituteAction {
             throw new IllegalArgumentException(SimplePatientConstans.PARAMETER_CANNOT_NULL_MSG);
         }
 
-        InstituteEntity instituteEntity = instituteRepository.findInstitute(instituteID);
+        InstituteEntity instituteEntity = instituteService.findInstitute(instituteID);
         if (instituteEntity == null) {
             throw new DeleteException(SimplePatientConstans.NO_DEPARTMENT_WITH_THIS_ID_MSG);
         }
-        instituteRepository.deleteInstitute(instituteID);
+        instituteService.deleteInstitute(instituteID);
         return instituteToResponse(instituteEntity);
     }
 

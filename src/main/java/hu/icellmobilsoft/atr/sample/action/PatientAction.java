@@ -50,7 +50,7 @@ public class PatientAction {
             throw new BaseException(SimplePatientConstans.PARAMETER_CANNOT_NULL_MSG);
         }
         // patient ID?
-        PatientEntity patient = patientService.findPatient(patientID);
+        PatientEntity patient = patientService.findPatientById(patientID);
         if (StringUtils.isBlank(patientID)) {
             throw new BaseException(SimplePatientConstans.PARAMETER_CANNOT_NULL_MSG);
         }
@@ -80,6 +80,7 @@ public class PatientAction {
             patientEntity.setId(RandomUtil.generateId());
             patientEntity.setStatus(ActiveInactiveStatus.ACTIVE);
 
+//            patientService.savePatient(patientEntity);
             CDI.current().select(PatientService.class).get().savePatient(patientEntity);
             return patientToResponse(patientEntity);
         }
@@ -103,7 +104,7 @@ public class PatientAction {
             throw new BaseException("módosításkor nem lehet usernamet megadni");
         }
 
-        PatientEntity patientEntity = patientService.findPatient(patientID);
+        PatientEntity patientEntity = patientService.findPatientById(patientID);
         if (patientEntity == null) {
             throw new BaseException(SimplePatientConstans.ENTITY_DOES_NOT_EXIST_MSG);
         }
@@ -138,7 +139,7 @@ public class PatientAction {
             throw new IllegalArgumentException(SimplePatientConstans.PARAMETER_CANNOT_NULL_MSG);
         }
 
-        PatientEntity patientEntity = patientService.findPatient((patientID));
+        PatientEntity patientEntity = patientService.findPatientById((patientID));
         if (patientEntity == null) {
             throw new DeleteException(SimplePatientConstans.NO_DEPARTMENT_WITH_THIS_ID_MSG);
         }

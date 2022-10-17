@@ -22,7 +22,6 @@ public class PersistenceHelper {
      */
     @ApplicationScoped
     @Produces
-//    @Dependent
     public EntityManager getEntityManager() {
         return entityManager;
     }
