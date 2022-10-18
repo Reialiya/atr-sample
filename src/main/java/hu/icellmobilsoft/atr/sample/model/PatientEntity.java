@@ -37,7 +37,7 @@ public class PatientEntity {
     private String username;
     @Column(name = "INSTITUTE_ID")
     private String instituteId;
-    @Column(name = "Department_ID")
+    @Column(name = "DEPARTMENT_ID")
     private String departmentId;
 
     @Column(name = "STATUS")

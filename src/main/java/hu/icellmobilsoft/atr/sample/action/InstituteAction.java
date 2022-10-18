@@ -90,8 +90,8 @@ public class InstituteAction {
     }
 
     @Transactional
-    public void saveInstitute(InstituteEntity instituteEntity) {
-        instituteService.saveInst(instituteEntity);
+    public void saveInstitute(InstituteEntity instituteEntity) throws BaseException {
+        instituteService.saveInstitute(instituteEntity);
     }
 
     /**

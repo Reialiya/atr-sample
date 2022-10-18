@@ -23,9 +23,11 @@ public class InstituteEntity {
     @Column(name = "NAME", nullable = false, length = 200)
     private String name;
 
-    @Column(name = "Department_ID")
+    @Column(name = "DEPARTMENT_ID") // HACKED
     private String departmentId;
 
+    @Column(name = "INSTITUTE_ID") // HACKED
+    private String instituteId;
 
     @Column(name = "STATUS")
     @Enumerated (EnumType.STRING)
@@ -37,6 +39,14 @@ public class InstituteEntity {
 
     public void setDepartmentId(String departmentId) {
         this.departmentId = departmentId;
+    }
+
+    public String getInstituteId() {
+        return instituteId;
+    }
+
+    public void setInstituteId(String instituteId) {
+        this.instituteId = instituteId;
     }
 
     public String getId() {

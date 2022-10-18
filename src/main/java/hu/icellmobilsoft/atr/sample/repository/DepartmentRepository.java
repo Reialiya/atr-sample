@@ -1,17 +1,13 @@
 package hu.icellmobilsoft.atr.sample.repository;
 
-import javax.inject.Inject;
-
 import org.apache.deltaspike.data.api.Repository;
-
-import hu.icellmobilsoft.atr.sample.util.PersistenceHelper;
 
 //@Model
 @Repository
-public class DepartmentRepository {
+public interface DepartmentRepository {
 
-    @Inject
-    private PersistenceHelper persistenceHelper;
+//    @Inject
+//    private PersistenceHelper persistenceHelper;
 
 
 //    @Query

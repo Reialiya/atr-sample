@@ -1,11 +1,12 @@
 package hu.icellmobilsoft.atr.sample.action;
 
 import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.URL;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.enterprise.inject.Model;
 import javax.inject.Inject;
@@ -37,6 +38,7 @@ import hu.icellmobilsoft.atr.sample.service.DepartmentService;
 import hu.icellmobilsoft.atr.sample.service.InstituteService;
 import hu.icellmobilsoft.atr.sample.service.PatientService;
 import hu.icellmobilsoft.atr.sample.util.ActiveInactiveStatus;
+import hu.icellmobilsoft.atr.sample.util.RandomUtil;
 import hu.icellmobilsoft.atr.sample.util.SimplePatientConstans;
 import hu.icellmobilsoft.atr.sample.util.TagNameEnum;
 import hu.icellmobilsoft.dto.sample.patient.BaseResponse;
@@ -121,9 +123,15 @@ public class LoadDataAction {
             if (instituteListType == null) {
                 return baseResponse;
             }
+
+            // ahány entity lesz, ahány department lesz
             instituteListType.getInstitute().forEach(instituteType -> {
                 InstituteEntity instituteEntity = instituteConverter.convert(instituteType);
-                instituteService.saveInst(instituteEntity);
+                try {
+                    instituteService.saveInstitute(instituteEntity);
+                } catch (BaseException e) {
+                    throw new RuntimeException(e);
+                }
             });
             PatientsListType patientsListType = sample.getPatients();
             if (patientsListType == null) {
@@ -179,28 +187,28 @@ public class LoadDataAction {
             throw new BaseException(fileName + SimplePatientConstans.FILE_NOT_VALID_MSG, e);
         }
     }
-    public static void main(String[] args) throws BaseException {
-        // loadFromJson("example.json");
-        LoadDataAction ld = new LoadDataAction();
-        ld.loadFromJson("example.json");
-    }
-    // BaseResponse visszatérési érték
+
+    // public static void main(String[] args) throws BaseException {
+    // // loadFromJson("example.json");
+    // LoadDataAction ld = new LoadDataAction();
+    // ld.loadFromJson("example.json");
+    // }
+
     public BaseResponse loadFromJson(String fileName) throws BaseException {
         BaseResponse baseResponse = new BaseResponse().withFuncCode(FunctionCodeType.ERROR);
         if (StringUtils.isBlank(fileName)) {
             throw new IllegalArgumentException(SimplePatientConstans.PARAMETER_CANNOT_NULL_MSG);
         }
-        File jsonFile = new File(getResource(fileName));
         JSONParser parser = new JSONParser();
         try {
-            FileReader reader = new FileReader(jsonFile.getAbsolutePath());
-            Object obj = parser.parse(reader);
-            JSONObject jsonObject = (JSONObject) obj;
+            InputStream resourceAsStream = LoadDataAction.class.getResourceAsStream("/" + fileName);
+            JSONObject jsonObject = (JSONObject) parser.parse(new InputStreamReader(resourceAsStream, "UTF-8"));
 
-            // mit olvasson fel először, a samplet szeretnem felolvasni
             JSONObject sample = (JSONObject) jsonObject.get(TagNameEnum.SAMPLE.getTagName());
-            // JSONObject sample = (JSONObject) jsonObject.get(TagNameEnum.SAMPLE.getTagName());
-            // JSONObject sample = (JSONObject) jsonObject.get("sample");
+
+            List<DepartmentEntity> departmentEntityList = new ArrayList<>();
+            List<InstituteEntity> instituteEntityList = new ArrayList<>();
+            List<PatientEntity> patientEntityList = new ArrayList<>();
 
             // department
             JSONObject departments = (JSONObject) sample.get(TagNameEnum.DEPARTMENTS.getTagName());
@@ -212,12 +220,7 @@ public class LoadDataAction {
                 return baseResponse;
             }
 
-            // ArrayList<DepartmentEntity> departmentEntityArrayList = new ArrayList<DepartmentEntity>();
-            Map<String, DepartmentEntity> departmentEntityMap = new HashMap<String, DepartmentEntity>();
-
             departmentJsonArray.forEach(department -> {
-                // jsonObjectumot alakítanánk át depType és utána tudnám tovább convertálni
-                // departmentConverter.convert(departmentType);
 
                 JSONObject objDepartment = (JSONObject) department;
                 String name = getElement(objDepartment, TagNameEnum.NAME);
@@ -228,7 +231,7 @@ public class LoadDataAction {
                 departmentEntity.setName(name);
                 departmentEntity.setId(id);
                 departmentEntity.setStatus(ActiveInactiveStatus.ACTIVE);
-                departmentEntityMap.put(id, departmentEntity);
+                departmentEntityList.add(departmentEntity);
             });
 
             // institute
@@ -240,34 +243,29 @@ public class LoadDataAction {
             if (instituteJsonArray == null) {
                 return baseResponse;
             }
-//            departmentService = new DepartmentService();
 
             instituteJsonArray.forEach(institute -> {
                 JSONObject objInstitute = (JSONObject) institute;
                 String id = getElement(objInstitute, TagNameEnum.ID);
                 String name = getElement(objInstitute, TagNameEnum.NAME);
+                JSONObject instDepartments = (JSONObject) objInstitute.get(TagNameEnum.DEPARTMENTS.getTagName());
+                ArrayList<String> instDepartmentStringList = (ArrayList<String>) instDepartments.get(TagNameEnum.DEPARTMENT.getTagName());
 
-                JSONObject InstDepartments = (JSONObject) objInstitute.get(TagNameEnum.DEPARTMENTS.getTagName());
+                for (String departmentId : instDepartmentStringList) {
 
-                JSONArray InstDepartmentJsonArray = (JSONArray) InstDepartments.get(TagNameEnum.DEPARTMENT.getTagName());
-
-                InstDepartmentJsonArray.forEach(departmentId -> {
-                    DepartmentEntity tmpDep = departmentEntityMap.get(departmentId);
-                    tmpDep.setInstituteId(id);
-                    try {
-                        departmentService.saveDepartment(tmpDep);
-                    } catch (BaseException e) {
-                        throw new RuntimeException(e);
+                    InstituteEntity existingInstitute = instituteService.findByIds(departmentId, id);
+                    if (existingInstitute != null) {
+                        continue;
                     }
-                });
 
-                InstituteEntity instituteEntity = new InstituteEntity();
-
-                instituteEntity.setId(id);
-                instituteEntity.setName(name);
-                instituteEntity.setStatus(ActiveInactiveStatus.ACTIVE);
-                instituteEntity.setDepartmentId(id);
-                instituteService.saveInst(instituteEntity);
+                    InstituteEntity instituteEntity = new InstituteEntity();
+                    instituteEntity.setId(RandomUtil.generateId());
+                    instituteEntity.setName(name);
+                    instituteEntity.setStatus(ActiveInactiveStatus.ACTIVE);
+                    instituteEntity.setInstituteId(id);
+                    instituteEntity.setDepartmentId(departmentId);
+                    instituteEntityList.add(instituteEntity);
+                }
             });
 
             // patient
@@ -286,11 +284,8 @@ public class LoadDataAction {
                 String email = getElement(objPatient, TagNameEnum.EMAIL);
                 String username = getElement(objPatient, TagNameEnum.USERNAME);
 
-                JSONObject PatDepartment = (JSONObject) objPatient.get(TagNameEnum.DEPARTMENT.getTagName());
-
-              //  JSONArray PatDepartmentJsonArray = (JSONArray) PatDepartment.get(TagNameEnum.DEPARTMENT.getTagName());
-//                String department = getElement(objPatient, TagNameEnum.DEPARTMENT);
-//                String institute = getElement(objPatient, TagNameEnum.INSTITUTE);
+                String departmentId = (String) objPatient.get(TagNameEnum.DEPARTMENT.getTagName());
+                String instituteId = (String) objPatient.get(TagNameEnum.INSTITUTE.getTagName());
 
                 PatientEntity patientEntity = new PatientEntity();
                 patientEntity.setId(id);
@@ -298,14 +293,31 @@ public class LoadDataAction {
                 patientEntity.setEmail(email);
                 patientEntity.setUsername(username);
                 patientEntity.setStatus(ActiveInactiveStatus.ACTIVE);
-                patientEntity.setDepartmentId(id);
-                patientEntity.setInstituteId(id);
-                try {
-                    patientService.save(patientEntity);
-                } catch (BaseException e) {
-                    throw new RuntimeException(e);
-                }
+                patientEntity.setDepartmentId(departmentId);
+                patientEntity.setInstituteId(instituteId);
+
+                patientEntityList.add(patientEntity);
             });
+
+            for (DepartmentEntity departmentEntity : departmentEntityList) {
+                departmentService.saveDepartment(departmentEntity);
+            }
+
+            for (InstituteEntity instituteEntity : instituteEntityList) {
+                instituteService.saveInstitute(instituteEntity);
+            }
+
+            for (PatientEntity patientEntity : patientEntityList) {
+                patientService.savePatient(patientEntity);
+            }
+
+            // patientEntityList.forEach(patientEntity -> {
+            // try {
+            // patientService.savePatient(patientEntity);
+            // } catch (BaseException e) {
+            // throw new RuntimeException(e);
+            // }
+            // });
 
         } catch (Exception e) {
             throw new BaseException(e);

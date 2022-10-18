@@ -15,7 +15,7 @@ public class InstituteConverter {
         InstituteEntity instituteEntity = new InstituteEntity();
         instituteEntity.setId(instituteType.getId());
         instituteEntity.setName(instituteType.getName());
-        instituteEntity.setDepartmentId(instituteEntity.getDepartmentId());
+        instituteEntity.setDepartmentId(instituteType.getDepartments().get(0).getDepartment().get(0));
         instituteEntity.setStatus(EnumUtil.convert(instituteType.getStatus() , ActiveInactiveStatus.class));
 
         return instituteEntity;

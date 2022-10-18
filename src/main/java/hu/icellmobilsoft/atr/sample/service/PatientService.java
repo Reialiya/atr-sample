@@ -40,9 +40,8 @@ public class PatientService extends BaseService {
 
     // TODO: tesztelés, h menti-e az adatokat
     @Transactional
-    public void savePatient(PatientEntity patient) throws BaseException {
-        entityManager.persist(patient);
-//        save(patient);
+    public void savePatient(PatientEntity patient) throws BaseException  {
+        save(patient);
     }
 
     // criteriaBuilder alapján felépített db lekérdezés, entity válasz

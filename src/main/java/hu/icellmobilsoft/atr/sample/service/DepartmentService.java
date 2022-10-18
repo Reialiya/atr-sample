@@ -26,8 +26,7 @@ public class DepartmentService extends BaseService {
 
     @Transactional
     public void saveDepartment(DepartmentEntity department) throws BaseException {
-        entityManager.persist(department);
-        // save(department);
+         save(department);
     }
 
     public DepartmentEntity findDepartmentById(String id) {
