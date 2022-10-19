@@ -311,14 +311,6 @@ public class LoadDataAction {
                 patientService.savePatient(patientEntity);
             }
 
-            // patientEntityList.forEach(patientEntity -> {
-            // try {
-            // patientService.savePatient(patientEntity);
-            // } catch (BaseException e) {
-            // throw new RuntimeException(e);
-            // }
-            // });
-
         } catch (Exception e) {
             throw new BaseException(e);
         }
