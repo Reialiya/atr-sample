@@ -1,47 +1,29 @@
 package hu.icellmobilsoft.atr.sample.rest;
 
-import java.io.IOException;
+import javax.inject.Inject;
 
-import javax.xml.stream.XMLStreamException;
-
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.core.JsonParser;
-
-import hu.icellmobilsoft.atr.sample.util.XSDValidator;
+import hu.icellmobilsoft.atr.sample.action.LoadDataAction;
+import hu.icellmobilsoft.atr.sample.exception.BaseException;
+import hu.icellmobilsoft.dto.sample.patient.BaseResponse;
 
 public class LoadDataImpl implements ILoadData {
 
-    @Override
-    public parseXml loadFromXml(String xmlFileName) {
-        parseXml oParseXml = new parseXml();
-        try {
-            XSDValidator validator = new XSDValidator();
-            if (validator.Validate(xmlFileName, "samplePatient.xsd")) {
-                oParseXml.readSample(oParseXml.parse(xmlFileName));
-            } else {
-                throw new Error("invalid xml");
-            }
-        } catch (XMLStreamException e) {
-            e.printStackTrace();
-        }
+    @Inject
+    private LoadDataAction loadDataAction;
 
-        return oParseXml;
+    private static final String XML_FILE = "sample.xml";
+    private static final String JSON_FILE = "example.json";
+
+    @Override
+    public BaseResponse loadFromXml(String filename) throws BaseException {
+        return loadDataAction.loadFromXml(XML_FILE);
     }
 
     @Override
-    public parseJson loadFromJson(String jsonFileName) {
-        parseJson jParser = new parseJson();
-        JsonParser parser;
-        try {
-            parser = jParser.parse(jsonFileName);
-            jParser.readSample(parser);
-        } catch (JsonParseException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        return jParser;
-
+    public BaseResponse loadFromJson(String filename) throws BaseException {
+        return loadDataAction.loadFromJson(JSON_FILE);
     }
+
+
+
 }

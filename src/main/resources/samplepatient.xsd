@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://sample.dto.icellmobilsoft.hu/patient"
+            xmlns="http://sample.dto.icellmobilsoft.hu/patient" elementFormDefault='qualified'>
+
+    <xsd:simpleType name="IdType">
+        <xsd:restriction base="xsd:string">
+            <xsd:maxLength value="30"/>
+            <xsd:pattern value="[+a-zA-Z0-9_]{1,32}"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+
+    <xsd:simpleType name="NameType">
+        <xsd:restriction base="xsd:string">
+            <xsd:maxLength value="200"/>
+            <xsd:minLength value="2"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+
+    <xsd:simpleType name="EmailType">
+        <xsd:restriction base="xsd:string">
+            <xsd:maxLength value="200"/>
+            <xsd:pattern
+                    value="[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+
+    <xsd:simpleType name="ActiveInactiveStatus">
+        <xsd:restriction base="xsd:string">
+            <xsd:enumeration value="ACTIVE"/>
+            <xsd:enumeration value="INACTIVE"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+
+    <xsd:simpleType name="FunctionCodeType">
+        <xsd:restriction base="xsd:string">
+            <xsd:enumeration value="OK">
+                <xsd:annotation>
+                    <xsd:documentation>OK</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="WARN">
+                <xsd:annotation>
+                    <xsd:documentation>Warning</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="ERROR">
+                <xsd:annotation>
+                    <xsd:documentation>Error</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+        </xsd:restriction>
+    </xsd:simpleType>
+
+    <xsd:complexType name="DepartmentType">
+        <xsd:sequence>
+            <xsd:element name="id" type="IdType"/>
+            <xsd:element name="name" type="NameType"/>
+            <xsd:element name="status" type="ActiveInactiveStatus"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="DepartmentIdType">
+        <xsd:sequence>
+            <xsd:element name="department" type="xsd:string" maxOccurs="unbounded"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="InstituteType">
+        <xsd:sequence>
+            <xsd:element name="id" type="IdType"/>
+            <xsd:element name="name" type="NameType"/>
+            <xsd:element name="departmentId" type="IdType"/>
+            <xsd:element name="instituteId" type="IdType"/>
+            <xsd:element name="status" type="ActiveInactiveStatus"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="PatientType">
+        <xsd:sequence>
+            <xsd:element name="name" type="NameType" minOccurs="0"/>
+            <xsd:element name="email" type="EmailType"/>
+            <xsd:element name="username" type="NameType" minOccurs="0"/>
+            <xsd:element name="department" type="IdType"/>
+            <xsd:element name="institute" type="IdType"/>
+            <xsd:element name="status" type="ActiveInactiveStatus"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="DepartmentListType">
+        <xsd:sequence>
+            <xsd:element name="department" type="DepartmentType" maxOccurs="unbounded"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="InstituteListType">
+        <xsd:sequence>
+            <xsd:element name="institute" type="InstituteType" maxOccurs="unbounded"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="PatientsListType">
+        <xsd:sequence>
+            <xsd:element name="patient" type="PatientType" maxOccurs="unbounded"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:element name="DepartmentRequest">
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element name="department" type="DepartmentType"/>
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="DepartmentResponse">
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element name="department" type="DepartmentType"/>
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+
+    <xsd:element name="InstituteRequest">
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element name="institute" type="InstituteType"/>
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="InstituteResponse">
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element name="institute" type="InstituteType"/>
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+
+    <xsd:element name="PatientRequest">
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element name="patient" type="PatientType"/>
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="PatientResponse">
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element name="patient" type="PatientType"/>
+                <xsd:element name="id" type="IdType"/>
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+
+    <xsd:complexType name="BaseResultType">
+        <xsd:sequence>
+            <xsd:element name="funcCode" type="FunctionCodeType"/>
+            <xsd:element name="message" type="xsd:string" minOccurs="0"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="BaseResponseType">
+        <xsd:complexContent>
+            <xsd:extension base="BaseResultType"/>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:element name="BaseResponse">
+        <xsd:complexType>
+            <xsd:complexContent>
+                <xsd:extension base="BaseResponseType"/>
+            </xsd:complexContent>
+        </xsd:complexType>
+    </xsd:element>
+
+    <xsd:element name="sample">
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element name="departments" type="DepartmentListType"/>
+                <xsd:element name="institutes" type="InstituteListType"/>
+                <xsd:element name="patients" type="PatientsListType"/>
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+</xsd:schema>

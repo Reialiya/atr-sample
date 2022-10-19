@@ -1,46 +1,9 @@
 package hu.icellmobilsoft.atr.sample.repository;
 
-import java.util.ArrayList;
-import java.util.stream.Stream;
+import org.apache.deltaspike.data.api.Repository;
 
-import hu.icellmobilsoft.atr.sample.model.Department;
+@Repository
+public interface DepartmentRepository {
 
-public class DepartmentRepository {
-
-    ArrayList<Department> departments = new ArrayList<Department>();
-
-    public DepartmentRepository() {
-    }
-
-    public void saveDepartment(Department department) {
-        Department existingDep = findDepartment(department.getId());
-
-        if (existingDep == null) {
-            departments.add(department);
-        } else {
-            Integer idx = departments.indexOf(existingDep);
-            departments.set(idx, new Department(department.getId(), department.getName()));
-        }
-
-    }
-
-    public Department findDepartment(String id) {
-        Stream<Department> findDepId = departments.stream().filter(x -> x.getId().equals(id));
-        return findDepId.findFirst().orElse(null);
-    }
-
-    public ArrayList<Department> getAllDepartment() {
-        return departments;
-    }
-
-    @Override
-    public String toString() {
-        departments.stream().forEach(x -> {
-            System.out.printf("[ %s ] => \n id: %s \n name: %s\n", this.getClass().getSimpleName().toString(),
-                    x.getId(),
-                    x.getName());
-        });
-        return super.toString();
-    }
-
+    // TODO: query methods
 }

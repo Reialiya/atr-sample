@@ -41,7 +41,7 @@
                     "id": "32158",
                     "name": "Szent Borbála Kórház Tatabánya",
                     "departments": {
-                        "department": "000010"
+                        "department": ["000010"]
                     }
                 }
             ]

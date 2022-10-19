@@ -1,53 +1,72 @@
 package hu.icellmobilsoft;
 
-import hu.icellmobilsoft.atr.sample.action.SamplePatientAction;
-import hu.icellmobilsoft.atr.sample.model.Patient;
-import hu.icellmobilsoft.atr.sample.rest.parseJson;
-import hu.icellmobilsoft.atr.sample.rest.parseXml;
+
+import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
+
+import hu.icellmobilsoft.atr.sample.action.DepartmentAction;
+import hu.icellmobilsoft.atr.sample.action.LoadDataAction;
+import hu.icellmobilsoft.atr.sample.exception.BaseException;
+import javassist.NotFoundException;
 
 /**
  * Hello world!
  *
  */
+
+/**
+ *
+ */
 public class App {
-    public static void main(String[] args) {
-        // parseXml opx = new parseXml();
-        // patientTest(opx);
-        SamplePatientAction osp = new SamplePatientAction();
-        osp.loadFromJson("example.json");
 
-        patientJsonTest(osp);
+    @Inject
+      private DepartmentAction departmentAction;
 
-        Patient patient = osp.queryPatientData("kv", "000008");
-        osp.deletePatient("PATIENT8");
+    public static void main(String[] args) throws BaseException, NotFoundException {
+
+        CDI.current().select(DepartmentAction.class).get().getDepartment("123");
+
+//        ILoadData loadData = new LoadDataImpl();
+//        IRequestData requestData = new RequestDataImpl();
+//        SamplePatientAction ospXml = loadData.loadFromXml();
+//        SamplePatientAction ospJson = loadData.loadFromJson();
+//
+//        patientXmlTest(ospXml);
+//        patientJsonTest(ospJson);
+//
+//        Patient patient = ospXml.queryPatientData("kv", "000008");
+//        ospXml.deletePatient("PATIENT8");
+    }
+    public void valami() throws BaseException, NotFoundException {
+        departmentAction.getDepartment("123");
     }
 
-    public static void patientXmlTest(parseXml opx) {
-        System.out.println("######################## allDepartment");
-        opx.getDepRepo().toString();
-        System.out.println("######################## allDepartment End \n");
-
-        System.out.println("######################## allInstitute");
-        opx.getInstRepo().toString();
-        System.out.println("######################## allInstitute End \n");
-
-        System.out.println("######################## allPatient");
-        opx.getPatRepo().toString();
-        System.out.println("######################## allPatient End \n");
+    public static void patientXmlTest(LoadDataAction opx) {
+//        System.out.println("######################## allDepartment");
+//        opx.getDepRep().toString();
+//        System.out.println("######################## allDepartment End \n");
+//
+//        System.out.println("######################## allInstitute");
+//        opx.getInstRep().toString();
+//        System.out.println("######################## allInstitute End \n");
+//
+//        System.out.println("######################## allPatient");
+//        opx.getPatRep().toString();
+//        System.out.println("######################## allPatient End \n");
     }
 
-    public static void patientJsonTest(SamplePatientAction spa) {
-        System.out.println("######################## allDepartment");
-        spa.getDepRep().toString();
-        System.out.println("######################## allDepartment End \n");
-
-        System.out.println("######################## allInstitute");
-        spa.getInstRep().toString();
-        System.out.println("######################## allInstitute End \n");
-
-        System.out.println("######################## allPatient");
-        spa.getPatRep().toString();
-        System.out.println("######################## allPatient End \n");
+    public static void patientJsonTest(LoadDataAction spa) {
+//        System.out.println("######################## allDepartment");
+//        spa.getDepRep().toString();
+//        System.out.println("######################## allDepartment End \n");
+//
+//        System.out.println("######################## allInstitute");
+//        spa.getInstRep().toString();
+//        System.out.println("######################## allInstitute End \n");
+//
+//        System.out.println("######################## allPatient");
+//        spa.getPatRep().toString();
+//        System.out.println("######################## allPatient End \n");
     }
 
 }
