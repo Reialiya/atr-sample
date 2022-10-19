@@ -16,14 +16,11 @@ import javassist.NotFoundException;
 
 /**
  * The interface Department rest.
+ *
+ * @author juhaszkata
  */
 @Path("/rest/department/")
 public interface IDepartmentRest {
-
-    // @GET
-    // @Path("/hello")
-    // @Produces({ "text/plain", MediaType.APPLICATION_JSON })
-    // Response getHello();
 
     /**
      * Gets department.
@@ -33,6 +30,8 @@ public interface IDepartmentRest {
      * @return the department
      * @throws BaseException
      *             the base exception
+     * @throws NotFoundException
+     *             the not found exception
      */
     @GET
     @Path("/{id}")
@@ -44,17 +43,18 @@ public interface IDepartmentRest {
      *
      * @param departmentRequest
      *            the department request
+     * @param id
+     *            the id
      * @return the department response
      * @throws BaseException
      *             the base exception
      */
-
     // ahol van request, ott mindig kell Consumesnek lennie
     @PUT
     @Path("/{id}")
     @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
     @Consumes({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
-    DepartmentResponse putDepartment(DepartmentRequest departmentRequest, @PathParam("id")String id) throws BaseException;
+    DepartmentResponse putDepartment(DepartmentRequest departmentRequest, @PathParam("id") String id) throws BaseException;
 
     /**
      * Post department department response.
@@ -66,7 +66,6 @@ public interface IDepartmentRest {
      *             the base exception
      */
     @POST
-    // @Path("/fafa")
     @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
     @Consumes({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
     DepartmentResponse postDepartment(DepartmentRequest departmentRequest) throws BaseException;
@@ -80,7 +79,6 @@ public interface IDepartmentRest {
      * @throws BaseException
      *             the base exception
      */
-
     @PUT
     @Path("/delete/{id}")
     @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })

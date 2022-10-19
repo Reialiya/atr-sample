@@ -7,7 +7,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import com.sun.istack.NotNull;
+import javax.validation.constraints.NotNull;
 
 import hu.icellmobilsoft.atr.sample.util.ActiveInactiveStatus;
 
@@ -28,19 +28,8 @@ public class DepartmentEntity {
     private String name;
 
     @Column(name = "STATUS")
-    @Enumerated (EnumType.STRING)
+    @Enumerated(EnumType.STRING)
     private ActiveInactiveStatus status;
-
-//    @Column(name = "INSTITUTE_ID", nullable = false, length = 30)
-//    private String InstituteId;
-
-//    public String getInstituteId() {
-//        return InstituteId;
-//    }
-//
-//    public void setInstituteId(String instituteId) {
-//        InstituteId = instituteId;
-//    }
 
     /**
      * Gets id.
@@ -87,6 +76,5 @@ public class DepartmentEntity {
     public void setStatus(ActiveInactiveStatus status) {
         this.status = status;
     }
-
 
 }

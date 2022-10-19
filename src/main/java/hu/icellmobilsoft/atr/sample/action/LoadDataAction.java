@@ -5,11 +5,14 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.enterprise.inject.Model;
+import javax.enterprise.inject.spi.CDI;
 import javax.inject.Inject;
+import javax.persistence.NoResultException;
 import javax.xml.XMLConstants;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Unmarshaller;
@@ -19,6 +22,7 @@ import javax.xml.validation.SchemaFactory;
 import javax.xml.validation.Validator;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.deltaspike.jpa.api.transaction.Transactional;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -32,8 +36,6 @@ import hu.icellmobilsoft.atr.sample.exception.NotFoundException;
 import hu.icellmobilsoft.atr.sample.model.DepartmentEntity;
 import hu.icellmobilsoft.atr.sample.model.InstituteEntity;
 import hu.icellmobilsoft.atr.sample.model.PatientEntity;
-import hu.icellmobilsoft.atr.sample.repository.DepartmentRepository;
-import hu.icellmobilsoft.atr.sample.repository.InstituteRepository;
 import hu.icellmobilsoft.atr.sample.service.DepartmentService;
 import hu.icellmobilsoft.atr.sample.service.InstituteService;
 import hu.icellmobilsoft.atr.sample.service.PatientService;
@@ -49,30 +51,16 @@ import hu.icellmobilsoft.dto.sample.patient.PatientsListType;
 import hu.icellmobilsoft.dto.sample.patient.Sample;
 
 /**
+ * The type Load data action.
+ *
  * @author juhaszkata
- * @version 1
+ *
  */
-
 @Model
 public class LoadDataAction {
 
-    // @Inject
-    // private PatientAction patientAction;
-    //
-    // @Inject
-    // private InstituteAction instituteAction;
-    //
-    // @Inject
-    // private DepartmentAction departmentAction;
-
     @Inject
     private DepartmentConverter departmentConverter;
-
-    @Inject
-    private DepartmentRepository departmentRepository;
-
-    @Inject
-    private InstituteRepository instituteRepository;
 
     @Inject
     private InstituteConverter instituteConverter;
@@ -89,11 +77,15 @@ public class LoadDataAction {
     @Inject
     private PatientConverter patientConverter;
 
-    // BaseResponse a visszatérítési érték, funcCode beállítjuk a végén setFunctionCode type = ok
-    // return mindenhol hibával visszaválaszolunk BaseResponse setF. error
-    // xml marshall exceptionnél lehet dob hibát és xml-t alakítsuk át, xsd-hez ne nyúljak hozzá!!
-    // with beállítjuk és a visszatérési értéke nem void, ugyanazt beállítjuk
-
+    /**
+     * Load from xml base response.
+     *
+     * @param fileName
+     *            the file name
+     * @return the base response
+     * @throws BaseException
+     *             the base exception
+     */
     public BaseResponse loadFromXml(String fileName) throws BaseException {
         BaseResponse baseResponse = new BaseResponse().withFuncCode(FunctionCodeType.ERROR);
         if (StringUtils.isBlank(fileName)) {
@@ -124,7 +116,7 @@ public class LoadDataAction {
                 return baseResponse;
             }
 
-            // ahány entity lesz, ahány department lesz
+            // amennyi entity lesz, annyi department lesz
             instituteListType.getInstitute().forEach(instituteType -> {
                 InstituteEntity instituteEntity = instituteConverter.convert(instituteType);
                 try {
@@ -152,48 +144,19 @@ public class LoadDataAction {
             throw new BaseException(SimplePatientConstans.PARSING_ERROR_MSG + e.getMessage(), e);
         }
 
-        // return response.ok
         baseResponse.setFuncCode(FunctionCodeType.OK);
         return baseResponse;
     }
 
-    // not found exception kell
-    private String getResource(String filename) throws BaseException {
-        URL resource = getClass().getClassLoader().getResource(filename);
-        if (resource == null) {
-            throw new NotFoundException(SimplePatientConstans.FILE_NOT_FOUND_MSG);
-        }
-        return resource.getFile();
-    }
-
-    private String getElement(JSONObject o, TagNameEnum tagName) {
-        String value = "";
-        if (o != null) {
-            Object obj = o.get(tagName.getTagName());
-            value = obj != null ? obj.toString() : " ";
-        }
-        return value;
-    }
-
-    // TODO: átnézni nálam is a validatort, Jsonra is ellenőrzést készítsünk
-    private void xmlValidation(String fileName) throws BaseException {
-        SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
-        try {
-            File xmlFile = new File(getResource(fileName));
-            Schema schema = schemaFactory.newSchema(new File(getResource(SimplePatientConstans.SCHEMA_FILE)));
-            Validator validator = schema.newValidator();
-            validator.validate(new StreamSource(xmlFile));
-        } catch (SAXException | IOException e) {
-            throw new BaseException(fileName + SimplePatientConstans.FILE_NOT_VALID_MSG, e);
-        }
-    }
-
-    // public static void main(String[] args) throws BaseException {
-    // // loadFromJson("example.json");
-    // LoadDataAction ld = new LoadDataAction();
-    // ld.loadFromJson("example.json");
-    // }
-
+    /**
+     * Load from json base response.
+     *
+     * @param fileName
+     *            the file name
+     * @return the base response
+     * @throws BaseException
+     *             the base exception
+     */
     public BaseResponse loadFromJson(String fileName) throws BaseException {
         BaseResponse baseResponse = new BaseResponse().withFuncCode(FunctionCodeType.ERROR);
         if (StringUtils.isBlank(fileName)) {
@@ -202,7 +165,7 @@ public class LoadDataAction {
         JSONParser parser = new JSONParser();
         try {
             InputStream resourceAsStream = LoadDataAction.class.getResourceAsStream("/" + fileName);
-            JSONObject jsonObject = (JSONObject) parser.parse(new InputStreamReader(resourceAsStream, "UTF-8"));
+            JSONObject jsonObject = (JSONObject) parser.parse(new InputStreamReader(resourceAsStream, StandardCharsets.UTF_8));
 
             JSONObject sample = (JSONObject) jsonObject.get(TagNameEnum.SAMPLE.getTagName());
 
@@ -252,19 +215,17 @@ public class LoadDataAction {
                 ArrayList<String> instDepartmentStringList = (ArrayList<String>) instDepartments.get(TagNameEnum.DEPARTMENT.getTagName());
 
                 for (String departmentId : instDepartmentStringList) {
-
-                    InstituteEntity existingInstitute = instituteService.findByIds(departmentId, id);
-                    if (existingInstitute != null) {
-                        continue;
+                    try {
+                        instituteService.findByIds(departmentId, id);
+                    } catch (NoResultException exception) {
+                        InstituteEntity instituteEntity = new InstituteEntity();
+                        instituteEntity.setId(RandomUtil.generateId());
+                        instituteEntity.setName(name);
+                        instituteEntity.setStatus(ActiveInactiveStatus.ACTIVE);
+                        instituteEntity.setInstituteId(id);
+                        instituteEntity.setDepartmentId(departmentId);
+                        instituteEntityList.add(instituteEntity);
                     }
-
-                    InstituteEntity instituteEntity = new InstituteEntity();
-                    instituteEntity.setId(RandomUtil.generateId());
-                    instituteEntity.setName(name);
-                    instituteEntity.setStatus(ActiveInactiveStatus.ACTIVE);
-                    instituteEntity.setInstituteId(id);
-                    instituteEntity.setDepartmentId(departmentId);
-                    instituteEntityList.add(instituteEntity);
                 }
             });
 
@@ -299,17 +260,7 @@ public class LoadDataAction {
                 patientEntityList.add(patientEntity);
             });
 
-            for (DepartmentEntity departmentEntity : departmentEntityList) {
-                departmentService.saveDepartment(departmentEntity);
-            }
-
-            for (InstituteEntity instituteEntity : instituteEntityList) {
-                instituteService.saveInstitute(instituteEntity);
-            }
-
-            for (PatientEntity patientEntity : patientEntityList) {
-                patientService.savePatient(patientEntity);
-            }
+            CDI.current().select(LoadDataAction.class).get().saveCollections(departmentEntityList, instituteEntityList, patientEntityList);
 
         } catch (Exception e) {
             throw new BaseException(e);
@@ -319,19 +270,51 @@ public class LoadDataAction {
         return baseResponse;
     }
 
-    // public void loadFromXml(String xmlFileName) {
-    // XSDValidator validator = new XSDValidator();
-    // if (validator.Validate(xmlFileName, "samplepatient.xsd")) {
-    // ParseHelper.ParseXml oParseXml = new ParseHelper.ParseXml();
-    // oParseXml.run(xmlFileName);
-    //
-    // depRep = oParseXml.getDepRepo();
-    // patRep = oParseXml.getPatRepo();
-    // instRep = oParseXml.getInstRepo();
-    // } else {
-    // throw new Error("invalid xml");
-    // }
-    //
-    // }
+    /**
+     * Save collections.
+     *
+     * @param departmentEntityList
+     *            the department entity list
+     * @param instituteEntityList
+     *            the institute entity list
+     * @param patientEntityList
+     *            the patient entity list
+     */
+    @Transactional
+    public void saveCollections(List<DepartmentEntity> departmentEntityList, List<InstituteEntity> instituteEntityList,
+            List<PatientEntity> patientEntityList) {
+        departmentService.saveCollection(departmentEntityList);
+        instituteService.saveCollection(instituteEntityList);
+        patientService.saveCollection(patientEntityList);
+    }
+
+    private String getResource(String filename) throws BaseException {
+        URL resource = getClass().getClassLoader().getResource(filename);
+        if (resource == null) {
+            throw new NotFoundException(SimplePatientConstans.FILE_NOT_FOUND_MSG);
+        }
+        return resource.getFile();
+    }
+
+    private String getElement(JSONObject o, TagNameEnum tagName) {
+        String value = "";
+        if (o != null) {
+            Object obj = o.get(tagName.getTagName());
+            value = obj != null ? obj.toString() : " ";
+        }
+        return value;
+    }
+
+    private void xmlValidation(String fileName) throws BaseException {
+        SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+        try {
+            File xmlFile = new File(getResource(fileName));
+            Schema schema = schemaFactory.newSchema(new File(getResource(SimplePatientConstans.SCHEMA_FILE)));
+            Validator validator = schema.newValidator();
+            validator.validate(new StreamSource(xmlFile));
+        } catch (SAXException | IOException e) {
+            throw new BaseException(fileName + SimplePatientConstans.FILE_NOT_VALID_MSG, e);
+        }
+    }
 
 }

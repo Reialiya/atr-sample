@@ -1,8 +1,6 @@
 package hu.icellmobilsoft.atr.sample.action;
 
-import javax.enterprise.inject.spi.CDI;
 import javax.inject.Inject;
-import javax.transaction.Transactional;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -10,7 +8,6 @@ import hu.icellmobilsoft.atr.sample.converter.InstituteConverter;
 import hu.icellmobilsoft.atr.sample.exception.BaseException;
 import hu.icellmobilsoft.atr.sample.exception.DeleteException;
 import hu.icellmobilsoft.atr.sample.model.InstituteEntity;
-import hu.icellmobilsoft.atr.sample.repository.InstituteRepository;
 import hu.icellmobilsoft.atr.sample.service.InstituteService;
 import hu.icellmobilsoft.atr.sample.util.ActiveInactiveStatus;
 import hu.icellmobilsoft.atr.sample.util.RandomUtil;
@@ -21,14 +18,10 @@ import javassist.NotFoundException;
 
 /**
  * The type Institute action.
- * 
+ *
  * @author juhaszkata
- * @version 1.0
  */
 public class InstituteAction {
-
-    @Inject
-    private InstituteRepository instituteRepository;
 
     @Inject
     private InstituteService instituteService;
@@ -36,6 +29,12 @@ public class InstituteAction {
     @Inject
     private InstituteConverter instituteConverter;
 
+    /**
+     * Is id blank boolean.
+     *
+     * @param instituteRequest the institute request
+     * @return the boolean
+     */
     public Boolean isIdBlank(InstituteRequest instituteRequest) {
         if (instituteRequest == null) {
             return true;
@@ -46,11 +45,10 @@ public class InstituteAction {
     /**
      * Gets institute.
      *
-     * @param instituteID
-     *            the institute id
+     * @param instituteID the institute id
      * @return the institute
-     * @throws BaseException
-     *             the base exception
+     * @throws BaseException     the base exception
+     * @throws NotFoundException the not found exception
      */
     public InstituteResponse getInstitute(String instituteID) throws BaseException, NotFoundException {
         if (StringUtils.isBlank(instituteID)) {
@@ -68,13 +66,10 @@ public class InstituteAction {
     /**
      * Post institute institute response.
      *
-     * @param instituteRequest
-     *            the institute request
+     * @param instituteRequest the institute request
      * @return the institute response
-     * @throws BaseException
-     *             the base exception
+     * @throws BaseException the base exception
      */
-
     public InstituteResponse postInstitute(InstituteRequest instituteRequest) throws BaseException {
         if (isIdBlank(instituteRequest)) {
             throw new BaseException(SimplePatientConstans.PARAMETER_CANNOT_NULL_MSG);
@@ -84,45 +79,42 @@ public class InstituteAction {
         instituteEntity.setId(RandomUtil.generateId());
         instituteEntity.setStatus(ActiveInactiveStatus.ACTIVE);
 
-        CDI.current().select(InstituteAction.class).get().saveInstitute(instituteEntity);
+        instituteService.saveInstitute(instituteEntity);
 
         return instituteToResponse(instituteEntity);
-    }
-
-    @Transactional
-    public void saveInstitute(InstituteEntity instituteEntity) throws BaseException {
-        instituteService.saveInstitute(instituteEntity);
     }
 
     /**
      * Put institute institute response.
      *
-     * @param instituteRequest
-     *            the institute request
+     * @param instituteRequest the institute request
+     * @param id               the id
      * @return the institute response
-     * @throws BaseException
-     *             the base exception
+     * @throws BaseException the base exception
      */
-    public InstituteResponse putInstitute(InstituteRequest instituteRequest) throws BaseException {
+    public InstituteResponse putInstitute(InstituteRequest instituteRequest, String id) throws BaseException {
         if (instituteRequest == null) {
             throw new BaseException(SimplePatientConstans.PARAMETER_CANNOT_NULL_MSG);
         }
 
-        InstituteEntity instituteEntity = instituteConverter.convert(instituteRequest.getInstitute());
-        instituteService.updateInstitute(instituteEntity);
+        InstituteEntity instituteEntity = instituteService.findInstitute(id);
+        if (instituteEntity == null) {
+            throw new DeleteException(SimplePatientConstans.NO_INSTITUTE_WITH_THIS_ID_MSG);
+        }
+
+        instituteConverter.convert(instituteRequest.getInstitute());
+        instituteService.saveInstitute(instituteEntity);
 
         return instituteToResponse(instituteEntity);
-
     }
 
     /**
-     * Delete instituteResponse instituteID alapján, megvizsgáljuk van-e id és az Entity üres-e aztán töröljük id alapján az institute-t
+     * Delete instituteResponse instituteID alapján, megvizsgáljuk van-e id és az Entity üres-e aztán töröljük id
+     * alapján az institute-t
      *
-     * @param instituteID
-     *            alaőján töröljük az institute-t the institute id
+     * @param instituteID alaőján töröljük az institute-t the institute id
      * @return the institute response
-     * @throws DeleteException
-     *             the delete exception
+     * @throws DeleteException the delete exception
      */
     public InstituteResponse deleteInstitute(String instituteID) throws DeleteException {
         if (StringUtils.isBlank(instituteID)) {

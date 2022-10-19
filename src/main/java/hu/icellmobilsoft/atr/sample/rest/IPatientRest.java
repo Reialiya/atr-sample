@@ -30,6 +30,7 @@ public interface IPatientRest {
     @PUT
     @Path("/{id}")
     @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
+    @Consumes({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
     PatientResponse putPatient(@PathParam("id") String patientID, PatientRequest patientRequest) throws BaseException;
 
     @PUT

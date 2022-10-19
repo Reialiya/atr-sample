@@ -27,8 +27,8 @@ public class InstituteRest implements IInstituteRest {
     }
 
     @Override
-    public InstituteResponse putInstitute(InstituteRequest instituteRequest) throws BaseException {
-        return instituteAction.putInstitute(instituteRequest);
+    public InstituteResponse putInstitute(InstituteRequest instituteRequest, String id) throws BaseException {
+        return instituteAction.putInstitute(instituteRequest, id);
     }
 
     @Override

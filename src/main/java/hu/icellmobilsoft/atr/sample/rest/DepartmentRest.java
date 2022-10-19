@@ -11,10 +11,11 @@ import javassist.NotFoundException;
 
 /**
  * The type Department rest.
+ * 
  * @author juhaszkata
  */
 @Model
-public class DepartmentRest implements IDepartmentRest{
+public class DepartmentRest implements IDepartmentRest {
     @Inject
     private DepartmentAction departmentAction;
 
@@ -37,7 +38,5 @@ public class DepartmentRest implements IDepartmentRest{
     public DepartmentResponse deleteDepartment(String departmentID) throws BaseException {
         return departmentAction.deleteDepartment(departmentID);
     }
-
-
 
 }

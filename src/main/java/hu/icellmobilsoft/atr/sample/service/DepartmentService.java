@@ -11,12 +11,21 @@ import hu.icellmobilsoft.atr.sample.exception.BaseException;
 import hu.icellmobilsoft.atr.sample.model.DepartmentEntity;
 import hu.icellmobilsoft.atr.sample.util.SimplePatientConstans;
 
+/**
+ * The type Department service.
+ */
 @Model
 public class DepartmentService extends BaseService {
 
     @Inject
     private EntityManager entityManager;
 
+    /**
+     * Find department department entity.
+     *
+     * @param id the id
+     * @return the department entity
+     */
     public DepartmentEntity findDepartment(String id) {
         if (StringUtils.isBlank(id)) {
             throw new IllegalArgumentException(SimplePatientConstans.PARAMETER_CANNOT_NULL_MSG);
@@ -24,17 +33,15 @@ public class DepartmentService extends BaseService {
         return entityManager.find(DepartmentEntity.class, id);
     }
 
+    /**
+     * Save department.
+     *
+     * @param department the department
+     * @throws BaseException the base exception
+     */
     @Transactional
     public void saveDepartment(DepartmentEntity department) throws BaseException {
-         save(department);
+        save(department);
     }
-
-    public DepartmentEntity findDepartmentById(String id) {
-        if (StringUtils.isBlank(id)) {
-            throw new IllegalArgumentException(SimplePatientConstans.PARAMETER_CANNOT_NULL_MSG);
-        }
-        return entityManager.find(DepartmentEntity.class, id);
-    }
-
 
 }

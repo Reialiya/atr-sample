@@ -54,21 +54,6 @@ public class InstituteService extends BaseService {
         save(institute);
     }
 
-    public void updateInstitute(InstituteEntity instituteEntity) {
-        if (instituteEntity == null) {
-            throw new IllegalArgumentException(SimplePatientConstans.PARAMETER_CANNOT_NULL_MSG);
-        }
-
-        InstituteEntity existingInstitute = findInstitute(instituteEntity.getId());
-
-        if (existingInstitute != null) {
-            existingInstitute.setName(instituteEntity.getName());
-            existingInstitute.setStatus(instituteEntity.getStatus());
-            entityManager.persist(existingInstitute);
-        }
-
-    }
-
     public void deleteInstitute(String id) {
         if (StringUtils.isBlank(id)) {
             throw new IllegalArgumentException(SimplePatientConstans.PARAMETER_CANNOT_NULL_MSG);

@@ -6,36 +6,58 @@ import hu.icellmobilsoft.atr.sample.util.SimplePatientConstans;
 import hu.icellmobilsoft.dto.sample.patient.ActiveInactiveStatus;
 import hu.icellmobilsoft.dto.sample.patient.DepartmentType;
 
+/**
+ * The type Department converter.
+ * 
+ * @author juhaszkata
+ */
 public class DepartmentConverter {
-    // db-ből jön az adat és entityvé lesz alakítva és fordítva is műkődnie kell
+    /**
+     * Convert department entity.
+     *
+     * @param departmentType
+     *            the department type
+     * @return the department entity
+     */
     public DepartmentEntity convert(DepartmentType departmentType) {
         if (departmentType == null) {
             throw new IllegalArgumentException(SimplePatientConstans.PARAMETER_CANNOT_NULL_MSG);
         }
         DepartmentEntity departmentEntity = new DepartmentEntity();
 
-
-//        departmentEntity.setId(departmentType.getId());
-        departmentEntity.setName(departmentType.getName());
+        departmentEntity.setId(departmentType.getId());
         convert(departmentType, departmentEntity);
-//        departmentEntity.setStatus(EnumUtil.convert(departmentType.getStatus(), hu.icellmobilsoft.atr.sample.util.ActiveInactiveStatus.class));
 
         return departmentEntity;
     }
 
-    public void convert(DepartmentType departmentType, DepartmentEntity departmentEntity){
+    /**
+     * Convert.
+     *
+     * @param departmentType
+     *            the department type
+     * @param departmentEntity
+     *            the department entity
+     */
+    public void convert(DepartmentType departmentType, DepartmentEntity departmentEntity) {
         departmentEntity.setName(departmentType.getName());
+
     }
 
-
+    /**
+     * Convert department type.
+     *
+     * @param departmentEntity
+     *            the department entity
+     * @return the department type
+     */
     public DepartmentType convert(DepartmentEntity departmentEntity) {
         if (departmentEntity == null) {
             throw new IllegalArgumentException(SimplePatientConstans.PARAMETER_CANNOT_NULL_MSG);
         }
         DepartmentType departmentType = new DepartmentType();
 
-        // ID generálás
-//        departmentType.setId(departmentEntity.getId());
+        departmentType.setId(departmentEntity.getId());
 
         departmentType.setName(departmentEntity.getName());
         departmentType.setStatus(EnumUtil.convert(departmentEntity.getStatus(), ActiveInactiveStatus.class));

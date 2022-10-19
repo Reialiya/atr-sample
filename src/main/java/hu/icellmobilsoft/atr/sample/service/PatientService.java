@@ -26,8 +26,7 @@ public class PatientService extends BaseService {
     /**
      * Find patient patient entity.
      *
-     * @param id
-     *            the id
+     * @param id the id
      * @return the patient entity
      */
     public PatientEntity findPatientById(String id) {
@@ -37,14 +36,24 @@ public class PatientService extends BaseService {
         return entityManager.find(PatientEntity.class, id);
     }
 
-
-    // TODO: tesztelés, h menti-e az adatokat
+    /**
+     * Save patient.
+     *
+     * @param patient the patient
+     * @throws BaseException the base exception
+     */
     @Transactional
     public void savePatient(PatientEntity patient) throws BaseException  {
         save(patient);
     }
 
-    // criteriaBuilder alapján felépített db lekérdezés, entity válasz
+    /**
+     * Find by username patient entity.
+     *
+     * @param username the username
+     * @return the patient entity
+     */
+// criteriaBuilder alapján felépített db lekérdezés, entity válasz
     public PatientEntity findByUsername(String username) {
         if (StringUtils.isBlank(username)) {
             throw new IllegalArgumentException(SimplePatientConstans.PARAMETER_CANNOT_NULL_MSG);
@@ -60,12 +69,7 @@ public class PatientService extends BaseService {
         // getResultStream() a végére, optional
     }
 
-    // TODO: repository tábla elkészítés, deltaspike
+    // TODO: query lekérdezés deltaspike szerint
 
-
-//    public PatientEntity findByUserName(String username){
-//
-//
-//    }
 
 }

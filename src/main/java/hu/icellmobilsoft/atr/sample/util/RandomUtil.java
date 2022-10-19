@@ -8,24 +8,65 @@ import javax.enterprise.inject.Vetoed;
 
 import org.apache.commons.lang3.StringUtils;
 
+/**
+ * The type Random util.
+ */
 @Vetoed
 public class RandomUtil {
 
+    /**
+     * The constant DATE_2013_01_01.
+     */
     public static long DATE_2013_01_01 = 1356998400000L;
+    /**
+     * The constant MAX_NUM_SYS.
+     */
     public static final int MAX_NUM_SYS = 62;
+    /**
+     * The constant LOWERCASE.
+     */
     public static final char[] LOWERCASE;
+    /**
+     * The constant UPPERCASE.
+     */
     public static final char[] UPPERCASE = new char[26];
+    /**
+     * The constant ALL_LETTER.
+     */
     public static final char[] ALL_LETTER;
+    /**
+     * The constant ALL_LETTER_STRING.
+     */
     public static final String ALL_LETTER_STRING;
+    /**
+     * The constant generatedIndex.
+     */
     public static int generatedIndex = 0;
+    /**
+     * The constant PID.
+     */
     public static final int PID;
+    /**
+     * The constant PID62.
+     */
     protected static final String PID62;
+    /**
+     * The constant PID36.
+     */
     protected static final String PID36;
     private static final Random RANDOM;
 
+    /**
+     * Instantiates a new Random util.
+     */
     public RandomUtil() {
     }
 
+    /**
+     * Generate id string.
+     *
+     * @return the string
+     */
     public static String generateId() {
         int xInd = getNextIndex();
         Date xDate = new Date();
@@ -42,6 +83,11 @@ public class RandomUtil {
         return builder.toString();
     }
 
+    /**
+     * Gets next index.
+     *
+     * @return the next index
+     */
     protected static synchronized int getNextIndex() {
         ++generatedIndex;
         if (generatedIndex > 1296) {
@@ -51,10 +97,25 @@ public class RandomUtil {
         return generatedIndex;
     }
 
+    /**
+     * Padd l string.
+     *
+     * @param str    the str
+     * @param length the length
+     * @param padd   the padd
+     * @return the string
+     */
     protected static String paddL(String str, int length, char padd) {
         return StringUtils.leftPad(str, length, padd);
     }
 
+    /**
+     * Convert to radix string.
+     *
+     * @param inNum the in num
+     * @param radix the radix
+     * @return the string
+     */
     protected static String convertToRadix(long inNum, long radix) {
         if (radix == 0L) {
             return null;

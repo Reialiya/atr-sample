@@ -1,7 +1,6 @@
 package hu.icellmobilsoft.atr.sample.action;
 
 import javax.enterprise.inject.Model;
-import javax.enterprise.inject.spi.CDI;
 import javax.inject.Inject;
 
 import org.apache.commons.lang3.StringUtils;
@@ -12,7 +11,6 @@ import hu.icellmobilsoft.atr.sample.exception.DeleteException;
 import hu.icellmobilsoft.atr.sample.model.PatientEntity;
 import hu.icellmobilsoft.atr.sample.service.PatientService;
 import hu.icellmobilsoft.atr.sample.util.ActiveInactiveStatus;
-import hu.icellmobilsoft.atr.sample.util.EnumUtil;
 import hu.icellmobilsoft.atr.sample.util.RandomUtil;
 import hu.icellmobilsoft.atr.sample.util.SimplePatientConstans;
 import hu.icellmobilsoft.dto.sample.patient.PatientRequest;
@@ -20,6 +18,8 @@ import hu.icellmobilsoft.dto.sample.patient.PatientResponse;
 
 /**
  * The type Patient action.
+ *
+ * @author juhaszkata
  */
 @Model
 public class PatientAction {
@@ -39,17 +39,15 @@ public class PatientAction {
     /**
      * Gets patient.
      *
-     * @param patientID
-     *            the patient id
+     * @param patientID the patient id
      * @return the patient
-     * @throws BaseException
-     *             the base exception
+     * @throws BaseException the base exception
      */
     public PatientResponse getPatient(String patientID) throws BaseException {
         if (StringUtils.isBlank(patientID)) {
             throw new BaseException(SimplePatientConstans.PARAMETER_CANNOT_NULL_MSG);
         }
-        // patient ID?
+
         PatientEntity patient = patientService.findPatientById(patientID);
         if (StringUtils.isBlank(patientID)) {
             throw new BaseException(SimplePatientConstans.PARAMETER_CANNOT_NULL_MSG);
@@ -60,13 +58,10 @@ public class PatientAction {
     /**
      * Post patient patient response.
      *
-     * @param patientRequest
-     *            the patient request
+     * @param patientRequest the patient request
      * @return the patient response
-     * @throws BaseException
-     *             the base exception
+     * @throws BaseException the base exception
      */
-
     public PatientResponse postPatient(PatientRequest patientRequest) throws BaseException {
         if (patientRequest == null) {
             throw new BaseException(SimplePatientConstans.PARAMETER_CANNOT_NULL_MSG);
@@ -80,21 +75,20 @@ public class PatientAction {
             patientEntity.setId(RandomUtil.generateId());
             patientEntity.setStatus(ActiveInactiveStatus.ACTIVE);
 
-//            patientService.savePatient(patientEntity);
-            CDI.current().select(PatientService.class).get().savePatient(patientEntity);
+            patientService.savePatient(patientEntity);
+
             return patientToResponse(patientEntity);
         }
-    throw new BaseException("nem megfelelő adatok/username/");
+        throw new BaseException("nem megfelelo adatok/username/");
     }
 
     /**
      * Put patient patient response.
      *
-     * @param patientRequest
-     *            the patient request
+     * @param patientID      the patient id
+     * @param patientRequest the patient request
      * @return the patient response
-     * @throws BaseException
-     *             the base exception
+     * @throws BaseException the base exception
      */
     public PatientResponse putPatient(String patientID, PatientRequest patientRequest) throws BaseException {
         if (patientRequest == null) {
@@ -115,6 +109,12 @@ public class PatientAction {
 
     }
 
+    /**
+     * Is username exist.
+     *
+     * @param username the username
+     * @throws BaseException the base exception
+     */
     public void isUsernameExist(String username) throws BaseException {
         if (StringUtils.isBlank(username)) {
             throw new BaseException(SimplePatientConstans.ENTITY_DOES_NOT_EXIST_MSG);
@@ -128,11 +128,9 @@ public class PatientAction {
     /**
      * Delete patient patient response.
      *
-     * @param patientID
-     *            the patient id
+     * @param patientID the patient id
      * @return the patient response
-     * @throws DeleteException
-     *             the delete exception
+     * @throws BaseException the base exception
      */
     public PatientResponse deletePatient(String patientID) throws BaseException {
         if (StringUtils.isBlank(patientID)) {
@@ -146,16 +144,15 @@ public class PatientAction {
 
         patientEntity.setStatus(ActiveInactiveStatus.INACTIVE);
 
-        CDI.current().select(PatientService.class).get().savePatient(patientEntity);
+        patientService.savePatient(patientEntity);
 
         return patientToResponse((patientEntity));
-
     }
 
     private PatientResponse patientToResponse(PatientEntity patient) {
         PatientResponse patientResponse = new PatientResponse();
         patientResponse.setId(patient.getId());
-        patientResponse.setStatus(EnumUtil.convert(patient.getStatus(), hu.icellmobilsoft.dto.sample.patient.ActiveInactiveStatus.class));
+
         return patientResponse.withPatient(patientConverter.convert(patient));
     }
 

@@ -53,7 +53,7 @@
 
     <xsd:complexType name="DepartmentType">
         <xsd:sequence>
-            <xsd:element name="id" type="IdType" minOccurs="0"/>
+            <xsd:element name="id" type="IdType"/>
             <xsd:element name="name" type="NameType"/>
             <xsd:element name="status" type="ActiveInactiveStatus"/>
         </xsd:sequence>
@@ -69,7 +69,8 @@
         <xsd:sequence>
             <xsd:element name="id" type="IdType"/>
             <xsd:element name="name" type="NameType"/>
-            <xsd:element name="departments" type="DepartmentIdType" maxOccurs="unbounded"/>
+            <xsd:element name="departmentId" type="IdType"/>
+            <xsd:element name="instituteId" type="IdType"/>
             <xsd:element name="status" type="ActiveInactiveStatus"/>
         </xsd:sequence>
     </xsd:complexType>
@@ -114,8 +115,6 @@
         <xsd:complexType>
             <xsd:sequence>
                 <xsd:element name="department" type="DepartmentType"/>
-                <xsd:element name="id" type="IdType"/>
-                <xsd:element name="status" type="ActiveInactiveStatus"/>
             </xsd:sequence>
         </xsd:complexType>
     </xsd:element>
@@ -131,8 +130,6 @@
         <xsd:complexType>
             <xsd:sequence>
                 <xsd:element name="institute" type="InstituteType"/>
-                <xsd:element name="id" type="IdType"/>
-                <xsd:element name="status" type="ActiveInactiveStatus"/>
             </xsd:sequence>
         </xsd:complexType>
     </xsd:element>
@@ -149,7 +146,6 @@
             <xsd:sequence>
                 <xsd:element name="patient" type="PatientType"/>
                 <xsd:element name="id" type="IdType"/>
-                <xsd:element name="status" type="ActiveInactiveStatus"/>
             </xsd:sequence>
         </xsd:complexType>
     </xsd:element>
