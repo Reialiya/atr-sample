@@ -19,7 +19,7 @@ import javassist.NotFoundException;
  *
  * @author juhaszkata
  */
-@Path("/rest/department/")
+@Path("/rest/department")
 public interface IDepartmentRest {
 
     /**

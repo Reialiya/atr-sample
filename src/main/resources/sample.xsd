@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema
+        xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+        targetNamespace="http://sample.dto.icellmobilsoft.hu/sample"
+        xmlns="http://sample.dto.icellmobilsoft.hu/sample"
+        xmlns:department="http://sample.dto.icellmobilsoft.hu/department"
+        xmlns:institute="http://sample.dto.icellmobilsoft.hu/institute"
+        xmlns:patient="http://sample.dto.icellmobilsoft.hu/patient"
+        elementFormDefault='qualified'>
+    <!--        xmlns:common="http://sample.dto.icellmobilsoft.hu/common"-->
+
+    <xsd:element name="sample">
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element name="departments" type="department:DepartmentListType"/>
+                <xsd:element name="institutes" type="institute:InstituteListType"/>
+                <xsd:element name="patients" type="patient:PatientsListType"/>
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+</xsd:schema>

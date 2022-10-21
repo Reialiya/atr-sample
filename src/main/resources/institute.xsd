@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+            targetNamespace="http://sample.dto.icellmobilsoft.hu/institute"
+            xmlns="http://sample.dto.icellmobilsoft.hu/institute"
+            xmlns:common="http://sample.dto.icellmobilsoft.hu/common"
+            elementFormDefault='qualified'>
+
+    <xsd:import namespace="https://common.dto.coffee.icellmobilsoft.hu/common" schemaLocation="./common.xsd"/>
+
+    <xsd:complexType name="InstituteType">
+        <xsd:sequence>
+            <xsd:element name="id" type="common:IdType"/>
+            <xsd:element name="name" type="common:NameType"/>
+            <xsd:element name="departmentId" type="common:IdType"/>
+            <xsd:element name="instituteId" type="common:IdType"/>
+            <xsd:element name="status" type="common:ActiveInactiveStatus"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="InstituteListType">
+        <xsd:sequence>
+            <xsd:element name="institute" type="InstituteType" maxOccurs="unbounded"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:element name="InstituteRequest">
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element name="institute" type="InstituteType"/>
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="InstituteResponse">
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element name="institute" type="InstituteType"/>
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+</xsd:schema>

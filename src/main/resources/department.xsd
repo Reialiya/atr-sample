@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+            targetNamespace="http://sample.dto.icellmobilsoft.hu/department"
+            xmlns="http://sample.dto.icellmobilsoft.hu/department"
+            xmlns:common="http://sample.dto.icellmobilsoft.hu/common"
+            elementFormDefault='qualified'>
+
+    <xsd:import namespace="https://common.dto.coffee.icellmobilsoft.hu/common" schemaLocation="./common.xsd"/>
+
+    <xsd:complexType name="DepartmentType">
+        <xsd:sequence>
+            <xsd:element name="id" type="common:IdType"/>
+            <xsd:element name="name" type="common:NameType"/>
+            <xsd:element name="status" type="common:ActiveInactiveStatus"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="DepartmentIdType">
+        <xsd:sequence>
+            <xsd:element name="department" type="xsd:string" maxOccurs="unbounded"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="DepartmentListType">
+        <xsd:sequence>
+            <xsd:element name="department" type="DepartmentType" maxOccurs="unbounded"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:element name="DepartmentRequest">
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element name="department" type="DepartmentType"/>
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+
+    <xsd:element name="DepartmentResponse">
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element name="department" type="DepartmentType"/>
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+
+</xsd:schema>
