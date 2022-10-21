@@ -43,12 +43,12 @@ import hu.icellmobilsoft.atr.sample.util.ActiveInactiveStatus;
 import hu.icellmobilsoft.atr.sample.util.RandomUtil;
 import hu.icellmobilsoft.atr.sample.util.SimplePatientConstans;
 import hu.icellmobilsoft.atr.sample.util.TagNameEnum;
-import hu.icellmobilsoft.dto.sample.patient.BaseResponse;
-import hu.icellmobilsoft.dto.sample.patient.DepartmentListType;
-import hu.icellmobilsoft.dto.sample.patient.FunctionCodeType;
-import hu.icellmobilsoft.dto.sample.patient.InstituteListType;
+import hu.icellmobilsoft.dto.sample.common.BaseResponse;
+import hu.icellmobilsoft.dto.sample.department.DepartmentListType;
+import hu.icellmobilsoft.dto.sample.common.FunctionCodeType;
+import hu.icellmobilsoft.dto.sample.institute.InstituteListType;
 import hu.icellmobilsoft.dto.sample.patient.PatientsListType;
-import hu.icellmobilsoft.dto.sample.patient.Sample;
+import hu.icellmobilsoft.dto.sample.sample.Sample;
 
 /**
  * The type Load data action.

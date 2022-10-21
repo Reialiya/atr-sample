@@ -5,8 +5,8 @@ import javax.inject.Inject;
 
 import hu.icellmobilsoft.atr.sample.action.DepartmentAction;
 import hu.icellmobilsoft.atr.sample.exception.BaseException;
-import hu.icellmobilsoft.dto.sample.patient.DepartmentRequest;
-import hu.icellmobilsoft.dto.sample.patient.DepartmentResponse;
+import hu.icellmobilsoft.dto.sample.department.DepartmentRequest;
+import hu.icellmobilsoft.dto.sample.department.DepartmentResponse;
 import javassist.NotFoundException;
 
 /**

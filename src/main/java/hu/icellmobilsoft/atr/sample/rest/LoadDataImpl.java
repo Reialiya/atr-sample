@@ -4,7 +4,7 @@ import javax.inject.Inject;
 
 import hu.icellmobilsoft.atr.sample.action.LoadDataAction;
 import hu.icellmobilsoft.atr.sample.exception.BaseException;
-import hu.icellmobilsoft.dto.sample.patient.BaseResponse;
+import hu.icellmobilsoft.dto.sample.common.BaseResponse;
 
 public class LoadDataImpl implements ILoadData {
 

@@ -9,6 +9,11 @@
         elementFormDefault='qualified'>
     <!--        xmlns:common="http://sample.dto.icellmobilsoft.hu/common"-->
 
+    <xsd:import namespace="http://sample.dto.icellmobilsoft.hu/department" schemaLocation="./department.xsd"/>
+    <xsd:import namespace="http://sample.dto.icellmobilsoft.hu/institute" schemaLocation="./institute.xsd"/>
+    <xsd:import namespace="http://sample.dto.icellmobilsoft.hu/patient" schemaLocation="./patient.xsd"/>
+
+
     <xsd:element name="sample">
         <xsd:complexType>
             <xsd:sequence>

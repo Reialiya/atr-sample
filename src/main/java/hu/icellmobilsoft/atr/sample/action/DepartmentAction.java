@@ -12,8 +12,8 @@ import hu.icellmobilsoft.atr.sample.model.DepartmentEntity;
 import hu.icellmobilsoft.atr.sample.service.DepartmentService;
 import hu.icellmobilsoft.atr.sample.util.ActiveInactiveStatus;
 import hu.icellmobilsoft.atr.sample.util.SimplePatientConstans;
-import hu.icellmobilsoft.dto.sample.patient.DepartmentRequest;
-import hu.icellmobilsoft.dto.sample.patient.DepartmentResponse;
+import hu.icellmobilsoft.dto.sample.department.DepartmentRequest;
+import hu.icellmobilsoft.dto.sample.department.DepartmentResponse;
 import javassist.NotFoundException;
 
 /**

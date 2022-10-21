@@ -12,8 +12,8 @@ import hu.icellmobilsoft.atr.sample.service.InstituteService;
 import hu.icellmobilsoft.atr.sample.util.ActiveInactiveStatus;
 import hu.icellmobilsoft.atr.sample.util.RandomUtil;
 import hu.icellmobilsoft.atr.sample.util.SimplePatientConstans;
-import hu.icellmobilsoft.dto.sample.patient.InstituteRequest;
-import hu.icellmobilsoft.dto.sample.patient.InstituteResponse;
+import hu.icellmobilsoft.dto.sample.institute.InstituteRequest;
+import hu.icellmobilsoft.dto.sample.institute.InstituteResponse;
 import javassist.NotFoundException;
 
 /**

@@ -3,7 +3,7 @@ package hu.icellmobilsoft.atr.sample.converter;
 import hu.icellmobilsoft.atr.sample.model.PatientEntity;
 import hu.icellmobilsoft.atr.sample.util.EnumUtil;
 import hu.icellmobilsoft.atr.sample.util.SimplePatientConstans;
-import hu.icellmobilsoft.dto.sample.patient.ActiveInactiveStatus;
+import hu.icellmobilsoft.dto.sample.common.ActiveInactiveStatus;
 import hu.icellmobilsoft.dto.sample.patient.PatientType;
 
 public class PatientConverter {

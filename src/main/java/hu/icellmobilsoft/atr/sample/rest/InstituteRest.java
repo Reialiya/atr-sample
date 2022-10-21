@@ -5,8 +5,8 @@ import javax.inject.Inject;
 
 import hu.icellmobilsoft.atr.sample.action.InstituteAction;
 import hu.icellmobilsoft.atr.sample.exception.BaseException;
-import hu.icellmobilsoft.dto.sample.patient.InstituteRequest;
-import hu.icellmobilsoft.dto.sample.patient.InstituteResponse;
+import hu.icellmobilsoft.dto.sample.institute.InstituteRequest;
+import hu.icellmobilsoft.dto.sample.institute.InstituteResponse;
 import javassist.NotFoundException;
 
 @Model

@@ -3,8 +3,8 @@ package hu.icellmobilsoft.atr.sample.converter;
 import hu.icellmobilsoft.atr.sample.model.DepartmentEntity;
 import hu.icellmobilsoft.atr.sample.util.EnumUtil;
 import hu.icellmobilsoft.atr.sample.util.SimplePatientConstans;
-import hu.icellmobilsoft.dto.sample.patient.ActiveInactiveStatus;
-import hu.icellmobilsoft.dto.sample.patient.DepartmentType;
+import hu.icellmobilsoft.dto.sample.common.ActiveInactiveStatus;
+import hu.icellmobilsoft.dto.sample.department.DepartmentType;
 
 /**
  * The type Department converter.

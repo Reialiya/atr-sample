@@ -6,7 +6,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import hu.icellmobilsoft.atr.sample.exception.BaseException;
-import hu.icellmobilsoft.dto.sample.patient.BaseResponse;
+import hu.icellmobilsoft.dto.sample.common.BaseResponse;
 
 @Path("/rest/load-data")
 public interface ILoadData {

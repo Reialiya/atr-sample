@@ -10,8 +10,8 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import hu.icellmobilsoft.atr.sample.exception.BaseException;
-import hu.icellmobilsoft.dto.sample.patient.InstituteRequest;
-import hu.icellmobilsoft.dto.sample.patient.InstituteResponse;
+import hu.icellmobilsoft.dto.sample.institute.InstituteRequest;
+import hu.icellmobilsoft.dto.sample.institute.InstituteResponse;
 import javassist.NotFoundException;
 
 /**

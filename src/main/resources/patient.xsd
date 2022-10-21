@@ -4,6 +4,8 @@
             xmlns:common="http://sample.dto.icellmobilsoft.hu/common"
             elementFormDefault='qualified'>
 
+    <xsd:import namespace="http://sample.dto.icellmobilsoft.hu/common" schemaLocation="./common.xsd"/>
+
     <xsd:simpleType name="PatientQueryOrderByType">
         <xsd:annotation>
             <xsd:documentation>Patient sorrendezési típusok</xsd:documentation>

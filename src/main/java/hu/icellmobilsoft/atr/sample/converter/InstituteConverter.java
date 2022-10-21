@@ -3,7 +3,7 @@ package hu.icellmobilsoft.atr.sample.converter;
 import hu.icellmobilsoft.atr.sample.model.InstituteEntity;
 import hu.icellmobilsoft.atr.sample.util.EnumUtil;
 import hu.icellmobilsoft.atr.sample.util.SimplePatientConstans;
-import hu.icellmobilsoft.dto.sample.patient.InstituteType;
+import hu.icellmobilsoft.dto.sample.institute.InstituteType;
 
 public class InstituteConverter {
     public InstituteEntity convert(InstituteType instituteType) {
@@ -33,7 +33,8 @@ public class InstituteConverter {
         instituteType.setName(instituteEntity.getName());
         instituteType.setDepartmentId(instituteEntity.getDepartmentId());
         instituteType.setInstituteId(instituteEntity.getInstituteId());
-        instituteType.setStatus(EnumUtil.convert(instituteEntity.getStatus(), hu.icellmobilsoft.dto.sample.patient.ActiveInactiveStatus.class));
+        instituteType.setStatus(EnumUtil.convert(instituteEntity.getStatus(),
+                hu.icellmobilsoft.dto.sample.common.ActiveInactiveStatus.class));
 
         return instituteType;
     }

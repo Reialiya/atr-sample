@@ -5,7 +5,40 @@
             xmlns:common="http://sample.dto.icellmobilsoft.hu/common"
             elementFormDefault='qualified'>
 
-    <xsd:import namespace="https://common.dto.coffee.icellmobilsoft.hu/common" schemaLocation="./common.xsd"/>
+    <xsd:import namespace="http://sample.dto.icellmobilsoft.hu/common" schemaLocation="./common.xsd"/>
+
+    <xsd:simpleType name="InstituteQueryOrderByType">
+        <xsd:annotation>
+            <xsd:documentation>Patient sorrendezési típusok</xsd:documentation>
+        </xsd:annotation>
+        <xsd:restriction base="xsd:string">
+            <xsd:enumeration value="ID">
+                <xsd:annotation>
+                    <xsd:documentation>Paraméterezésnél használatos megnevezés</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="NAME">
+                <xsd:annotation>
+                    <xsd:documentation>Paraméterezésnél használatos megnevezés</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="INSTITUTE_ID">
+                <xsd:annotation>
+                    <xsd:documentation>Paraméterezésnél használatos megnevezés</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="DEPARTMENT_ID">
+                <xsd:annotation>
+                    <xsd:documentation>Paraméterezésnél használatos megnevezés</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="STATUS">
+                <xsd:annotation>
+                    <xsd:documentation>Státusz</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+        </xsd:restriction>
+    </xsd:simpleType>
 
     <xsd:complexType name="InstituteType">
         <xsd:sequence>
@@ -21,6 +54,104 @@
         <xsd:sequence>
             <xsd:element name="institute" type="InstituteType" maxOccurs="unbounded"/>
         </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="InstituteQueryOrderType">
+        <xsd:annotation>
+            <xsd:documentation>Sorrendezési beállítások</xsd:documentation>
+        </xsd:annotation>
+        <xsd:sequence>
+            <xsd:element name="order" type="InstituteQueryOrderByType">
+                <xsd:annotation>
+                    <xsd:documentation>Oszlop szerinti sorba rendezés</xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="type" type="common:OrderByTypeType">
+                <xsd:annotation>
+                    <xsd:documentation>Sorba rendezés típusa: ASC - Növekvő, DESC - Csokkenő</xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="InstituteQueryParamsType">
+        <xsd:annotation>
+            <xsd:documentation>Szűrő paraméterek</xsd:documentation>
+        </xsd:annotation>
+        <xsd:sequence>
+            <xsd:element name="id" type="common:IdType" minOccurs="0" maxOccurs="unbounded">
+            </xsd:element>
+            <xsd:element name="name" type="common:NameType" minOccurs="0">
+                <xsd:annotation>
+                    <xsd:documentation>Név</xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="instituteId" type="common:IdType" minOccurs="0">
+                <xsd:annotation>
+                    <xsd:documentation>Institute id</xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="departmentId" type="common:IdType" minOccurs="0">
+                <xsd:annotation>
+                    <xsd:documentation>Department id</xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="status" type="common:ActiveInactiveStatus" minOccurs="0">
+                <xsd:annotation>
+                    <xsd:documentation>Paraméterezésnél használatos megnevezés</xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="InstituteQueryRequestType">
+        <xsd:annotation>
+            <xsd:documentation>Patient query kérés típus</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="common:BaseRequestType">
+                <xsd:sequence>
+                    <xsd:element name="paginationParams" type="common:QueryRequestDetails">
+                        <xsd:annotation>
+                            <xsd:documentation>Query lapozás beállítása</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="queryOrders" type="InstituteQueryOrderType" minOccurs="0"
+                                 maxOccurs="unbounded">
+                        <xsd:annotation>
+                            <xsd:documentation>Query rendezés beállítása</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="queryParams" type="InstituteQueryParamsType" minOccurs="0">
+                        <xsd:annotation>
+                            <xsd:documentation>Query szűrés beállítása</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="InstituteQueryResponseType">
+        <xsd:annotation>
+            <xsd:documentation>Patient query válasz típus</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="common:BaseResponseType">
+                <xsd:sequence>
+                    <xsd:element name="paginationParams" type="common:QueryResponseDetails">
+                        <xsd:annotation>
+                            <xsd:documentation>Lapozási adatok</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="patients" type="InstituteType" minOccurs="0" maxOccurs="unbounded">
+                        <xsd:annotation>
+                            <xsd:documentation>Patient eredmény lista</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
     </xsd:complexType>
 
     <xsd:element name="InstituteRequest">

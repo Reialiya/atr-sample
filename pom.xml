@@ -176,7 +176,7 @@
                     <episode>false</episode>
                     <schemaDirectory>src/main/resources</schemaDirectory>
                     <schemaIncludes>
-                        <include>samplepatient.xsd</include>
+                        <include>sample.xsd</include>
                     </schemaIncludes>
                     <generateDirectory>${project.build.directory}/generated-sources/src/main/java</generateDirectory>
                     <args>
