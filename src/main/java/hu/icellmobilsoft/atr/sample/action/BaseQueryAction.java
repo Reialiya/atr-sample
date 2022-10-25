@@ -1,17 +1,17 @@
-package hu.icellmobilsoft.atr.common.system.action;
+package hu.icellmobilsoft.atr.sample.action;
+
+import hu.icellmobilsoft.dto.sample.common.QueryRequestDetails;
 
 import java.util.Objects;
-
-import hu.icellmobilsoft.coffee.dto.common.common.QueryRequestDetails;
 
 /**
  * Base class for all other query action class
  * 
- * @author karoly.tamas
+ * @author katalin.juhasz
  * @since 0.1.0
  *
  */
-public abstract class BaseQueryAction extends BaseClientAction {
+public abstract class BaseQueryAction {
 
     /**
      * Alapértelmezett lapozás

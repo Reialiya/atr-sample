@@ -3,6 +3,7 @@ package hu.icellmobilsoft.atr.sample.action;
 import javax.enterprise.inject.Model;
 import javax.inject.Inject;
 
+import hu.icellmobilsoft.atr.sample.exception.NotFoundException;
 import org.apache.commons.lang3.StringUtils;
 
 import hu.icellmobilsoft.atr.sample.converter.DepartmentConverter;
@@ -14,7 +15,6 @@ import hu.icellmobilsoft.atr.sample.util.ActiveInactiveStatus;
 import hu.icellmobilsoft.atr.sample.util.SimplePatientConstans;
 import hu.icellmobilsoft.dto.sample.department.DepartmentRequest;
 import hu.icellmobilsoft.dto.sample.department.DepartmentResponse;
-import javassist.NotFoundException;
 
 /**
  * @author juhaszkata The type Department action.
@@ -53,7 +53,7 @@ public class DepartmentAction {
      * @throws NotFoundException
      *             the not found exception
      */
-    public DepartmentResponse getDepartment(String departmentID) throws BaseException, NotFoundException {
+    public DepartmentResponse getDepartment(String departmentID) throws BaseException {
         if (StringUtils.isBlank(departmentID)) {
             throw new BaseException(SimplePatientConstans.PARAMETER_CANNOT_NULL_MSG);
         }

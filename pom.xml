@@ -29,7 +29,18 @@
         <failOnMissingWebXml>false</failOnMissingWebXml>
         <apache.common.version>3.10</apache.common.version>
         <service.name>atr-sample</service.name>
+        <version.com.google.guava>25.0-jre</version.com.google.guava>
     </properties>
+
+<!--    <dependencyManagement>-->
+<!--        <dependency>-->
+<!--            <groupId>hu.icellmobilsoft.coffee</groupId>-->
+<!--            <artifactId>coffee-bom</artifactId>-->
+<!--            <version>${version.hu.icellmobilsoft.coffee}</version>-->
+<!--            <type>pom</type>-->
+<!--            <scope>import</scope>-->
+<!--        </dependency>-->
+<!--    </dependencyManagement>-->
 
     <dependencies>
         <dependency>
@@ -38,11 +49,27 @@
             <version>4.13.2</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>${version.com.google.guava}</version>
+            <scope>provided</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>*</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
 <!--        json test-->
 <!--        <dependency>-->
 <!--            <groupId>com.networknt</groupId>-->
 <!--            <artifactId>json-schema-validator</artifactId>-->
 <!--            <version>1.0.72</version>-->
+<!--        </dependency>-->
+<!--        <dependency>-->
+<!--            <groupId>hu.icellmobilsoft.coffee</groupId>-->
+<!--            <artifactId>coffee-jpa</artifactId>-->
 <!--        </dependency>-->
         <dependency>
             <groupId>com.googlecode.json-simple</groupId>
@@ -128,6 +155,39 @@
             <version>1.9.1</version>
             <scope>compile</scope>
         </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-collections4</artifactId>
+            <version>4.4</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-jpamodelgen</artifactId>
+            <version>5.4.1.Final</version>
+            <scope>provided</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>javax.xml.bind</groupId>
+                    <artifactId>jaxb-api</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>javax.activation</groupId>
+                    <artifactId>javax.activation-api</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <!-- hibernate-jpamodelgen -> javax.xml.bind:jaxb-api és javax.activation:javax.activation-api helyett -->
+            <groupId>jakarta.xml.bind</groupId>
+            <artifactId>jakarta.xml.bind-api</artifactId>
+            <version>2.3.2</version>
+        </dependency>
+        <dependency>
+            <groupId>jakarta.activation</groupId>
+            <artifactId>jakarta.activation-api</artifactId>
+            <version>1.2.1</version>
+        </dependency>
 
     </dependencies>
 
@@ -144,6 +204,7 @@
         </resources>
         <finalName>${project.artifactId}</finalName>
         <plugins>
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
@@ -191,6 +252,7 @@
                     </plugins>
                 </configuration>
             </plugin>
+
         </plugins>
         <pluginManagement>
             <plugins>
@@ -247,6 +309,7 @@
                         </lifecycleMappingMetadata>
                     </configuration>
                 </plugin>
+
             </plugins>
         </pluginManagement>
     </build>

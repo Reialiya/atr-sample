@@ -10,6 +10,8 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import hu.icellmobilsoft.atr.sample.exception.BaseException;
+import hu.icellmobilsoft.dto.sample.department.DepartmentQueryRequest;
+import hu.icellmobilsoft.dto.sample.department.DepartmentQueryResponse;
 import hu.icellmobilsoft.dto.sample.department.DepartmentRequest;
 import hu.icellmobilsoft.dto.sample.department.DepartmentResponse;
 import javassist.NotFoundException;
@@ -83,5 +85,20 @@ public interface IDepartmentRest {
     @Path("/delete/{id}")
     @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
     DepartmentResponse deleteDepartment(@PathParam("id") String departmentID) throws BaseException;
+
+    /**
+     * Post department query.
+     *
+     * @param departmentQueryRequest
+     *            the department request
+     * @return the department response
+     * @throws BaseException
+     *             the base exception
+     */
+    @POST
+    @Path("/query")
+    @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
+    @Consumes({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
+    DepartmentQueryResponse postDepartmentQuery(DepartmentQueryRequest departmentQueryRequest) throws BaseException;
 
 }

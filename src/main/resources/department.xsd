@@ -145,6 +145,7 @@
             </xsd:sequence>
         </xsd:complexType>
     </xsd:element>
+
     <xsd:element name="DepartmentResponse">
         <xsd:complexType>
             <xsd:sequence>
@@ -153,6 +154,26 @@
         </xsd:complexType>
     </xsd:element>
 
+    <xsd:element name="DepartmentQueryRequest">
+        <xsd:annotation>
+            <xsd:documentation>View query kérés</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+            <xsd:complexContent>
+                <xsd:extension base="DepartmentQueryRequestType"/>
+            </xsd:complexContent>
+        </xsd:complexType>
+    </xsd:element>
 
+    <xsd:element name="DepartmentQueryResponse">
+        <xsd:annotation>
+            <xsd:documentation>View query válasz</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+            <xsd:complexContent>
+                <xsd:extension base="DepartmentQueryResponseType"/>
+            </xsd:complexContent>
+        </xsd:complexType>
+    </xsd:element>
 
 </xsd:schema>

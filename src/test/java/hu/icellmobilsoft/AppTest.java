@@ -4,7 +4,7 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
-import hu.icellmobilsoft.atr.sample.exception.BaseException;
+
 
 /**
  * Unit test for simple App.
@@ -15,7 +15,7 @@ public class AppTest
      * Rigorous Test :-)
      */
     @Test
-    public void shouldAnswerWithTrue() throws BaseException {
+    public void shouldAnswerWithTrue()  {
 //        CDI.current().select(DepartmentAction.class).get().getDepartment("123");
         assertTrue( true );
     }
