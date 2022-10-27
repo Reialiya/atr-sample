@@ -2,6 +2,7 @@ package hu.icellmobilsoft.atr.sample.service;
 
 import hu.icellmobilsoft.atr.sample.common.PagingResult;
 import hu.icellmobilsoft.atr.sample.common.PagingUtil;
+import hu.icellmobilsoft.atr.sample.model.InstituteEntity_;
 import hu.icellmobilsoft.atr.sample.model.PatientEntity;
 import hu.icellmobilsoft.atr.sample.model.PatientEntity_;
 import hu.icellmobilsoft.atr.sample.util.ActiveInactiveStatus;
@@ -27,7 +28,7 @@ import java.util.List;
  * The type patient service.
  */
 @Model
-public class PatientQueryService extends BaseService {
+public class PatientQueryService extends BaseQueryService<PatientEntity> {
 
     @Inject
     private EntityManager entityManager;
@@ -72,7 +73,8 @@ public class PatientQueryService extends BaseService {
 
     private void addQueryFilters(PatientQueryParamsType queryParams, CriteriaBuilder builder, Root<PatientEntity> root, ArrayList<Predicate> predicates) {
         if (CollectionUtils.isNotEmpty(queryParams.getId())) {
-            SQLUtil.buildCriteriaInClause(builder, root.get(PatientEntity_.id), queryParams.getId(), predicates);
+            addInPredicate(queryParams.getId(), PatientEntity_.id, root, predicates);
+            //   SQLUtil.buildCriteriaInClause(builder, root.get(PatientEntity_.id), queryParams.getId(), predicates);
         }
 
         if (StringUtils.isNotBlank(queryParams.getName())) {
@@ -80,11 +82,11 @@ public class PatientQueryService extends BaseService {
         }
 
         if (StringUtils.isNotBlank(queryParams.getEmail())) {
-            predicates.add(builder.like(root.get(PatientEntity_.EMAIL), queryParams.getEmail().toLowerCase()));
+            predicates.add(builder.like(builder.lower(root.get(PatientEntity_.EMAIL)), queryParams.getEmail().toLowerCase()));
         }
 
         if (StringUtils.isNotBlank(queryParams.getUsername())) {
-            predicates.add(builder.like(root.get(PatientEntity_.USERNAME), queryParams.getUsername().toLowerCase()));
+            predicates.add(builder.like(builder.lower(root.get(PatientEntity_.USERNAME)), queryParams.getUsername().toLowerCase()));
         }
 
         if (StringUtils.isNotBlank(queryParams.getDepartmentId())) {

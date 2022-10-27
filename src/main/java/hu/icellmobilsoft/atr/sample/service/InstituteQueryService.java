@@ -2,6 +2,7 @@ package hu.icellmobilsoft.atr.sample.service;
 
 import hu.icellmobilsoft.atr.sample.common.PagingResult;
 import hu.icellmobilsoft.atr.sample.common.PagingUtil;
+import hu.icellmobilsoft.atr.sample.model.DepartmentEntity_;
 import hu.icellmobilsoft.atr.sample.model.InstituteEntity;
 import hu.icellmobilsoft.atr.sample.model.InstituteEntity_;
 import hu.icellmobilsoft.atr.sample.util.ActiveInactiveStatus;
@@ -28,7 +29,7 @@ import java.util.List;
  * The type Institute service.
  */
 @Model
-public class InstituteQueryService extends BaseService {
+public class InstituteQueryService extends BaseQueryService<InstituteEntity> {
 
     @Inject
     private EntityManager entityManager;
@@ -73,7 +74,8 @@ public class InstituteQueryService extends BaseService {
 
     private void addQueryFilters(InstituteQueryParamsType queryParams, CriteriaBuilder builder, Root<InstituteEntity> root, ArrayList<Predicate> predicates) {
         if (CollectionUtils.isNotEmpty(queryParams.getId())) {
-            SQLUtil.buildCriteriaInClause(builder, root.get(InstituteEntity_.ID), queryParams.getId(), predicates);
+            addInPredicate(queryParams.getId(), InstituteEntity_.id, root, predicates);
+            //  SQLUtil.buildCriteriaInClause(builder, root.get(InstituteEntity_.ID), queryParams.getId(), predicates);
         }
 
         if (StringUtils.isNotBlank(queryParams.getName())) {

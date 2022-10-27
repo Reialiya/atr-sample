@@ -27,7 +27,7 @@ import java.util.List;
  * The type Department service.
  */
 @Model
-public class DepartmentQueryService extends BaseService {
+public class DepartmentQueryService extends BaseQueryService<DepartmentEntity> {
 
     @Inject
     private EntityManager entityManager;
@@ -72,7 +72,8 @@ public class DepartmentQueryService extends BaseService {
 
     private void addQueryFilters(DepartmentQueryParamsType queryParams, CriteriaBuilder builder, Root<DepartmentEntity> root, ArrayList<Predicate> predicates) {
         if (org.apache.commons.collections4.CollectionUtils.isNotEmpty(queryParams.getId())) {
-            SQLUtil.buildCriteriaInClause(builder, root.get(DepartmentEntity_.id), queryParams.getId(), predicates);
+            addInPredicate(queryParams.getId(),DepartmentEntity_.id, root, predicates);
+//            SQLUtil.buildCriteriaInClause(builder, root.get(DepartmentEntity_.id), queryParams.getId(), predicates);
         }
 
         if (StringUtils.isNotBlank(queryParams.getName())) {
@@ -98,7 +99,6 @@ public class DepartmentQueryService extends BaseService {
                         break;
                     case STATUS:
                         attr = root.get(DepartmentEntity_.status);
-
                 }
                 if (attr != null) {
                     OrderByTypeType orderType = order.getType() == null ? OrderByTypeType.ASC : order.getType();
