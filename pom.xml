@@ -230,7 +230,7 @@
 				<configuration>
 					<noFileHeader>true</noFileHeader>
 					<episode>false</episode>
-					<schemaDirectory>src/main/resources</schemaDirectory>
+					<schemaDirectory>${project.basedir}/src/main/resources</schemaDirectory>
 					<schemaIncludes>
 						<include>sample.xsd</include>
 					</schemaIncludes>
@@ -292,6 +292,7 @@
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>build-helper-maven-plugin</artifactId>
+				<version>3.3.0</version>
 				<executions>
 					<execution>
 						<id>add-source</id>
@@ -307,6 +308,14 @@
 					</execution>
 				</executions>
 			</plugin>
+<!--			<plugin>-->
+<!--				<groupId>org.apache.maven.plugins</groupId>-->
+<!--				<artifactId>maven-compiler-plugin</artifactId>-->
+<!--				<configuration>-->
+<!--					<source>8</source>-->
+<!--					<target>8</target>-->
+<!--				</configuration>-->
+<!--			</plugin>-->
 
 		</plugins>
 		<pluginManagement>

@@ -1,45 +1,45 @@
 package hu.icellmobilsoft.atr.sample.action;
 
 import hu.icellmobilsoft.atr.sample.common.PagingResult;
-import hu.icellmobilsoft.atr.sample.converter.DepartmentConverter;
+import hu.icellmobilsoft.atr.sample.converter.PatientConverter;
 import hu.icellmobilsoft.atr.sample.exception.BaseException;
-import hu.icellmobilsoft.atr.sample.model.DepartmentEntity;
-import hu.icellmobilsoft.atr.sample.service.DepartmentQueryService;
+import hu.icellmobilsoft.atr.sample.model.PatientEntity;
+import hu.icellmobilsoft.atr.sample.service.PatientQueryService;
 import hu.icellmobilsoft.atr.sample.util.SQLUtil;
 import hu.icellmobilsoft.atr.sample.util.SimplePatientConstans;
 import hu.icellmobilsoft.dto.sample.common.FunctionCodeType;
-import hu.icellmobilsoft.dto.sample.department.DepartmentQueryRequest;
-import hu.icellmobilsoft.dto.sample.department.DepartmentQueryResponse;
+import hu.icellmobilsoft.dto.sample.patient.PatientQueryRequest;
+import hu.icellmobilsoft.dto.sample.patient.PatientQueryResponse;
 
 import javax.enterprise.inject.Model;
 import javax.inject.Inject;
 
 @Model
-public class DepartmentQueryAction extends BaseQueryAction {
+public class PatientQueryAction extends BaseQueryAction {
 
     @Inject
-    private DepartmentQueryService departmentQueryService;
+    private PatientQueryService patientQueryService;
 
     @Inject
-    private DepartmentConverter departmentConverter;
+    private PatientConverter patientConverter;
 
-    public DepartmentQueryResponse query(DepartmentQueryRequest departmentQueryRequest) throws BaseException {
-        if (departmentQueryRequest == null) {
+    public PatientQueryResponse query(PatientQueryRequest patientQueryRequest) throws BaseException {
+        if (patientQueryRequest == null) {
             throw new BaseException(SimplePatientConstans.PARAMETER_CANNOT_NULL_MSG);
         }
 
-        PagingResult<DepartmentEntity> pagingResult = departmentQueryService.findByQueryParam(departmentQueryRequest.getQueryParams(),
-                departmentQueryRequest.getQueryOrders(), defaultPaginationParams(departmentQueryRequest.getPaginationParams()));
+        PagingResult<PatientEntity> pagingResult = patientQueryService.findByQueryParam(patientQueryRequest.getQueryParams(),
+                patientQueryRequest.getQueryOrders(), defaultPaginationParams(patientQueryRequest.getPaginationParams()));
 
-        return toDepartmentQueryResponse(pagingResult);
+        return topatientQueryResponse(pagingResult);
     }
 
-    private DepartmentQueryResponse toDepartmentQueryResponse(PagingResult<DepartmentEntity> pagingResult) {
-        DepartmentQueryResponse response = new DepartmentQueryResponse();
+    private PatientQueryResponse topatientQueryResponse(PagingResult<PatientEntity> pagingResult) {
+        PatientQueryResponse response = new PatientQueryResponse();
 
         //response osszeallitas
-        for (DepartmentEntity departmentEntity : pagingResult.getResults()) {
-            response.getDepartment().add(departmentConverter.convert(departmentEntity));
+        for (PatientEntity patientEntity : pagingResult.getResults()) {
+            response.getPatients().add(patientConverter.convert(patientEntity));
         }
 
         response.setFuncCode(FunctionCodeType.OK);

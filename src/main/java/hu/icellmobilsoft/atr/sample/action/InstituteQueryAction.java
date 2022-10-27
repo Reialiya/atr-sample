@@ -1,15 +1,15 @@
 package hu.icellmobilsoft.atr.sample.action;
 
 import hu.icellmobilsoft.atr.sample.common.PagingResult;
-import hu.icellmobilsoft.atr.sample.converter.DepartmentConverter;
+import hu.icellmobilsoft.atr.sample.converter.InstituteConverter;
 import hu.icellmobilsoft.atr.sample.exception.BaseException;
-import hu.icellmobilsoft.atr.sample.model.DepartmentEntity;
-import hu.icellmobilsoft.atr.sample.service.DepartmentQueryService;
+import hu.icellmobilsoft.atr.sample.model.InstituteEntity;
+import hu.icellmobilsoft.atr.sample.service.InstituteQueryService;
 import hu.icellmobilsoft.atr.sample.util.SQLUtil;
 import hu.icellmobilsoft.atr.sample.util.SimplePatientConstans;
 import hu.icellmobilsoft.dto.sample.common.FunctionCodeType;
-import hu.icellmobilsoft.dto.sample.department.DepartmentQueryRequest;
-import hu.icellmobilsoft.dto.sample.department.DepartmentQueryResponse;
+import hu.icellmobilsoft.dto.sample.institute.InstituteQueryRequest;
+import hu.icellmobilsoft.dto.sample.institute.InstituteQueryResponse;
 
 import javax.enterprise.inject.Model;
 import javax.inject.Inject;
@@ -18,28 +18,28 @@ import javax.inject.Inject;
 public class InstituteQueryAction extends BaseQueryAction {
 
     @Inject
-    private DepartmentQueryService departmentQueryService;
+    private InstituteQueryService instituteQueryService;
 
     @Inject
-    private DepartmentConverter departmentConverter;
+    private InstituteConverter instituteConverter;
 
-    public DepartmentQueryResponse query(DepartmentQueryRequest departmentQueryRequest) throws BaseException {
-        if (departmentQueryRequest == null) {
+    public InstituteQueryResponse query(InstituteQueryRequest InstituteQueryRequest) throws BaseException {
+        if (InstituteQueryRequest == null) {
             throw new BaseException(SimplePatientConstans.PARAMETER_CANNOT_NULL_MSG);
         }
 
-        PagingResult<DepartmentEntity> pagingResult = departmentQueryService.findByQueryParam(departmentQueryRequest.getQueryParams(),
-                departmentQueryRequest.getQueryOrders(), defaultPaginationParams(departmentQueryRequest.getPaginationParams()));
+        PagingResult<InstituteEntity> pagingResult = instituteQueryService.findByQueryParam(InstituteQueryRequest.getQueryParams(),
+                InstituteQueryRequest.getQueryOrders(), defaultPaginationParams(InstituteQueryRequest.getPaginationParams()));
 
-        return toDepartmentQueryResponse(pagingResult);
+        return toInstituteQueryResponse(pagingResult);
     }
 
-    private DepartmentQueryResponse toDepartmentQueryResponse(PagingResult<DepartmentEntity> pagingResult) {
-        DepartmentQueryResponse response = new DepartmentQueryResponse();
+    private InstituteQueryResponse toInstituteQueryResponse(PagingResult<InstituteEntity> pagingResult) {
+        InstituteQueryResponse response = new InstituteQueryResponse();
 
         //response osszeallitas
-        for (DepartmentEntity departmentEntity : pagingResult.getResults()) {
-            response.getDepartment().add(departmentConverter.convert(departmentEntity));
+        for (InstituteEntity instituteEntity : pagingResult.getResults()) {
+            response.getInstitute().add(instituteConverter.convert(instituteEntity));
         }
 
         response.setFuncCode(FunctionCodeType.OK);

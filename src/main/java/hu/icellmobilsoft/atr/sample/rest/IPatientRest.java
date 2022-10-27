@@ -10,6 +10,10 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import hu.icellmobilsoft.atr.sample.exception.BaseException;
+import hu.icellmobilsoft.dto.sample.institute.InstituteQueryRequest;
+import hu.icellmobilsoft.dto.sample.institute.InstituteQueryResponse;
+import hu.icellmobilsoft.dto.sample.patient.PatientQueryRequest;
+import hu.icellmobilsoft.dto.sample.patient.PatientQueryResponse;
 import hu.icellmobilsoft.dto.sample.patient.PatientRequest;
 import hu.icellmobilsoft.dto.sample.patient.PatientResponse;
 import javassist.NotFoundException;
@@ -38,4 +42,9 @@ public interface IPatientRest {
     @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
     PatientResponse deletePatient(@PathParam("id") String patientID) throws BaseException;
 
+    @POST
+    @Path("/query")
+    @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
+    @Consumes({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
+    PatientQueryResponse postPatientQuery(PatientQueryRequest patientQueryRequest) throws BaseException;
 }

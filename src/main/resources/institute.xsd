@@ -9,7 +9,7 @@
 
     <xsd:simpleType name="InstituteQueryOrderByType">
         <xsd:annotation>
-            <xsd:documentation>Patient sorrendezési típusok</xsd:documentation>
+            <xsd:documentation>Institute sorrendezési típusok</xsd:documentation>
         </xsd:annotation>
         <xsd:restriction base="xsd:string">
             <xsd:enumeration value="ID">
@@ -106,7 +106,7 @@
 
     <xsd:complexType name="InstituteQueryRequestType">
         <xsd:annotation>
-            <xsd:documentation>Patient query kérés típus</xsd:documentation>
+            <xsd:documentation>Institute query kérés típus</xsd:documentation>
         </xsd:annotation>
         <xsd:complexContent>
             <xsd:extension base="common:BaseRequestType">
@@ -134,7 +134,7 @@
 
     <xsd:complexType name="InstituteQueryResponseType">
         <xsd:annotation>
-            <xsd:documentation>Patient query válasz típus</xsd:documentation>
+            <xsd:documentation>Institute query válasz típus</xsd:documentation>
         </xsd:annotation>
         <xsd:complexContent>
             <xsd:extension base="common:BaseResponseType">
@@ -144,15 +144,37 @@
                             <xsd:documentation>Lapozási adatok</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element name="patients" type="InstituteType" minOccurs="0" maxOccurs="unbounded">
+                    <xsd:element name="institute" type="InstituteType" minOccurs="0" maxOccurs="unbounded">
                         <xsd:annotation>
-                            <xsd:documentation>Patient eredmény lista</xsd:documentation>
+                            <xsd:documentation>Institute eredmény lista</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                 </xsd:sequence>
             </xsd:extension>
         </xsd:complexContent>
     </xsd:complexType>
+
+    <xsd:element name="InstituteQueryRequest">
+        <xsd:annotation>
+            <xsd:documentation>View query kérés</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+            <xsd:complexContent>
+                <xsd:extension base="InstituteQueryRequestType"/>
+            </xsd:complexContent>
+        </xsd:complexType>
+    </xsd:element>
+
+    <xsd:element name="InstituteQueryResponse">
+        <xsd:annotation>
+            <xsd:documentation>View query válasz</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+            <xsd:complexContent>
+                <xsd:extension base="InstituteQueryResponseType"/>
+            </xsd:complexContent>
+        </xsd:complexType>
+    </xsd:element>
 
     <xsd:element name="InstituteRequest">
         <xsd:complexType>

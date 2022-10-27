@@ -111,7 +111,7 @@
             </xsd:element>
             <xsd:element name="instituteId" type="common:IdType" minOccurs="0">
                 <xsd:annotation>
-                    <xsd:documentation>Institute id</xsd:documentation>
+                    <xsd:documentation>Patient id</xsd:documentation>
                 </xsd:annotation>
             </xsd:element>
             <xsd:element name="departmentId" type="common:IdType" minOccurs="0">

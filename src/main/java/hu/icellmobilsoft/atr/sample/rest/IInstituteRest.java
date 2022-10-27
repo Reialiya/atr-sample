@@ -10,6 +10,10 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import hu.icellmobilsoft.atr.sample.exception.BaseException;
+import hu.icellmobilsoft.dto.sample.department.DepartmentQueryRequest;
+import hu.icellmobilsoft.dto.sample.department.DepartmentQueryResponse;
+import hu.icellmobilsoft.dto.sample.institute.InstituteQueryRequest;
+import hu.icellmobilsoft.dto.sample.institute.InstituteQueryResponse;
 import hu.icellmobilsoft.dto.sample.institute.InstituteRequest;
 import hu.icellmobilsoft.dto.sample.institute.InstituteResponse;
 import javassist.NotFoundException;
@@ -82,4 +86,9 @@ public interface IInstituteRest {
     @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
     InstituteResponse deleteInstitute(@PathParam("id") String instituteID) throws BaseException;
 
+    @POST
+    @Path("/query")
+    @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
+    @Consumes({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
+    InstituteQueryResponse postInstituteQuery(InstituteQueryRequest instituteQueryRequest) throws BaseException;
 }
