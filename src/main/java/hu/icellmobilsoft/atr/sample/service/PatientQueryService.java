@@ -76,7 +76,7 @@ public class PatientQueryService extends BaseService {
         }
 
         if (StringUtils.isNotBlank(queryParams.getName())) {
-            predicates.add(builder.like(root.get(PatientEntity_.NAME), queryParams.getName().toLowerCase()));
+            predicates.add(builder.like(builder.lower(root.get(PatientEntity_.name)), queryParams.getName().toLowerCase()));
         }
 
         if (StringUtils.isNotBlank(queryParams.getEmail())) {

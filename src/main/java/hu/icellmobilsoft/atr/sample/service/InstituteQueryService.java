@@ -77,7 +77,7 @@ public class InstituteQueryService extends BaseService {
         }
 
         if (StringUtils.isNotBlank(queryParams.getName())) {
-            predicates.add(builder.like(root.get(InstituteEntity_.NAME), queryParams.getName().toLowerCase()));
+            predicates.add(builder.like(builder.lower(root.get(InstituteEntity_.NAME)), queryParams.getName().toLowerCase()));
         }
 
         if (StringUtils.isNotBlank(queryParams.getDepartmentId())) {

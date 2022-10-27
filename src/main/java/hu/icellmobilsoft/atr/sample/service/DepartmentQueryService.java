@@ -72,11 +72,11 @@ public class DepartmentQueryService extends BaseService {
 
     private void addQueryFilters(DepartmentQueryParamsType queryParams, CriteriaBuilder builder, Root<DepartmentEntity> root, ArrayList<Predicate> predicates) {
         if (org.apache.commons.collections4.CollectionUtils.isNotEmpty(queryParams.getId())) {
-            SQLUtil.buildCriteriaInClause(builder, root.get(DepartmentEntity_.ID), queryParams.getId(), predicates);
+            SQLUtil.buildCriteriaInClause(builder, root.get(DepartmentEntity_.id), queryParams.getId(), predicates);
         }
 
         if (StringUtils.isNotBlank(queryParams.getName())) {
-            predicates.add(builder.like(root.get(DepartmentEntity_.NAME), queryParams.getName().toLowerCase()));
+            predicates.add(builder.like(builder.lower(root.get(DepartmentEntity_.name)), queryParams.getName().toLowerCase()));
         }
 
         if (queryParams.getStatus() != null) {
