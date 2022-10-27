@@ -50,15 +50,15 @@ public final class SQLUtil {
      * @param ids        Szuresi ertekek
      * @param predicates Predicate gyujto lista
      */
-    public static <T, Y> void buildCriteriaInClause(CriteriaBuilder builder, Path<Y> path, Collection<T> ids, List<Predicate> predicates) {
-        Iterable<List<T>> it = getIdFragmentIterator(ids);
-        List<Predicate> tempPredicateList = new ArrayList<>();
-        for (List<T> fragment : it) {
-            Predicate inPredicate = path.in(fragment);
-            tempPredicateList.add(inPredicate);
-        }
-        predicates.add(builder.or(tempPredicateList.toArray(new Predicate[tempPredicateList.size()])));
-    }
+//    public static <T, Y> void buildCriteriaInClause(CriteriaBuilder builder, Path<Y> path, Collection<T> ids, List<Predicate> predicates) {
+//        Iterable<List<T>> it = getIdFragmentIterator(ids);
+//        List<Predicate> tempPredicateList = new ArrayList<>();
+//        for (List<T> fragment : it) {
+//            Predicate inPredicate = path.in(fragment);
+//            tempPredicateList.add(inPredicate);
+//        }
+//        predicates.add(builder.or(tempPredicateList.toArray(new Predicate[tempPredicateList.size()])));
+//    }
 
     /**
      * PagingResult létrehozása default értékekkel
@@ -77,8 +77,5 @@ public final class SQLUtil {
         return pagingResult;
     }
 
-    private static <T> Iterable<List<T>> getIdFragmentIterator(Collection<T> ids) {
-        return Iterables.partition(ids, PARTITION_MAX_SIZE);
-    }
 
 }
